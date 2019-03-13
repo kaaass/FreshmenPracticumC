@@ -46,7 +46,11 @@ Database *Database_pushBack(Database *head, void *data) {
  * @return
  */
 void Database_destroy(Database *head) {
-
+    ForEach(cur, head) {
+        free(cur->cur);
+    }
+    free(head->data); // 释放表头信息
+    free(head);
 }
 
 /**
