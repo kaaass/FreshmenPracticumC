@@ -1,5 +1,7 @@
 # 程序设计基础课程设计项目 (2018级)
 
+[![Build Status](https://travis-ci.com/kaaass/FreshmenPracticumC.svg?token=7d6V7UKwzfD6augATNKx&branch=master)](https://travis-ci.com/kaaass/FreshmenPracticumC)
+
 本项目为吉林大学软件学院程序设计基础课程设计(2018级)课程项目的代码仓库。
 
 本项目为Windows设计。
