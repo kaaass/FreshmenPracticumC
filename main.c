@@ -14,5 +14,6 @@ int main() {
         Test *record = GetData(Test, cur);
         printf("Id %d: Num = %d, Str = %s.\n", record->id, record->num, record->str);
     }
+    Database_destroy(db);
     return 0;
 }
