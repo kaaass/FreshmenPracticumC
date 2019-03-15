@@ -4,10 +4,6 @@ compiler:
   - gcc
   - clang
 
-env:
-  global:
-    - CODECOV_TOKEN=:1b2f01c2-c875-4c07-8a73-9aff59b3d292
-
 before_script:
   - mkdir build
   - cd build
@@ -18,4 +14,4 @@ script:
   - make gcov
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -X gcov
+  - bash <(curl -s https://codecov.io/bash) -X gcov -t "1b2f01c2-c875-4c07-8a73-9aff59b3d292"
