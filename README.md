@@ -1,6 +1,7 @@
 # 程序设计基础课程设计项目 (2018级)
 
 [![Build Status](https://travis-ci.com/kaaass/FreshmenPracticumC.svg?token=7d6V7UKwzfD6augATNKx&branch=master)](https://travis-ci.com/kaaass/FreshmenPracticumC)
+[![codecov](https://codecov.io/gh/kaaass/FreshmenPracticumC/branch/master/graph/badge.svg?token=oyO5jgZi6v)](https://codecov.io/gh/kaaass/FreshmenPracticumC)
 
 本项目为吉林大学软件学院程序设计基础课程设计(2018级)课程项目的代码仓库。
 
@@ -28,7 +29,13 @@
 
 ## 使用项目
 
-[cJson](https://github.com/DaveGamble/cJSON)
+[cJson](https://github.com/DaveGamble/cJSON) - Json数据解析
+
+[Unity](https://github.com/ThrowTheSwitch/Unity) - 单元测试框架
+
+[cmake-unity-tutorial](https://github.com/rpoisel/cmake-unity-tutorial) - CMake配置
+
+[CMake-codecov](https://github.com/RWTH-HPC/CMake-codecov) - 代码覆盖率测试
 
 ## 版权说明
 
