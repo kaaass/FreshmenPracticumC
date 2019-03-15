@@ -2,6 +2,7 @@
 // Created by guyis on 2019/3/12.
 //
 #include <stdlib.h>
+#include <assert.h>
 #include "Database.h"
 
 const int DATA_TYPE_Header = 0;
@@ -32,12 +33,28 @@ Database *Database_pushBack(Database *head, void *data) {
     DataNode *node = malloc(sizeof(DataNode));
     Header *header = GetData(Header, head);
     node->dataType = header->defaultDataType;
-    node->data = data;
+    node->data = data; // FIXME: data can be a object on stack
     node->next = NULL;
     header->tail->next = node; // 加入链表
     header->tail = node;
     header->cnt++;
     return head;
+}
+
+/**
+ * 返回数据库记录数
+ * @param head 数据库
+ * @return 记录数
+ */
+size_t Database_size(Database *head) {
+    size_t size = 0;
+    if (head != NULL) {
+        Header *header = GetData(Header, head);
+        assert(header);
+        size = (size_t) header->cnt;
+        assert(size >= 0);
+    }
+    return size;
 }
 
 /**
