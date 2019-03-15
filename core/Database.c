@@ -3,6 +3,8 @@
 //
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
+
 #include "Database.h"
 
 const int DATA_TYPE_Header = 0;
@@ -15,6 +17,7 @@ const int DATA_TYPE_Header = 0;
 Database *Database_create(int type) {
     Database *db = malloc(sizeof(Database));
     Header *header = malloc(sizeof(Header));
+
     db->dataType = DATA_TYPE_Header;
     header->cnt = 0;
     header->defaultDataType = type;
@@ -27,13 +30,18 @@ Database *Database_create(int type) {
 /**
  * 在数据库尾加入节点
  * @param head 数据库
+ * @param data 使用Data宏进行数据组织
  * @return 数据库
  */
-Database *Database_pushBack(Database *head, void *data) {
+Database *Database_pushBack(Database *head, void *data, size_t size) {
     DataNode *node = malloc(sizeof(DataNode));
     Header *header = GetData(Header, head);
+    void *newData = malloc(size);
+
+    memcpy(newData, data, size);
     node->dataType = header->defaultDataType;
-    node->data = data; // FIXME: data can be a object on stack
+    node->dataSize = size;
+    node->data = newData;
     node->next = NULL;
     header->tail->next = node; // 加入链表
     header->tail = node;
@@ -48,6 +56,7 @@ Database *Database_pushBack(Database *head, void *data) {
  */
 size_t Database_size(Database *head) {
     size_t size = 0;
+
     if (head != NULL) {
         Header *header = GetData(Header, head);
         assert(header);
@@ -77,14 +86,18 @@ void Database_destroy(Database *head) {
  */
 Cursor *Database_begin(Database *head) {
     Cursor *cursor;
+    DataNode *next;
+
     // 空表检查
     if (head->next == NULL)
         return NULL;
+    next = head->next;
     cursor = malloc(sizeof(Cursor));
-    cursor->cur = head->next;
-    cursor->next = cursor->cur->next;
-    cursor->dataType = cursor->cur->dataType;
-    cursor->data = cursor->cur->data;
+    cursor->cur = next;
+    cursor->next = next->next;
+    cursor->dataType = next->dataType;
+    cursor->dataSize = next->dataSize;
+    cursor->data = next->data;
     return cursor;
 }
 
@@ -94,12 +107,16 @@ Cursor *Database_begin(Database *head) {
  * @return 迭代器
  */
 Cursor *Cursor_next(Cursor *cursor) {
+    DataNode *next;
+
     // 尾节点
     if (cursor->next == NULL)
         return NULL;
-    cursor->cur = cursor->next;
-    cursor->next = cursor->cur->next;
-    cursor->dataType = cursor->cur->dataType;
-    cursor->data = cursor->cur->data;
+    next = cursor->next;
+    cursor->cur = next;
+    cursor->next = next->next;
+    cursor->dataType = next->dataType;
+    cursor->dataSize = next->dataSize;
+    cursor->data = next->data;
     return cursor;
 }
