@@ -25,7 +25,13 @@
 
 1. 安装CMake
 2. 下载源代码并解压，cd至目录
-3. 执行```cmake --build . --config Release```
+3. 执行
+```bash
+mkdir build
+cd build
+cmake .. -DENABLE_COVERAGE=Off -DCMAKE_BUILD_TYPE=Release
+make
+```
 
 ## 使用项目
 
