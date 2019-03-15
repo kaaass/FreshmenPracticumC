@@ -57,6 +57,13 @@ Database *Database_create(int type);
 Database *Database_pushBack(Database *head, void *data);
 
 /**
+ * 返回数据库记录数
+ * @param head 数据库
+ * @return 记录数
+ */
+size_t Database_size(Database *head);
+
+/**
  * 回收数据库所占内存
  * @param head 数据库
  * @return

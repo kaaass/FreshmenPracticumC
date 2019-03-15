@@ -3,7 +3,7 @@ if(BUILD_TEST)
             TestDataBase)
 
     foreach(unit_test ${unit_tests})
-        add_executable("${unit_test}" "${unit_test}.c")
+        add_executable("${unit_test}" "${unit_test}.c" "../${modules}")
         target_link_libraries("${unit_test}" unity)
         add_test(NAME "${unit_test}"
                 COMMAND "./${unit_test}")
