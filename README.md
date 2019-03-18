@@ -29,8 +29,7 @@
 ```bash
 mkdir build
 cd build
-cmake .. -DENABLE_COVERAGE=Off -DCMAKE_BUILD_TYPE=Release
-make
+cmake --build . -DENABLE_COVERAGE=Off --config Release
 ```
 
 ## 使用项目
