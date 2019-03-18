@@ -14,12 +14,12 @@ void test_create_database() {
 }
 
 void test_pushData() {
-    Test sigle = {1, 114, "SingleLine"};
+    Test sigle = {1, 114, LITERAL("SingleLine")};
     Database_pushBack(db, Data(Test, &sigle));
     TEST_ASSERT_EQUAL_INT(1, Database_size(db));
 
-    Test data[] = {{2, 233, "test"},
-                   {3, 666, "test2"}};
+    Test data[] = {{2, 233, LITERAL("test")},
+                   {3, 666, LITERAL("test2")}};
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Test, &data[i]));
     }
