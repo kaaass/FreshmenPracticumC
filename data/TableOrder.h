@@ -6,22 +6,27 @@
 
 #ifndef FRESHMAN_PROJ_C_TABLEORDER_H
 #define FRESHMAN_PROJ_C_TABLEORDER_H
-#define MaxOPID 100;
-enum {Normal=0,Del,Sales_Return,Gift}Status;
-enum {Purchase=0,Single_Buy,Whole_Sale}How;
+
+/**
+ * 数据表：订单
+ */
+#define MAX_OP_ID 100;
+enum OrderStatus {
+    normal = 0, del, salesReturn, gift
+};
+enum OrderType {
+    purchase = 0, singleBuy, wholeSale
+};
 
 const int DATA_TYPE_Order = 7;
 
 typedef struct {
     int id;
-    How type;
-    Status status;
-    int opcount;
-    int opId[MaxOPID];
+    enum OrderType type;
+    enum OrderStatus status;
+    int opCount;
+    int opId[MAX_OP_ID];
     float price;
 } Order;
-
-
-
 
 #endif //FRESHMAN_PROJ_C_TABLEORDER_H

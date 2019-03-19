@@ -11,7 +11,7 @@
  */
 const int DATA_TYPE_Mountings = 2;
 enum MountingsType {
-    type_mouse = 0, type_keyboard = 1, type_memory = 2, type_graphicsCard = 3, type_hardDisk = 4
+    mouse = 0, keyboard = 1, memory = 2, graphicsCard = 3, hardDisk = 4
 };
 
 typedef struct {
