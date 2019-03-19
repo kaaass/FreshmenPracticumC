@@ -7,7 +7,7 @@
 
 #include "../util/StringUtil.h"
 
-const int DATA_TYPE_Test = 4;
+const int DATA_TYPE_SellingRecord = 5;
 
 enum {
     Normal = 0 ,Del ,SalesReturn, Gift
