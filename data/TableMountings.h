@@ -9,7 +9,7 @@
 /**
  * 数据表：零配件
  */
-const int DATA_TYPE_Test = 2;
+const int DATA_TYPE_Mountings = 2;
 enum MountingsType {
     type_mouse = 0, type_keyboard = 1, type_memory = 2, type_graphicsCard = 3, type_hardDisk = 4
 };
