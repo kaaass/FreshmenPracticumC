@@ -7,7 +7,7 @@
 #ifndef FRESHMAN_PROJ_C_TABLEPROVIDER_H
 #define FRESHMAN_PROJ_C_TABLEPROVIDER_H
 
-const int DATA_TYPE_Test = 6;
+const int DATA_TYPE_Provider= 6;
 
 typedef struct {
     int id;
