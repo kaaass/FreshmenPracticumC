@@ -12,6 +12,8 @@ Database *CONFIG ;
 Database *GUEST;
 Database *SELLING_RECORD;
 Database *CONFIG;
+Database *ORDER;
+Database *PROVIDER;
 Database *MOUNTINGS;
 Database *PURCHASE_RECORD;
 
