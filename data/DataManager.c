@@ -6,9 +6,13 @@
 #include "DataManager.h"
 #include"TableOrder.h"
 #include"TableProvider.h"
+#include "TableMountings.h"
+#include "TablePurchaseRecord.h"
 
 void DataManager_init() {
     CONFIG = Create(Config);
     ORDER  = Create(Order);
     PROVIDER = Create(Provider);
+    MOUNTINGS = Create(Mountings);
+    PURCHASE_RECORD = Create(PurchaseRecord);
 }
