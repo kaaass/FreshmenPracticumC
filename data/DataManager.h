@@ -7,6 +7,8 @@
 #define FRESHMAN_PROJ_C_DATAMANAGER_H
 
 Database *CONFIG;
+Database *ORDER;
+Database *PROVIDER;
 
 void DataManager_init();
 
