@@ -10,7 +10,7 @@
 /**
  * 数据表：供应商
  */
-const int DATA_TYPE_Provider = 6;
+#define DATA_TYPE_Provider 6
 
 typedef struct {
     int id;

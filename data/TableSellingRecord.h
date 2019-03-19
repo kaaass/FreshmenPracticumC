@@ -10,7 +10,7 @@
 /**
  * 数据表：销售记录
  */
-const int DATA_TYPE_SellingRecord = 5;
+#define DATA_TYPE_SellingRecord 5
 
 enum SellingRecordStatus {
     normal = 0, del, salesReturn, gift

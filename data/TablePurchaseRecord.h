@@ -11,7 +11,8 @@
 /**
  * 数据表：进货记录
  */
-const int DATA_TYPE_PurchaseRecord = 3;
+#define DATA_TYPE_PurchaseRecord 3
+
 enum PurchaseRecordStatus {
     normal = 0, deleted = 1, salesReturn = 2
 };

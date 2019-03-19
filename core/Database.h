@@ -38,7 +38,7 @@ typedef struct {
 /**
  * 数据类型：哨兵结点
  */
-const int DATA_TYPE_Header;
+#define DATA_TYPE_Header 0
 
 typedef struct {
     int cnt;

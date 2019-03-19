@@ -10,7 +10,7 @@
 /**
  * 数据表：
  */
-const int DATA_TYPE_Config = 8;
+#define DATA_TYPE_Config 8
 
 typedef struct {
     int id;

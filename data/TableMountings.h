@@ -9,7 +9,8 @@
 /**
  * 数据表：零配件
  */
-const int DATA_TYPE_Mountings = 2;
+#define DATA_TYPE_Mountings 2
+
 enum MountingsType {
     mouse = 0, keyboard = 1, memory = 2, graphicsCard = 3, hardDisk = 4
 };
