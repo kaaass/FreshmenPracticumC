@@ -23,7 +23,7 @@ typedef struct {
     int sellerId;
     int amount;
     float total;
-    int orderId
+    int orderId;
     enum PurchaseRecordStatus status;
     Time time;
 } PurchaseRecord;
