@@ -37,6 +37,7 @@ void test_pushData() {
 void test_cursor() {
     Cursor *cur = Database_begin(db);
     TEST_ASSERT(CheckType(Test, cur))
+    TEST_ASSERT_EQUAL(NULL, Database_begin(NULL));
     DataNode *next = cur->cur->next;
     Cursor_next(cur);
     TEST_ASSERT(CheckType(Test, cur))
