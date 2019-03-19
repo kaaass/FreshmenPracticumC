@@ -4,10 +4,14 @@
 
 #include "../data/TableConfig.h"
 #include "DataManager.h"
+#include "TableMountings.h"
+#include "TablePurchaseRecord.h"
 
 void DataManager_init() {
     CONFIG = Create(Config);
     GUEST = Create(Guest);
     SELLING_RECORD = Create(SellingRecord);
 
+    MOUNTINGS = Create(Mountings);
+    PURCHASE_RECORD = Create(PurchaseRecord);
 }
