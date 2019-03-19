@@ -1,7 +1,8 @@
 if(BUILD_TEST)
     set(unit_tests
             TestDatabase
-            TestData)
+            TestData
+            TestUtil)
     set(_modules) # Stupid way
     foreach(mod ${modules})
         list(APPEND _modules "../${mod}")
