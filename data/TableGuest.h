@@ -7,13 +7,13 @@
 
 #include "../util/StringUtil.h"
 
-const int DATA_TYPE_Test = 4;
+const int DATA_TYPE_Guest = 4;
 
 typedef struct {
     int id;
     stringbuf name;
     stringbuf phone;
-} TableGuest;
+} Guest;
 
 
 #endif //FRESHMAN_PROJ_C_TABLEGUEST_H
