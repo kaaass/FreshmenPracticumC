@@ -10,7 +10,7 @@
 enum {Normal=0,Del,SalesReturn,Gift}Status;
 enum {Purchase=0,Singlebuy,Wholesale}How;
 
-const int DATA_TYPE_Test = 7;
+const int DATA_TYPE = 7;
 
 typedef struct {
     int id;
@@ -19,7 +19,7 @@ typedef struct {
     int opcount;
     int opId[MaxOPID];
     float price;
-} Provider;
+} Order;
 
 
 
