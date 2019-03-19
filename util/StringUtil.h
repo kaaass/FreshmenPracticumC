@@ -6,6 +6,7 @@
 #define FRESHMAN_PROJ_C_STRINGUTIL_H
 
 #define LITERAL(str) str
+#define CSTR(str) str
 typedef char *stringbuf;
 
 #endif //FRESHMAN_PROJ_C_STRINGUTIL_H
