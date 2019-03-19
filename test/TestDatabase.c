@@ -10,16 +10,24 @@ Database *db = NULL;
 
 void test_create_database() {
     db = Create(Test);
-    TEST_ASSERT_MESSAGE( db != NULL , "Fail to create database.");
+    TEST_ASSERT_MESSAGE(db != NULL, "Fail to create database.");
 }
 
 void test_pushData() {
-    Test sigle = {1, 114, LITERAL("SingleLine")};
+    Test sigle = {.id = 1,
+            .num = 114,
+            .str = LITERAL("SingleLine")};
     Database_pushBack(db, Data(Test, &sigle));
     TEST_ASSERT_EQUAL_INT(1, Database_size(db));
 
-    Test data[] = {{2, 233, LITERAL("test")},
-                   {3, 666, LITERAL("test2")}};
+    Test data[] = {
+            {.id = 2,
+                    .num = 233,
+                    .str = LITERAL("test")},
+            {.id = 3,
+                    .num = 666,
+                    .str = LITERAL("test2")}
+    };
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Test, &data[i]));
     }
@@ -45,7 +53,7 @@ void test_foreach() {
     TEST_ASSERT_EQUAL_INT(Database_size(db), cnt);
 }
 
-int main () {
+int main() {
     UNITY_BEGIN();
 
     RUN_TEST(test_create_database);
