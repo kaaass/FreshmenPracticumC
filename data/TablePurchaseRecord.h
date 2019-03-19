@@ -14,7 +14,7 @@
 #define DATA_TYPE_PurchaseRecord 3
 
 enum PurchaseRecordStatus {
-    normal = 0, deleted = 1, salesReturn = 2
+    PURCHASE_NORMAL = 0, PURCHASE_DELETED = 1, PURCHASE_SALES_RETURN = 2
 };
 
 typedef struct {

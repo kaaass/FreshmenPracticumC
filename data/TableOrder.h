@@ -10,14 +10,14 @@
 /**
  * 数据表：订单
  */
-#define MAX_OP_ID 100;
+#define MAX_OP_ID 100
 
 enum OrderStatus {
-    normal = 0, del, salesReturn, gift
+    ORDER_NORMAL = 0, ORDER_DELETED, ORDER_SALES_RETURN, ORDER_GIFT
 };
 
 enum OrderType {
-    purchase = 0, singleBuy, wholeSale
+    ORDER_PURCHASE = 0, ORDER_SINGLE_BUY, ORDER_WHOLE_SALE
 };
 
 #define DATA_TYPE_Order 7
