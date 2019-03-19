@@ -11,6 +11,9 @@
 
 void DataManager_init() {
     CONFIG = Create(Config);
+    GUEST = Create(Guest);
+    SELLING_RECORD = Create(SellingRecord);
+
     ORDER  = Create(Order);
     PROVIDER = Create(Provider);
     MOUNTINGS = Create(Mountings);
