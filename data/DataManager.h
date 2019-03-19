@@ -11,6 +11,9 @@
 Database *CONFIG ;
 Database *GUEST;
 Database *SELLING_RECORD;
+Database *CONFIG;
+Database *MOUNTINGS;
+Database *PURCHASE_RECORD;
 
 void DataManager_init();
 
