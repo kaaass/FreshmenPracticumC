@@ -13,7 +13,7 @@
  */
 const int DATA_TYPE_PurchaseRecord = 3;
 enum PurchaseRecordStatus {
-    status_ormal = 0, status_deleted = 1, status_salesReturn = 2
+    normal = 0, deleted = 1, salesReturn = 2
 };
 
 typedef struct {
@@ -23,7 +23,7 @@ typedef struct {
     int amount;
     float total;
     int orderId
-    PurchaseRecordStatus status;
+    enum PurchaseRecordStatus status;
     Time time;
 } PurchaseRecord;
 
