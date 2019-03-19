@@ -9,6 +9,8 @@
 Database *CONFIG;
 Database *ORDER;
 Database *PROVIDER;
+Database *MOUNTINGS;
+Database *PURCHASE_RECORD;
 
 void DataManager_init();
 
