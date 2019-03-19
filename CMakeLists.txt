@@ -8,10 +8,12 @@ find_package(codecov)
 
 aux_source_directory(core module_core)
 aux_source_directory(util module_util)
+aux_source_directory(data module_data)
 
 set(modules
         ${module_core}
-        ${module_util})
+        ${module_util}
+        ${module_data})
 
 add_executable(freshman_proj_c main.c ${modules})
 add_coverage(freshman_proj_c)
