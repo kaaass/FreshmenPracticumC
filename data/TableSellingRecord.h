@@ -13,7 +13,7 @@
 #define DATA_TYPE_SellingRecord 5
 
 enum SellingRecordStatus {
-    normal = 0, del, salesReturn, gift
+    SELLING_NORMAL = 0, SELLING_DELETED, SELLING_SALES_RETURN, SELLING_GIFT
 };
 
 typedef struct {

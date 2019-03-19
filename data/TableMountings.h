@@ -12,17 +12,17 @@
 #define DATA_TYPE_Mountings 2
 
 enum MountingsType {
-    mouse = 0, keyboard = 1, memory = 2, graphicsCard = 3, hardDisk = 4
+    MOUNTINGS_MOUSE = 0, MOUNTINGS_KEYBOARD = 1, MOUNTINGS_MEMORY = 2, MOUNTINGS_GRAPHICS_CARD = 3, MOUNTINGS_HARD_DISK = 4
 };
 
 typedef struct {
     int id;
-    MountingsType type;
+    enum MountingsType type;
     int sellerId;
     stringbuf name;
     int amount;
     int giftPriority;
-    double price
+    double price;
 } Mountings;
 
 #endif //FRESHMAN_PROJ_C_TABLEMOUNTINGS_H
