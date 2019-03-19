@@ -5,6 +5,12 @@
 
 #include "../core/Database.h"
 #include "../data/TableConfig.h"
+#include "../data/DataManager.h"
+
+void test_init() {
+    DataManager_init();
+    TEST_ASSERT_MESSAGE( CONFIG != NULL , "Fail to create database.");
+}
 
 void test_table_config() {
     Database *db = Create(Config);
@@ -25,6 +31,7 @@ void test_table_config() {
 int main () {
     UNITY_BEGIN();
 
+    RUN_TEST(test_init);
     RUN_TEST(test_table_config);
 
     return UNITY_END();
