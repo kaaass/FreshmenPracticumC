@@ -1,6 +1,7 @@
 //
 // Created by Gu Yue on 2019/3/12.
 //
+#include <stddef.h>
 
 #ifndef FRESHMAN_PROJ_C_DATABASE_H
 #define FRESHMAN_PROJ_C_DATABASE_H
