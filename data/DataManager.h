@@ -3,10 +3,13 @@
 //
 #include "../core/Database.h"
 
+
 #ifndef FRESHMAN_PROJ_C_DATAMANAGER_H
 #define FRESHMAN_PROJ_C_DATAMANAGER_H
 
 Database *CONFIG;
+Database *MOUNTINGS;
+Database *PURCHASE_RECORD;
 
 void DataManager_init();
 
