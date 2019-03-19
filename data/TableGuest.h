@@ -7,7 +7,7 @@
 
 #include "../util/StringUtil.h"
 
-const int DATA_TYPE_Guest = 4;
+#define DATA_TYPE_Guest 4
 
 typedef struct {
     int id;

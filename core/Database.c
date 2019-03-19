@@ -7,8 +7,6 @@
 
 #include "Database.h"
 
-const int DATA_TYPE_Header = 0;
-
 /**
  * 创建空数据库
  * @param type 默认结点数据类型

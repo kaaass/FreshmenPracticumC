@@ -11,14 +11,16 @@
  * 数据表：订单
  */
 #define MAX_OP_ID 100;
+
 enum OrderStatus {
     normal = 0, del, salesReturn, gift
 };
+
 enum OrderType {
     purchase = 0, singleBuy, wholeSale
 };
 
-const int DATA_TYPE_Order = 7;
+#define DATA_TYPE_Order 7
 
 typedef struct {
     int id;
