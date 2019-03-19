@@ -11,7 +11,7 @@
 /**
  * 数据表：进货记录
  */
-const int DATA_TYPE_Test = 3;
+const int DATA_TYPE_PurchaseRecord = 3;
 enum PurchaseRecordStatus {
     status_ormal = 0, status_deleted = 1, status_salesReturn = 2
 };
@@ -25,6 +25,6 @@ typedef struct {
     int orderId
     PurchaseRecordStatus status;
     Time time;
-} Mountings;
+} PurchaseRecord;
 
 #endif //FRESHMAN_PROJ_C_TABLEPURCHASERECORD_H
