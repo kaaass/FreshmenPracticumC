@@ -10,7 +10,7 @@ void test_time() {
     printf("Now time: %s", Time_toLocalString(Time_getNow()));
     TEST_ASSERT_EQUAL_INT(3, test.month);
     TEST_ASSERT_EQUAL_INT(19, test.day);
-    TEST_ASSERT_EQUAL_INT(23, test.hour);
+    TEST_ASSERT_EQUAL_INT(15, test.hour);
     TEST_ASSERT_EQUAL_INT(56, test.minute);
     TEST_ASSERT_EQUAL_INT(40, test.second);
 }
