@@ -8,7 +8,6 @@
 #include "../data/DataManager.h"
 #include "../data/TableMountings.h"
 #include "../data/TablePurchaseRecord.h"
-
 #include "../data/TableOrder.h"
 #include "../data/TableProvider.h"
 #include "../data/TableGuest.h"
