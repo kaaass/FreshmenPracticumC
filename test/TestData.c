@@ -13,6 +13,7 @@
 #include "../data/TableProvider.h"
 #include "../data/TableGuest.h"
 #include "../data/TableSellingRecord.h"
+#include "../util/Time.h"
 
 void test_init() {
     DataManager_init();
@@ -74,8 +75,9 @@ void test_table_provider() {
 void test_table_mountings() {
     Database *db = Create(Mountings);
     TEST_ASSERT_MESSAGE( db != NULL , "Fail to create database.");
-    Mountings mounts[] = {{.id = 1, .type = MOUNTINGS_KEYBOARD, .sellerId = 1, .name = LITERAL("keyboard1"), .amount = 5, .giftPriority = 2, .price = 57.2},
-                     {.id = 2, .type = MOUNTINGS_MOUSE, .sellerId = 2, .name = LITERAL("mouse1"), .amount = 10, .giftPriority = 3, .price = 233.3}};
+    Mountings mounts[] = {
+            {.id = 1, .type = MOUNTINGS_KEYBOARD, .sellerId = 1,    .name = LITERAL("keyboard1"), .amount = 5,  .giftPriority = 2, .price = 57.2},
+            {.id = 2, .type = MOUNTINGS_MOUSE,    .sellerId = 2,    .name = LITERAL("mouse1"),    .amount = 10, .giftPriority = 3, .price = 233.3}};
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Mountings, &mounts[i]));
         TEST_ASSERT_EQUAL_INT(i + 1, Database_size(db));
@@ -90,19 +92,20 @@ void test_table_mountings() {
 }
 
 void test_table_purchaseRecord() {
-    Database *db = Create(Mountings);
+    Database *db = Create(PurchaseRecord);
     TEST_ASSERT_MESSAGE( db != NULL , "Fail to create database.");
-    PurchaseRecord records[] = {{.id=1, .partId = 2, .sellerId = 3, .amount = 4, .total = 5.6, .orderId = 7, .status = PURCHASE_NORMAL, .time = NULL},
-                          {.id = 8, .partId = 9, .sellerId = 10, .amount = 11, .total = 12.13, .orderId = 14, .status = PURCHASE_DELETED, .time = NULL}};
+    PurchaseRecord records[] = {
+            {.id=1,   .partId = 2, .sellerId = 3,  .amount = 4,  .total = 5.6,   .orderId = 7,  .status = PURCHASE_NORMAL,  .time = Time_getNow()},
+            {.id = 8, .partId = 9, .sellerId = 10, .amount = 11, .total = 12.13, .orderId = 14, .status = PURCHASE_DELETED, .time = Time_getNow()}};
     for (int i = 0; i < 2; i++) {
-        Database_pushBack(db, Data(Mountings, &records[i]));
+        Database_pushBack(db, Data(PurchaseRecord, &records[i]));
         TEST_ASSERT_EQUAL_INT(i + 1, Database_size(db));
     }
     ForEach(cur, db) {
         PurchaseRecord *now = GetData(PurchaseRecord, cur);
 
-        printf("PurchaseRecord {id = %d, partId = %d, sellerId = %d, amount = %d, total = %.2f, orderId = %d, status = %d,}\n",
-               now->id, now->partId, now->sellerId, now->amount, now->total, now->orderId, now->status);
+        printf("PurchaseRecord {id = %d, partId = %d, sellerId = %d, amount = %d, total = %.2f, orderId = %d, status = %d, time = %s}\n",
+               now->id, now->partId, now->sellerId, now->amount, now->total, now->orderId, now->status, Time_toLocalString(now->time));
     }
     Database_destroy(db);
 }
@@ -129,8 +132,8 @@ void test_table_selling_record(){
     Database *db = Create(SellingRecord);
     TEST_ASSERT_MESSAGE( db != NULL , "Fail to create database.");
     SellingRecord conf[] = {
-            {.id = 1,.partId = 1,.status  = 1,.guestId = 1,.amount = 1,.total = 1,.time = NULL,.giftId = 1,.orderId = 1},
-            {.id = 2,.partId = 2,.status  = 2,.guestId = 2,.amount = 2,.total = 2,.time = NULL,.giftId = 2,.orderId = 2}
+            {.id = 1,.partId = 1,.status  = 1,.guestId = 1,.amount = 1,.total = 1,.time = Time_getNow(),.giftId = 1,.orderId = 1},
+            {.id = 2,.partId = 2,.status  = 2,.guestId = 2,.amount = 2,.total = 2,.time = Time_getNow(),.giftId = 2,.orderId = 2}
     };
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(SellingRecord, &conf[i]));
@@ -138,8 +141,8 @@ void test_table_selling_record(){
     }
     ForEach(cur, db) {
         SellingRecord *now = GetData(SellingRecord, cur);
-        printf("Selling Record {Id = %d, partId = %d, status = %d, guestId = %d,amount = %d,total = %f,giftId = %d,orderId = %d}\n",now->id ,now->partId ,
-                now->status ,now->guestId ,now->amount ,now->total,now->giftId,now->orderId);
+        printf("Selling Record {Id = %d, partId = %d, status = %d, guestId = %d,amount = %d,total = %f,giftId = %d,orderId = %d,time = %s}\n",now->id ,now->partId ,
+                now->status ,now->guestId ,now->amount ,now->total,now->giftId,now->orderId,Time_toLocalString(now->time));
     }
     Database_destroy(db);
 }
