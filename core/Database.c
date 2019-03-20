@@ -32,10 +32,14 @@ Database *Database_create(int type) {
  * @return 数据库
  */
 Database *Database_pushBack(Database *head, void *data, size_t size) {
-    DataNode *node = malloc(sizeof(DataNode));
-    Header *header = GetData(Header, head);
-    void *newData = malloc(size);
+    DataNode *node;
+    Header *header;
+    void *newData;
 
+    assert(head);
+    node = malloc(sizeof(DataNode));
+    header = GetData(Header, head);
+    newData = malloc(size);
     memcpy(newData, data, size);
     node->dataType = header->defaultDataType;
     node->dataSize = size;
@@ -70,6 +74,7 @@ size_t Database_size(Database *head) {
  * @return
  */
 void Database_destroy(Database *head) {
+    assert(head);
     ForEach(cur, head) {
         free(cur->cur);
     }
@@ -86,6 +91,7 @@ Cursor *Database_begin(Database *head) {
     Cursor *cursor;
     DataNode *next;
 
+    assert(head);
     // 空表检查
     if (head->next == NULL)
         return NULL;
@@ -107,6 +113,7 @@ Cursor *Database_begin(Database *head) {
 Cursor *Cursor_next(Cursor *cursor) {
     DataNode *next;
 
+    assert(cursor);
     // 尾节点
     if (cursor->next == NULL)
         return NULL;
