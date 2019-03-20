@@ -3,8 +3,10 @@
 //
 #include "Time.h"
 
+#define BJS (+8)
+
 /**
- * 将时间戳解析为Time结构体
+ * 将UTC时间戳解析为Time结构体
  * @param now 待解析时间戳
  * @return Time结构体
  */
@@ -20,7 +22,7 @@ Time Time_parseTime(time_t now) {
     if (now == -1) {
         return result;
     }
-    struct tm *data = localtime(&now);
+    struct tm *data = gmtime(&now); // UTC 时间
     result.month = data->tm_mon + 1;
     result.day = data->tm_mday;
     result.hour = data->tm_hour;
