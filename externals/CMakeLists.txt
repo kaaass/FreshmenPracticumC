@@ -7,7 +7,7 @@ if(BUILD_TEST)
 endif()
 
 add_library(cJson STATIC
-        cJson/cJson.c)
+        cJson/cJSON.c)
 
 target_include_directories(cJson PUBLIC
         cJson)
