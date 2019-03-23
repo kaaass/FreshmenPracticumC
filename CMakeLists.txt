@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 project(freshman_proj_c C)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/externals/CMake-codecov/cmake" ${CMAKE_MODULE_PATH})
 find_package(codecov)
@@ -17,7 +17,8 @@ set(modules
         ${module_util}
         ${module_data})
 
-add_executable(freshman_proj_c main.c ${libs} ${modules})
+add_executable(freshman_proj_c main.c ${modules})
+target_link_libraries(freshman_proj_c cJson cstring_jslike)
 add_coverage(freshman_proj_c)
 
 enable_testing()

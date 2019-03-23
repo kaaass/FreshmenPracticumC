@@ -2,6 +2,7 @@
 // Created by guyis on 2019/3/19.
 //
 #include "Time.h"
+#include "StringUtil.h"
 
 #define BJS (+8)
 
@@ -48,5 +49,5 @@ Time Time_getNow() {
  */
 stringbuf Time_toLocalString(Time structTime) {
     // TODO: 修正为要求的格式
-    return asctime(localtime(&structTime.timeStamp));
+    return newString(asctime(localtime(&structTime.timeStamp)));
 }

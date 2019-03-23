@@ -17,7 +17,3 @@ add_library(cstring_jslike STATIC
 
 target_include_directories(cstring_jslike PUBLIC
         cstring_jslike)
-
-set(libs
-        cJson
-        cstring_jslike)
