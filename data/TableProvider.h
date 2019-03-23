@@ -3,7 +3,6 @@
 //
 #include "../util/StringUtil.h"
 
-
 #ifndef FRESHMAN_PROJ_C_TABLEPROVIDER_H
 #define FRESHMAN_PROJ_C_TABLEPROVIDER_H
 

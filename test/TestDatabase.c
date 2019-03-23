@@ -16,17 +16,17 @@ void test_create_database() {
 void test_pushData() {
     Test sigle = {.id = 1,
             .num = 114,
-            .str = LITERAL("SingleLine")};
+            .str = STR_BUF("SingleLine")};
     Database_pushBack(db, Data(Test, &sigle));
     TEST_ASSERT_EQUAL_INT(1, Database_size(db));
 
     Test data[] = {
             {.id = 2,
                     .num = 233,
-                    .str = LITERAL("test")},
+                    .str = STR_BUF("test")},
             {.id = 3,
                     .num = 666,
-                    .str = LITERAL("test2")}
+                    .str = STR_BUF("test2")}
     };
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Test, &data[i]));
@@ -47,7 +47,7 @@ void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
         Test *record = GetData(Test, cur);
-        printf("Id %d: Num = %d, Str = %s.\n", record->id, record->num, record->str);
+        printf("Id %d: Num = %d, Str = %s.\n", record->id, record->num, CSTR(record->str));
         TEST_ASSERT_EQUAL_INT(++cnt, record->id);
     }
     TEST_ASSERT_EQUAL_INT(Database_size(db), cnt);

@@ -1,9 +1,7 @@
 //
 // Created by Kevin on 2019/3/19.
 //
-#include "../util/StringUtil.h"
 #include "../util/Time.h"
-
 
 #ifndef FRESHMAN_PROJ_C_TABLEPURCHASERECORD_H
 #define FRESHMAN_PROJ_C_TABLEPURCHASERECORD_H

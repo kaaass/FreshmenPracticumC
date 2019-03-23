@@ -24,11 +24,11 @@ void test_table_config() {
     TEST_ASSERT_MESSAGE(db != NULL, "Fail to create database.");
     Config conf[] = {
             {.id = 1,
-                    .key = LITERAL("key1"),
-                    .value = LITERAL("value1")},
+                    .key = STR_BUF("key1"),
+                    .value = STR_BUF("value1")},
             {.id = 2,
-                    .key = LITERAL("key2"),
-                    .value = LITERAL("value2")}};
+                    .key = STR_BUF("key2"),
+                    .value = STR_BUF("value2")}};
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Config, &conf[i]));
         TEST_ASSERT_EQUAL_INT(i + 1, Database_size(db));
@@ -59,8 +59,8 @@ void test_table_order() {
 void test_table_provider() {
     Database *db = Create(Provider);
     TEST_ASSERT_MESSAGE(db != NULL, "Fail to create database.");
-    Provider conf[] = {{1, LITERAL("key1"), LITERAL("value1")},
-                       {2, LITERAL("key2"), LITERAL("value2")}};
+    Provider conf[] = {{1, STR_BUF("key1"), STR_BUF("value1")},
+                       {2, STR_BUF("key2"), STR_BUF("value2")}};
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Provider, &conf[i]));
         TEST_ASSERT_EQUAL_INT(i + 1, Database_size(db));
@@ -79,14 +79,14 @@ void test_table_mountings() {
             {.id = 1,
                     .type = MOUNTINGS_KEYBOARD,
                     .sellerId = 1,
-                    .name = LITERAL("keyboard1"),
+                    .name = STR_BUF("keyboard1"),
                     .amount = 5,
                     .giftPriority = 2,
                     .price = 57.2},
             {.id = 2,
                     .type = MOUNTINGS_MOUSE,
                     .sellerId = 2,
-                    .name = LITERAL("mouse1"),
+                    .name = STR_BUF("mouse1"),
                     .amount = 10,
                     .giftPriority = 3,
                     .price = 233.3}};
@@ -129,10 +129,11 @@ void test_table_purchaseRecord() {
     }
     ForEach(cur, db) {
         PurchaseRecord *now = GetData(PurchaseRecord, cur);
-
+        stringbuf timeStr = Time_toLocalString(now->time);
         printf("PurchaseRecord {id = %d, partId = %d, sellerId = %d, amount = %d, total = %.2f, orderId = %d, status = %d, time = %s}\n",
                now->id, now->partId, now->sellerId, now->amount, now->total, now->orderId, now->status,
-               Time_toLocalString(now->time));
+               CSTR(timeStr));
+        $STR_BUF(timeStr);
     }
     Database_destroy(db);
 }
@@ -141,8 +142,8 @@ void test_table_guest() {
     Database *db = Create(Guest);
     TEST_ASSERT_MESSAGE(db != NULL, "Fail to create database.");
     Guest conf[] = {
-            {1, LITERAL("name1"), LITERAL("phone1")},
-            {2, LITERAL("name2"), LITERAL("phone2")}
+            {1, STR_BUF("name1"), STR_BUF("phone1")},
+            {2, STR_BUF("name2"), STR_BUF("phone2")}
     };
     for (int i = 0; i < 2; i++) {
         Database_pushBack(db, Data(Guest, &conf[i]));
@@ -184,10 +185,12 @@ void test_table_selling_record() {
     }
     ForEach(cur, db) {
         SellingRecord *now = GetData(SellingRecord, cur);
+        stringbuf timeStr = Time_toLocalString(now->time);
         printf("Selling Record {Id = %d, partId = %d, status = %d, guestId = %d,amount = %d,total = %f,giftId = %d,orderId = %d,time = %s}\n",
                now->id, now->partId,
                now->status, now->guestId, now->amount, now->total, now->giftId, now->orderId,
-               Time_toLocalString(now->time));
+               CSTR(timeStr));
+        $STR_BUF(timeStr);
     }
     Database_destroy(db);
 }

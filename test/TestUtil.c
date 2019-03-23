@@ -3,11 +3,12 @@
 //
 #include "unity.h"
 
+#include "../util/StringUtil.h"
 #include "../util/Time.h"
 
 void test_time() {
     Time test = Time_parseTime(1553011000);
-    printf("Now time: %s", Time_toLocalString(Time_getNow()));
+    printf("Now time: %s", CSTR(Time_toLocalString(Time_getNow())));
     TEST_ASSERT_EQUAL_INT(3, test.month);
     TEST_ASSERT_EQUAL_INT(19, test.day);
     TEST_ASSERT_EQUAL_INT(15, test.hour);
