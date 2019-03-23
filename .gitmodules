@@ -4,3 +4,9 @@
 [submodule "externals/unity"]
 	path = externals/unity
 	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "externals/cJson"]
+	path = externals/cJson
+	url = https://github.com/DaveGamble/cJSON.git
+[submodule "externals/cstring_jslike"]
+	path = externals/cstring_jslike
+	url = git@github.com:Yesterday17/cstring_jslike.git
