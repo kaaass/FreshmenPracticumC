@@ -9,4 +9,4 @@
 	url = https://github.com/DaveGamble/cJSON.git
 [submodule "externals/cstring_jslike"]
 	path = externals/cstring_jslike
-	url = git@github.com:Yesterday17/cstring_jslike.git
+	url = https://github.com/Yesterday17/cstring_jslike.git
