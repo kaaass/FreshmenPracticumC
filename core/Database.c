@@ -6,6 +6,10 @@
 #include <string.h>
 
 #include "Database.h"
+#include "../data/TableConfig.h"
+#include "../data/TableGuest.h"
+#include "../data/TableMountings.h"
+#include "../data/TableProvider.h"
 
 /**
  * 创建空数据库
@@ -76,6 +80,32 @@ size_t Database_size(Database *head) {
 void Database_destroy(Database *head) {
     assert(head);
     ForEach(cur, head) {
+        // 释放字符串
+        switch (cur->dataType) {
+            case DATA_TYPE_Config:
+                ;
+                Config *config = GetData(Config, cur);
+                $STR_BUF(config->key);
+                $STR_BUF(config->value);
+                break;
+            case DATA_TYPE_Guest:
+                ;
+                Guest *guest = GetData(Guest, cur);
+                $STR_BUF(guest->name);
+                $STR_BUF(guest->phone);
+                break;
+            case DATA_TYPE_Mountings:
+                ;
+                Mountings *mountings = GetData(Mountings, cur);
+                $STR_BUF(mountings->name);
+                break;
+            case DATA_TYPE_Provider:
+                ;
+                Provider *provider = GetData(Provider, cur);
+                $STR_BUF(provider->name);
+                $STR_BUF(provider->phone);
+                break;
+        }
         free(cur->cur);
     }
     free(head->data); // 释放表头信息

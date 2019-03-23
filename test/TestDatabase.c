@@ -49,6 +49,7 @@ void test_foreach() {
         Test *record = GetData(Test, cur);
         printf("Id %d: Num = %d, Str = %s.\n", record->id, record->num, CSTR(record->str));
         TEST_ASSERT_EQUAL_INT(++cnt, record->id);
+        $STR_BUF(record->str);
     }
     TEST_ASSERT_EQUAL_INT(Database_size(db), cnt);
 }
