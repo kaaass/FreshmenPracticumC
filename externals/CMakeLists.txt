@@ -1,3 +1,4 @@
+option(BUILD_TEST "Build the unit tests" ON)
 if(BUILD_TEST)
     add_library(unity STATIC
             unity/src/unity.c)
