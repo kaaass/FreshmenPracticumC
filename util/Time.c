@@ -43,6 +43,15 @@ Time Time_getNow() {
 }
 
 /**
+ * 当前时间结构体是否合法
+ * @param structTime
+ * @return
+ */
+bool Time_isValid(Time structTime) {
+    return structTime.timeStamp != -1;
+}
+
+/**
  * 将时间结构体转为字符串形式
  * @param structTime
  * @return
