@@ -24,6 +24,7 @@ typedef struct {
 
 Time Time_parseTime(time_t now);
 Time Time_getNow();
+bool Time_isValid(Time structTime);
 stringbuf Time_toLocalString(Time structTime);
 
 #endif //FRESHMAN_PROJ_C_TIME_H
