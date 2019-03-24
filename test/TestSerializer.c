@@ -58,11 +58,37 @@ void test_time() {
     $STR_BUF(formatTime);
 }
 
+void test_guest() {
+    cJSON *testData, *guestJson, *parsed;
+    testData = cJSON_GetObjectItemCaseSensitive(data, "test_guest");
+    // 开始测试
+    // 序列化
+    cJSON *expectedJson;
+    Guest g = {.id = 5, .name = "kenneth", .phone = "233-233-2233"};
+    string expected, json;
+    guestJson = Serialize(Guest, test);
+    json = STRING(cJSON_Print(guestJson));
+    expectedJson = cJSON_GetObjectItemCaseSensitive(testData, "expected");
+    expected = STRING(expectedJson->valuestring);
+    printf("Serialize Guest: %s\n", CSTR(json));
+    TEST_ASSERT(EQ(expected, json));
+    cJSON_Delete(guestJson);
+    // 反序列化
+    parsed = cJSON_GetObjectItemCaseSensitive(testData, "guest");
+    Guest parsedGuest = Deserialize(Guest, parsed);
+    printf("Deserialize Guest: id = %d, name = %s, phone = %s\n", parsedGuest.id, CSTR(parsedGuest.name), CSTR(parsedGuest.phone));
+    TEST_ASSERT_EQUAL_INT(5, parsedGuest.id);
+    TEST_ASSERT_EQUAL("kenneth", parsedGuest.name);
+    TEST_ASSERT_EQUAL("233-233-2233", parsedGuest.phone);
+}
+
+
 int main() {
     UNITY_BEGIN();
     loadJsonFromFile();
 
     RUN_TEST(test_time);
+    RUN_TEST(test_guest);
 
     cJSON_Delete(data);
     return UNITY_END();
