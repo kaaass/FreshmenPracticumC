@@ -17,3 +17,28 @@ Time deserialize_Time(const cJSON *json) {
     }
     return t;
 }
+
+cJSON *serialize_Guest(Guest g) {
+    cJSON *json = cJSON_CreateObject();
+    cJSON_AddNumberToObject(json, "id", g.id);
+    cJSON_AddStringToObject(json, "name", g.name);
+    cJSON_AddStringToObject(json, "phone", g.phone);
+    return json;
+}
+
+Guest deserialize_Guest(const cJSON *json) {
+    Guest g;
+    cJSON *id = cJSON_GetObjectItem(json, "id");
+    cJSON *name = cJSON_GetObjectItem(json, "name");
+    cJSON *phone = cJSON_GetObjectItem(json, "phone");
+    if (cJSON_IsNumber(id) && id->valueint != -1) {
+        g.id = id->valueint;
+    }
+    if (cJSON_IsString(name) && (name->valuestring != NULL)) {
+        g.name = name->valuestring;
+    }
+    if (cJSON_IsString(phone) && (phone->valuestring != NULL)) {
+        g.phone = phone->valuestring;
+    }
+    return g;
+}
