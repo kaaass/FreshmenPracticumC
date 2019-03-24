@@ -12,5 +12,75 @@
       "phone":  "233-233-2233"
     },
     "expected": "{\n\t\"id\":\t5,\n\t\"name\":\t\"kenneth\",\n\t\"phone\":\t\"233-233-2233\"\n}"
+  },
+  "test_provider": {
+    "provider": {
+      "id": 15,
+      "name": "kevin",
+      "phone": "123-321-1234567"
+    },
+    "expected": "{\n\t\"id\":\t15,\n\t\"name\"\t\"kevin\",\n\t\"phone\":\t\"123-321-1234567\"\n}"
+  },
+  "test_config": {
+    "config": {
+      "id": 516,
+      "key": "ys",
+      "value": "tql"
+    },
+    "excpected": "{\n\t\"id\"\t516,\n\t\"key\":\t\"ys\",\n\t\"value\":\t\"tql\"\n}"
+  },
+  "test_mountings": {
+    "mountings": {
+      "id": 7596,
+      "type": 1,
+      "sellerId": 1561,
+      "name": "gugugu",
+      "amount": 797,
+      "giftPriority": 4,
+      "price": 45.67
+    },
+    "expected": "{\n\t\"id\":\t7596,\n\t\"type\":\t1,\n\t\"sellerId\":\t1561,\n\t\"name\":\t\"gugugu\",\n\t\"amount\":\t797,\n\t\"giftPriority\":\t4,\n\t\"price\":\t45.67\n}"
+  },
+  "test_order": {
+    "order": {
+      "id": 61,
+      "type": 4,
+      "status": 2,
+      "opCount": 3,
+      "opId": [45,56,67],
+      "price": 53.21
+    },
+    "expected": "{\n\t\"id\":\t61,\n\t\"type\":\t4,\n\t\"status\":\t2,\n\t\"opCount\":\t3,\n\t\"opId\":\t[45,56,67],\n\t\"price\":\t53.21\n}"
+  },
+  "test_purchase_record": {
+    "purchase_record": {
+      "id": 654,
+      "partId": 641,
+      "sellerId": 4864,
+      "amount": 461,
+      "total": 87562.54,
+      "orderId": 13434,
+      "status": 4,
+      "time": {
+        "ts": 1553011022
+      }
+    },
+    "expected": "{\n\t\"id\":\t654,\n\t\"partId\":\t641,\n\t\"sellerId\":\t4864,\n\t\"amount\":\t461,\n\t\"total\":\t87562.54,\n\t\"orderId\":\t13434,\n\t\"status\":\t4,\n\t\"time\":\t{\n\t\"ts\":\t1553011022\n}}"
+  },
+  "test_selling_record": {
+    "selling_record": {
+      "id": 615,
+      "partId": 6168,
+      "status": 1,
+      "guestId": 616115,
+      "amount": 6111,
+      "total": 97.79,
+      "time": {
+        "ts": 1553011044
+      },
+      "giftId": 6161616,
+      "orderId": 619191
+    },
+    "expected": "{\n\t\"id\": 615,\n\t\"partId\": 6168,\n\t\"status\": 1,\n\t\"guestId\": 616115,\n\t\"amount\": 6111,\n\t\"total\": 97.79,\n\t\"time\": {\n\t\"ts\": 1553011044\n\t},\n\t\"giftId\": 6161616,\n\t\"orderId\": 619191\n}"
   }
 }
