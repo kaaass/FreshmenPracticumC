@@ -21,7 +21,7 @@ typedef struct {
     enum SellingRecordStatus status;
     int guestId;
     int amount;
-    float total;
+    double total;
     Time time;
     int giftId;
     int orderId;
