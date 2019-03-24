@@ -4,5 +4,13 @@
       "ts": 1553011000
     },
     "expected": "{\n\t\"ts\":\t1553011000\n}"
+  },
+  "test_guest": {
+    "guest": {
+      "id": 5,
+      "name": "kenneth",
+      "phone":  "233-233-2233"
+    },
+    "expected": "{\n\t\"id\":\t5,\n\t\"name\":\t\"kenneth\",\n\t\"phone\":\t\"233-233-2233\"\n}"
   }
 }
