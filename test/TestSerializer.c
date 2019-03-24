@@ -64,7 +64,7 @@ void test_guest() {
     // 开始测试
     // 序列化
     cJSON *expectedJson;
-    Guest g = {.id = 5, .name = "kenneth", .phone = "233-233-2233"};
+    Guest test = {.id = 5, .name = "kenneth", .phone = "233-233-2233"};
     string expected, json;
     guestJson = Serialize(Guest, test);
     json = STRING(cJSON_Print(guestJson));
