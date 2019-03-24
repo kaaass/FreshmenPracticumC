@@ -9,7 +9,7 @@
     "guest": {
       "id": 5,
       "name": "kenneth",
-      "phone":  "233-233-2233"
+      "phone": "233-233-2233"
     },
     "expected": "{\n\t\"id\":\t5,\n\t\"name\":\t\"kenneth\",\n\t\"phone\":\t\"233-233-2233\"\n}"
   },
@@ -19,7 +19,7 @@
       "name": "kevin",
       "phone": "123-321-1234567"
     },
-    "expected": "{\n\t\"id\":\t15,\n\t\"name\"\t\"kevin\",\n\t\"phone\":\t\"123-321-1234567\"\n}"
+    "expected": "{\n\t\"id\":\t15,\n\t\"name\":\t\"kevin\",\n\t\"phone\":\t\"123-321-1234567\"\n}"
   },
   "test_config": {
     "config": {
@@ -27,7 +27,7 @@
       "key": "ys",
       "value": "tql"
     },
-    "excpected": "{\n\t\"id\"\t516,\n\t\"key\":\t\"ys\",\n\t\"value\":\t\"tql\"\n}"
+    "expected": "{\n\t\"id\":\t516,\n\t\"key\":\t\"ys\",\n\t\"value\":\t\"tql\"\n}"
   },
   "test_mountings": {
     "mountings": {
@@ -46,11 +46,14 @@
       "id": 61,
       "type": 4,
       "status": 2,
-      "opCount": 3,
-      "opId": [45,56,67],
+      "ops": [
+        45,
+        56,
+        67
+      ],
       "price": 53.21
     },
-    "expected": "{\n\t\"id\":\t61,\n\t\"type\":\t4,\n\t\"status\":\t2,\n\t\"opCount\":\t3,\n\t\"opId\":\t[45,56,67],\n\t\"price\":\t53.21\n}"
+    "expected": "{\n\t\"id\":\t61,\n\t\"type\":\t2,\n\t\"status\":\t1,\n\t\"ops\":\t[45, 56, 67],\n\t\"price\":\t53.209999084472656\n}"
   },
   "test_purchase_record": {
     "purchase_record": {
@@ -65,7 +68,7 @@
         "ts": 1553011022
       }
     },
-    "expected": "{\n\t\"id\":\t654,\n\t\"partId\":\t641,\n\t\"sellerId\":\t4864,\n\t\"amount\":\t461,\n\t\"total\":\t87562.54,\n\t\"orderId\":\t13434,\n\t\"status\":\t4,\n\t\"time\":\t{\n\t\"ts\":\t1553011022\n}}"
+    "expected": "{\n\t\"id\":\t654,\n\t\"partId\":\t641,\n\t\"sellerId\":\t4864,\n\t\"amount\":\t461,\n\t\"total\":\t87562.54,\n\t\"orderId\":\t13434,\n\t\"status\":\t1,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011022\n\t}\n}"
   },
   "test_selling_record": {
     "selling_record": {
@@ -81,6 +84,6 @@
       "giftId": 6161616,
       "orderId": 619191
     },
-    "expected": "{\n\t\"id\": 615,\n\t\"partId\": 6168,\n\t\"status\": 1,\n\t\"guestId\": 616115,\n\t\"amount\": 6111,\n\t\"total\": 97.79,\n\t\"time\": {\n\t\"ts\": 1553011044\n\t},\n\t\"giftId\": 6161616,\n\t\"orderId\": 619191\n}"
+    "expected": "{\n\t\"id\": 615,\n\t\"partId\": 6168,\n\t\"status\": 2,\n\t\"guestId\": 616115,\n\t\"amount\": 6111,\n\t\"total\": 97.79,\n\t\"time\": {\n\t\"ts\": 1553011044\n\t},\n\t\"giftId\": 6161616,\n\t\"orderId\": 619191\n}"
   }
 }
