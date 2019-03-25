@@ -44,8 +44,8 @@
   "test_order": {
     "order": {
       "id": 61,
-      "type": 4,
-      "status": 2,
+      "type": 2,
+      "status": 1,
       "ops": [
         45,
         56,
@@ -53,7 +53,7 @@
       ],
       "price": 53.21
     },
-    "expected": "{\n\t\"id\":\t61,\n\t\"type\":\t2,\n\t\"status\":\t1,\n\t\"ops\":\t[45, 56, 67],\n\t\"price\":\t53.209999084472656\n}"
+    "expected": "{\n\t\"id\":\t61,\n\t\"type\":\t2,\n\t\"status\":\t1,\n\t\"ops\":\t[45, 56, 67],\n\t\"price\":\t53.21\n}"
   },
   "test_purchase_record": {
     "purchase_record": {
@@ -63,7 +63,7 @@
       "amount": 461,
       "total": 87562.54,
       "orderId": 13434,
-      "status": 4,
+      "status": 1,
       "time": {
         "ts": 1553011022
       }
@@ -74,7 +74,7 @@
     "selling_record": {
       "id": 615,
       "partId": 6168,
-      "status": 1,
+      "status": 2,
       "guestId": 616115,
       "amount": 6111,
       "total": 97.79,
@@ -84,6 +84,6 @@
       "giftId": 6161616,
       "orderId": 619191
     },
-    "expected": "{\n\t\"id\": 615,\n\t\"partId\": 6168,\n\t\"status\": 2,\n\t\"guestId\": 616115,\n\t\"amount\": 6111,\n\t\"total\": 97.79,\n\t\"time\": {\n\t\"ts\": 1553011044\n\t},\n\t\"giftId\": 6161616,\n\t\"orderId\": 619191\n}"
+    "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"giftId\":\t6161616,\n\t\"orderId\":\t619191\n}"
   }
 }

@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include "unity.h"
 
+#define UNITY_INCLUDE_DOUBLE
+#define UNITY_DOUBLE_PRECISION 0.001f
+
 #include "../data/Serializer.h"
 #include "../util/StringUtil.h"
 #include "../util/Time.h"
@@ -228,7 +231,7 @@ void test_order() {
     for (int i = 1; i < parsedOrder.opCount; ++i) {
         printf(",%d", parsedOrder.opId[i]);
     }
-    printf("], price = %f", parsedOrder.price);
+    printf("], price = %f\n", parsedOrder.price);
     TEST_ASSERT_EQUAL_INT(61, parsedOrder.id);
     TEST_ASSERT_EQUAL_INT(ORDER_WHOLE_SALE, parsedOrder.type);
     TEST_ASSERT_EQUAL_INT(ORDER_DELETED, parsedOrder.status);
@@ -279,11 +282,11 @@ void test_purchaseRecord() {
     TEST_ASSERT_EQUAL_FLOAT(87562.54, parsedPurchaseRecord.total);
     TEST_ASSERT_EQUAL_INT(13434, parsedPurchaseRecord.orderId);
     TEST_ASSERT_EQUAL_INT(PURCHASE_DELETED, parsedPurchaseRecord.status);
-    TEST_ASSERT_EQUAL("1553011022", Time_toLocalString(parsedPurchaseRecord.time));
+    TEST_ASSERT_EQUAL_INT(time.timeStamp, parsedPurchaseRecord.time.timeStamp);
 }
 
 void test_sellingRecord() {
-    cJSON *testData, *sellerRecordJson, *parsed;
+    cJSON *testData, *sellingRecordJson, *parsed;
     testData = cJSON_GetObjectItemCaseSensitive(data, "test_selling_record");
     // 开始测试
     // 序列化
@@ -302,29 +305,29 @@ void test_sellingRecord() {
     };
     string expected, json;
 
-    sellerRecordJson = Serialize(SellingRecord, test);
-    json = STRING(cJSON_Print(sellerRecordJson));
+    sellingRecordJson = Serialize(SellingRecord, test);
+    json = STRING(cJSON_Print(sellingRecordJson));
     expectedJson = cJSON_GetObjectItemCaseSensitive(testData, "expected");
     expected = STRING(expectedJson->valuestring);
-    printf("Serialize SellerRecord: %s\n", CSTR(json));
+    printf("Serialize SellingRecord: %s\n", CSTR(json));
     TEST_ASSERT(EQ(expected, json));
-    cJSON_Delete(sellerRecordJson);
+    cJSON_Delete(sellingRecordJson);
     // 反序列化
-    parsed = cJSON_GetObjectItemCaseSensitive(testData, "seller_record");
-    SellingRecord parsedSellerRecord = Deserialize(SellingRecord, parsed);
-    printf("Deserialize SellerRecord: id = %d, partId = %d, status = %d, guestId = %d, amount = %d, total = %f, time = %s, giftId = %d, orderId = %d\n",
-           parsedSellerRecord.id, parsedSellerRecord.partId, parsedSellerRecord.status, parsedSellerRecord.guestId,
-           parsedSellerRecord.amount, parsedSellerRecord.total, CSTR(Time_toLocalString(parsedSellerRecord.time)),
-           parsedSellerRecord.giftId, parsedSellerRecord.orderId);
-    TEST_ASSERT_EQUAL_INT(615, parsedSellerRecord.id);
-    TEST_ASSERT_EQUAL_INT(6168, parsedSellerRecord.partId);
-    TEST_ASSERT_EQUAL_INT(SELLING_SALES_RETURN, parsedSellerRecord.status);
-    TEST_ASSERT_EQUAL_INT(616115, parsedSellerRecord.guestId);
-    TEST_ASSERT_EQUAL_INT(6111, parsedSellerRecord.amount);
-    TEST_ASSERT_EQUAL_FLOAT(97.79, parsedSellerRecord.total);
-    TEST_ASSERT_EQUAL("1553011044", Time_toLocalString(parsedSellerRecord.time));
-    TEST_ASSERT_EQUAL_INT(6161616, parsedSellerRecord.giftId);
-    TEST_ASSERT_EQUAL_INT(619191, parsedSellerRecord.orderId);
+    parsed = cJSON_GetObjectItemCaseSensitive(testData, "selling_record");
+    SellingRecord parsedSellingRecord = Deserialize(SellingRecord, parsed);
+    printf("Deserialize SellingRecord: id = %d, partId = %d, status = %d, guestId = %d, amount = %d, total = %f, time = %s, giftId = %d, orderId = %d\n",
+           parsedSellingRecord.id, parsedSellingRecord.partId, parsedSellingRecord.status, parsedSellingRecord.guestId,
+           parsedSellingRecord.amount, parsedSellingRecord.total, CSTR(Time_toLocalString(parsedSellingRecord.time)),
+           parsedSellingRecord.giftId, parsedSellingRecord.orderId);
+    TEST_ASSERT_EQUAL_INT(615, parsedSellingRecord.id);
+    TEST_ASSERT_EQUAL_INT(6168, parsedSellingRecord.partId);
+    TEST_ASSERT_EQUAL_INT(SELLING_SALES_RETURN, parsedSellingRecord.status);
+    TEST_ASSERT_EQUAL_INT(616115, parsedSellingRecord.guestId);
+    TEST_ASSERT_EQUAL_INT(6111, parsedSellingRecord.amount);
+    TEST_ASSERT_EQUAL_FLOAT(97.79, parsedSellingRecord.total);
+    TEST_ASSERT_EQUAL_INT(time.timeStamp, parsedSellingRecord.time.timeStamp);
+    TEST_ASSERT_EQUAL_INT(6161616, parsedSellingRecord.giftId);
+    TEST_ASSERT_EQUAL_INT(619191, parsedSellingRecord.orderId);
 }
 
 int main() {

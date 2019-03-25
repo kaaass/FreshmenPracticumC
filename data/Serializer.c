@@ -87,6 +87,7 @@ cJSON *serialize_SellingRecord(SellingRecord sr) {
     cJSON_AddItemToObject(json, "time", serialize_Time(sr.time));
     cJSON_AddNumberToObject(json, "giftId", sr.giftId);
     cJSON_AddNumberToObject(json, "orderId", sr.orderId);
+    return json;
 }
 
 
@@ -219,7 +220,7 @@ Order deserialize_Order(const cJSON *json) {
         order.status = status->valueint;
     }
     if (cJSON_IsNumber(price)) {
-        order.price = price->valueint;
+        order.price = price->valuedouble;
     }
     // 解析ops数组
     cJSON *opId;
@@ -242,6 +243,7 @@ PurchaseRecord deserialize_PurchaseRecord(const cJSON *json) {
     };
     cJSON *id = cJSON_GetObjectItem(json, "id");
     cJSON *partId = cJSON_GetObjectItem(json, "partId");
+    cJSON *sellerId = cJSON_GetObjectItem(json, "sellerId");
     cJSON *amount = cJSON_GetObjectItem(json, "amount");
     cJSON *total = cJSON_GetObjectItem(json, "total");
     cJSON *orderId = cJSON_GetObjectItem(json, "orderId");
@@ -253,6 +255,9 @@ PurchaseRecord deserialize_PurchaseRecord(const cJSON *json) {
     }
     if (cJSON_IsNumber(partId)) {
         purchaseRecord.partId = partId->valueint;
+    }
+    if (cJSON_IsNumber(sellerId)) {
+        purchaseRecord.sellerId = sellerId->valueint;
     }
     if (cJSON_IsNumber(amount)) {
         purchaseRecord.amount = amount->valueint;
@@ -271,7 +276,6 @@ PurchaseRecord deserialize_PurchaseRecord(const cJSON *json) {
     }
     purchaseRecord.time = deserialize_Time(time);
     return purchaseRecord;
-
 }
 
 SellingRecord deserialize_SellingRecord(const cJSON *json) {

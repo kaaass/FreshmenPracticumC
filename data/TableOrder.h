@@ -25,7 +25,7 @@ typedef struct {
     enum OrderStatus status;
     int opCount;
     int opId[MAX_OP_ID];
-    float price;
+    double price;
 } Order;
 
 #endif //FRESHMAN_PROJ_C_TABLEORDER_H

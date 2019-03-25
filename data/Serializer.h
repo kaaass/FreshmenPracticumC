@@ -43,5 +43,4 @@ Order deserialize_Order(const cJSON *);
 PurchaseRecord deserialize_PurchaseRecord(const cJSON *);
 SellingRecord deserialize_SellingRecord(const cJSON *);
 
-
 #endif //FRESHMAN_PROJ_C_SERIALIZER_H
