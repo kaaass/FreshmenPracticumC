@@ -85,5 +85,28 @@
       "orderId": 619191
     },
     "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"giftId\":\t6161616,\n\t\"orderId\":\t619191\n}"
+  },
+  "test_database": {
+    "database_config": {
+      "type": 8,
+      "data": [
+        {
+          "id": 1,
+          "key": "giftValue",
+          "value": "23333"
+        },
+        {
+          "id": 2,
+          "key": "accountBalance",
+          "value": "66666"
+        },
+        {
+          "id": 3,
+          "key": "monster",
+          "value": "810"
+        }
+      ]
+    },
+    "expected": "{\n\t\"type\":\t4,\n\t\"data\":\t[{\n\t\t\t\"id\":\t1,\n\t\t\t\"name\":\t\"DD\",\n\t\t\t\"phone\":\t\"233-3333-3333\"\n\t\t}, {\n\t\t\t\"id\":\t2,\n\t\t\t\"name\":\t\"KAAAsS\",\n\t\t\t\"phone\":\t\"666-6666-6666\"\n\t\t}, {\n\t\t\t\"id\":\t3,\n\t\t\t\"name\":\t\"神楽めあ\",\n\t\t\t\"phone\":\t\"114514\"\n\t\t}]\n}"
   }
 }
