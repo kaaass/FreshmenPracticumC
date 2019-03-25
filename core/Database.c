@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "Database.h"
+#include "../util/MemoryUtil.h"
 #include "../data/TableConfig.h"
 #include "../data/TableGuest.h"
 #include "../data/TableMountings.h"
@@ -17,8 +18,8 @@
  * @return 数据库
  */
 Database *Database_create(int type) {
-    Database *db = malloc(sizeof(Database));
-    Header *header = malloc(sizeof(Header));
+    Database *db = MALLOC(Database);
+    Header *header = MALLOC(Header);
 
     db->dataType = DATA_TYPE_Header;
     header->cnt = 0;
@@ -41,7 +42,7 @@ Database *Database_pushBack(Database *head, void *data, size_t size) {
     void *newData;
 
     assert(head);
-    node = malloc(sizeof(DataNode));
+    node = MALLOC(DataNode);
     header = GetData(Header, head);
     newData = malloc(size);
     memcpy(newData, data, size);
@@ -124,7 +125,7 @@ Cursor *Database_begin(Database *head) {
     if (head->next == NULL)
         return NULL;
     next = head->next;
-    cursor = malloc(sizeof(Cursor));
+    cursor = MALLOC(Cursor);
     cursor->cur = next;
     cursor->next = next->next;
     cursor->dataType = next->dataType;
