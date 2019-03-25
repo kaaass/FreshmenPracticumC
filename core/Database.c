@@ -82,28 +82,26 @@ void Database_destroy(Database *head) {
     ForEach(cur, head) {
         // 释放字符串
         switch (cur->dataType) {
-            case DATA_TYPE_Config:
-                ;
+            case DATA_TYPE_Config:;
                 Config *config = GetData(Config, cur);
                 $STR_BUF(config->key);
                 $STR_BUF(config->value);
                 break;
-            case DATA_TYPE_Guest:
-                ;
+            case DATA_TYPE_Guest:;
                 Guest *guest = GetData(Guest, cur);
                 $STR_BUF(guest->name);
                 $STR_BUF(guest->phone);
                 break;
-            case DATA_TYPE_Mountings:
-                ;
+            case DATA_TYPE_Mountings:;
                 Mountings *mountings = GetData(Mountings, cur);
                 $STR_BUF(mountings->name);
                 break;
-            case DATA_TYPE_Provider:
-                ;
+            case DATA_TYPE_Provider:;
                 Provider *provider = GetData(Provider, cur);
                 $STR_BUF(provider->name);
                 $STR_BUF(provider->phone);
+                break;
+            default:
                 break;
         }
         free(cur->cur);

@@ -3,6 +3,7 @@
 //
 #include <assert.h>
 #include "Serializer.h"
+#include "../util/MemoryUtil.h"
 
 cJSON *serialize_Time(Time t) {
     cJSON *json = cJSON_CreateObject();
@@ -318,4 +319,113 @@ SellingRecord deserialize_SellingRecord(const cJSON *json) {
     }
     sellingRecord.time = deserialize_Time(time);
     return sellingRecord;
+}
+
+/*
+ * Database
+ */
+
+/**
+ * 序列化数据库
+ * @param db
+ * @param type
+ * @return
+ */
+cJSON *serialize_Database(Database *db, int type) {
+    assert(db);
+    assert(type == GetData(Header, db)->defaultDataType);
+    cJSON *json = cJSON_CreateObject(), *data = cJSON_CreateArray(), *node;
+    cJSON_AddNumberToObject(json, "type", type);
+    // 序列化结点
+    ForEach(cur, db) {
+        switch (type) {
+            case DATA_TYPE_Config:;
+                Config *config = GetData(Config, cur);
+                node = Serialize(Config, *config);
+                break;
+            case DATA_TYPE_Guest:;
+                Guest *guest = GetData(Guest, cur);
+                node = Serialize(Guest, *guest);
+                break;
+            case DATA_TYPE_Mountings:;
+                Mountings *mountings = GetData(Mountings, cur);
+                node = Serialize(Mountings, *mountings);
+                break;
+            case DATA_TYPE_Order:;
+                Order *order = GetData(Order, cur);
+                node = Serialize(Order, *order);
+                break;
+            case DATA_TYPE_Provider:;
+                Provider *provider = GetData(Provider, cur);
+                node = Serialize(Provider, *provider);
+                break;
+            case DATA_TYPE_PurchaseRecord:;
+                PurchaseRecord *purchaseRecord = GetData(PurchaseRecord, cur);
+                node = Serialize(PurchaseRecord, *purchaseRecord);
+                break;
+            case DATA_TYPE_SellingRecord:;
+                SellingRecord *sellingRecord = GetData(SellingRecord, cur);
+                node = Serialize(SellingRecord, *sellingRecord);
+                break;
+            default:
+                node = NULL;
+                break;
+        }
+        cJSON_AddItemToArray(data, node);
+    }
+    cJSON_AddItemToObject(json, "data", data);
+    return json;
+}
+
+/**
+ * 反序列化数据库
+ * @param db
+ * @param type
+ */
+void deserialize_Database(Database *db, const cJSON *json, int type) {
+    assert(db);
+    assert(type == GetData(Header, db)->defaultDataType);
+    // TODO: 先清除数据库内容
+    cJSON *jsonType, *data;
+    jsonType = cJSON_GetObjectItemCaseSensitive(json, "type");
+    assert(cJSON_IsNumber(jsonType));
+    assert(jsonType->valueint == type);
+    data = cJSON_GetObjectItemCaseSensitive(json, "data");
+    assert(cJSON_IsArray(data));
+    // 反序列化结点
+    cJSON *cur;
+    cJSON_ArrayForEach(cur, data) {
+        switch (type) {
+            case DATA_TYPE_Config:;
+                Config config = Deserialize(Config, cur);
+                Database_pushBack(db, Data(Config, CLONE(Config, &config)));
+                break;
+            case DATA_TYPE_Guest:;
+                Guest guest = Deserialize(Guest, cur);
+                Database_pushBack(db, Data(Guest, CLONE(Guest, &guest)));
+                break;
+            case DATA_TYPE_Mountings:;
+                Mountings mountings = Deserialize(Mountings, cur);
+                Database_pushBack(db, Data(Mountings, CLONE(Mountings, &mountings)));
+                break;
+            case DATA_TYPE_Order:;
+                Order order = Deserialize(Order, cur);
+                Database_pushBack(db, Data(Order, CLONE(Order, &order)));
+                break;
+            case DATA_TYPE_Provider:;
+                Provider provider = Deserialize(Provider, cur);
+                Database_pushBack(db, Data(Provider, CLONE(Provider, &provider)));
+                break;
+            case DATA_TYPE_PurchaseRecord:;
+                PurchaseRecord purchaseRecord = Deserialize(PurchaseRecord, cur);
+                Database_pushBack(db, Data(PurchaseRecord, CLONE(PurchaseRecord, &purchaseRecord)));
+                break;
+            case DATA_TYPE_SellingRecord:;
+                SellingRecord sellingRecord = Deserialize(SellingRecord, cur);
+                Database_pushBack(db, Data(SellingRecord, CLONE(SellingRecord, &sellingRecord)));
+                break;
+            default:
+                break;
+        }
+    }
 }

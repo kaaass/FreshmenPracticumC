@@ -3,6 +3,7 @@
 //
 #include "../util/StringUtil.h"
 #include "../util/Time.h"
+#include "../core/Database.h"
 #include "../data/TableGuest.h"
 #include "../data/TableProvider.h"
 #include "../data/TableConfig.h"
@@ -17,6 +18,8 @@
 
 #define Serialize(type,data) serialize_##type(data)
 #define Deserialize(type,data) deserialize_##type(data)
+#define SerializeDB(type,db) serialize_Database(db,DATA_TYPE_##type)
+#define DeserializeDB(type,db,data) deserialize_Database(db,data,DATA_TYPE_##type)
 
 /*
  * 序列化方法
@@ -29,7 +32,7 @@ cJSON *serialize_Mountings(Mountings);
 cJSON *serialize_Order(Order);
 cJSON *serialize_PurchaseRecord(PurchaseRecord);
 cJSON *serialize_SellingRecord(SellingRecord);
-
+cJSON *serialize_Database(Database *, int);
 
 /*
  * 反序列化方法

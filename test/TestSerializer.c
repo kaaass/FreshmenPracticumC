@@ -4,9 +4,6 @@
 #include <stdio.h>
 #include "unity.h"
 
-#define UNITY_INCLUDE_DOUBLE
-#define UNITY_DOUBLE_PRECISION 0.001f
-
 #include "../data/Serializer.h"
 #include "../util/StringUtil.h"
 #include "../util/Time.h"
@@ -330,6 +327,70 @@ void test_sellingRecord() {
     TEST_ASSERT_EQUAL_INT(619191, parsedSellingRecord.orderId);
 }
 
+void test_database() {
+    cJSON *testData;
+    testData = cJSON_GetObjectItemCaseSensitive(data, "test_database");
+    /*
+     * 序列化
+     */
+    cJSON *expectedJson;
+    stringbuf json, expected;
+    expectedJson = cJSON_GetObjectItemCaseSensitive(testData, "expected");
+    TEST_ASSERT_MESSAGE(cJSON_IsString(expectedJson) && expectedJson->valuestring != NULL, "No test data, pls check the test json!");
+    expected = STRING(expectedJson->valuestring);
+    Database *db = Create(Guest);
+    Guest data[3] = {
+            {
+                    .id = 1, .name = STR_BUF("DD"), .phone = STR_BUF("233-3333-3333")
+            },
+            {
+                    .id = 2, .name = STR_BUF("KAAAsS"), .phone = STR_BUF("666-6666-6666")
+            },
+            {
+                    .id = 3, .name = STR_BUF("神楽めあ"), .phone = STR_BUF("114514")
+            }
+    };
+    for (int i = 0; i < 3; i++) {
+        Database_pushBack(db, Data(Guest, &data[i]));
+    }
+    cJSON *serialized = SerializeDB(Guest, db);
+    // 检查
+    json = STRING(cJSON_Print(serialized));
+    TEST_ASSERT(EQ(expected, json));
+    // 释放
+    Database_destroy(db);
+    cJSON_Delete(serialized);
+    /*
+     * 反序列化
+     */
+    cJSON *parsed = cJSON_GetObjectItemCaseSensitive(testData, "database_config");
+    // printf("%s\n", CSTR(STRING(cJSON_Print(cJSON_CreateString(cJSON_Print(serialized))))));
+    db = Create(Config);
+    Config expectedData[3] = {
+            {
+                    .id = 1, .key = LITERAL("giftValue"), .value = LITERAL("23333")
+            },
+            {
+                    .id = 2, .key = LITERAL("accountBalance"), .value = LITERAL("66666")
+            },
+            {
+                    .id = 3, .key = LITERAL("monster"), .value = LITERAL("810")
+            }
+    };
+    DeserializeDB(Config, db, parsed);
+    // 检查
+    int i = 0;
+    ForEach(cur, db) {
+        Config *actual = GetData(Config, cur);
+        TEST_ASSERT_EQUAL_INT(expectedData[i].id, actual->id);
+        TEST_ASSERT(EQ(expectedData[i].key, actual->key));
+        TEST_ASSERT(EQ(expectedData[i].value, actual->value));
+        i++;
+    }
+    // 释放
+    Database_destroy(db);
+}
+
 int main() {
     UNITY_BEGIN();
     loadJsonFromFile();
@@ -342,6 +403,7 @@ int main() {
     RUN_TEST(test_order);
     RUN_TEST(test_purchaseRecord);
     RUN_TEST(test_sellingRecord);
+    RUN_TEST(test_database);
 
     cJSON_Delete(data);
     return UNITY_END();
