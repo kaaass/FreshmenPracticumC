@@ -16,10 +16,10 @@
 #ifndef FRESHMAN_PROJ_C_SERIALIZER_H
 #define FRESHMAN_PROJ_C_SERIALIZER_H
 
-#define Serialize(type,data) serialize_##type(data)
-#define Deserialize(type,data) deserialize_##type(data)
-#define SerializeDB(type,db) serialize_Database(db,DATA_TYPE_##type)
-#define DeserializeDB(type,db,data) deserialize_Database(db,data,DATA_TYPE_##type)
+#define Serialize(type, data) serialize_##type(data)
+#define Deserialize(type, data) deserialize_##type(data)
+#define SerializeDB(type, db) serialize_Database(db,DATA_TYPE_##type)
+#define DeserializeDB(type, db, data) deserialize_Database(db,data,DATA_TYPE_##type)
 
 /*
  * 序列化方法
@@ -45,5 +45,6 @@ Mountings deserialize_Mountings(const cJSON *);
 Order deserialize_Order(const cJSON *);
 PurchaseRecord deserialize_PurchaseRecord(const cJSON *);
 SellingRecord deserialize_SellingRecord(const cJSON *);
+void deserialize_Database(Database *, const cJSON *, int);
 
 #endif //FRESHMAN_PROJ_C_SERIALIZER_H
