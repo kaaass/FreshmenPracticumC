@@ -2,7 +2,6 @@
 // Created by guyis on 2019/3/19.
 //
 
-#include <io.h>
 #include "../util/FileUtil.h"
 #include "TableConfig.h"
 #include "Serializer.h"
@@ -55,7 +54,7 @@ void DataManager_finalize() {
 void DataManager_save(string dir) {
     cJSON *json;
     stringbuf path, content;
-    mkdir(CSTR(dir));
+    MKDIR(CSTR(dir));
     // Config
     path = LITERAL("/Config.json");
     path = concat(2, dir, path);
