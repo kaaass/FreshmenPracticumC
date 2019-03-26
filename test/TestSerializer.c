@@ -6,7 +6,9 @@
 
 #include "../data/Serializer.h"
 #include "../util/StringUtil.h"
+#include "../util/FileUtil.h"
 #include "../util/Time.h"
+#include "../data/DataManager.h"
 #include "../data/TableConfig.h"
 #include "../data/TableGuest.h"
 #include "../data/TableMountings.h"
@@ -20,15 +22,7 @@
 cJSON *data = NULL;
 
 void loadJsonFromFile() {
-    FILE *f = fopen("inputs/TestSerializer.json", "r");
-    stringbuf content = $init$, line;
-    char rawLine[200];
-    if (f == NULL) return;
-    while (!feof(f)) {
-        fgets(rawLine, 200 - 1, f);
-        line = STRING(rawLine);
-        freeAssign(&content, concat2(content, line));
-    }
+    stringbuf content = readStringFromFile("inputs/TestSerializer.json");
     data = cJSON_Parse(U8_CSTR(content));
     if (data == NULL) {
         const char *error_ptr = cJSON_GetErrorPtr();
@@ -391,6 +385,18 @@ void test_database() {
     Database_destroy(db);
 }
 
+void test_save() {
+    DataManager_init();
+    DataManager_save(LITERAL("test_data"));
+    DataManager_finalize();
+}
+
+void test_load() {
+    DataManager_init();
+    DataManager_load(LITERAL("test_data"));
+    DataManager_finalize();
+}
+
 int main() {
     UNITY_BEGIN();
     loadJsonFromFile();
@@ -404,6 +410,8 @@ int main() {
     RUN_TEST(test_purchaseRecord);
     RUN_TEST(test_sellingRecord);
     RUN_TEST(test_database);
+    RUN_TEST(test_save);
+    RUN_TEST(test_load);
 
     cJSON_Delete(data);
     return UNITY_END();
