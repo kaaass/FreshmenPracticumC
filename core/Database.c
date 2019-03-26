@@ -154,3 +154,20 @@ Cursor *Cursor_next(Cursor *cursor) {
     cursor->data = next->data;
     return cursor;
 }
+
+/**
+ * 由ID获得数据库对应节点
+ * @param head
+ * @param id
+ * @return
+ */
+void *Database_getById(Database *head, int id) {
+    assert(head);
+    ForEach(cur, head) {
+        IdLike *node = GetData(IdLike, cur);
+        if (node->id == id) {
+            return node;
+        }
+    }
+    return NULL;
+}
