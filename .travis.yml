@@ -10,7 +10,8 @@ before_script:
   - cmake .. -DENABLE_COVERAGE=On
 
 script:
-  - make && make test
+  - make # && make test
+  - ctest --verbose
   - make gcov
 
 after_success:
