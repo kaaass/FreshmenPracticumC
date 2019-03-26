@@ -42,5 +42,5 @@ stringbuf readStringFromFile(char *filename) {
  * @return
  */
 bool isExist(char *path) {
-    return !access(path, F_OK);
+    return access(path, F_OK) != -1;
 }
