@@ -11,11 +11,13 @@ add_subdirectory(externals)
 aux_source_directory(core module_core)
 aux_source_directory(util module_util)
 aux_source_directory(data module_data)
+aux_source_directory(model module_model)
 
 set(modules
         ${module_core}
         ${module_util}
-        ${module_data})
+        ${module_data}
+        ${module_model})
 
 add_executable(freshman_proj_c main.c ${modules})
 target_link_libraries(freshman_proj_c cJson cstring_jslike)
