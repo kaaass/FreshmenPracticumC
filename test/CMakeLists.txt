@@ -2,7 +2,7 @@ if(BUILD_TEST)
     #copy test files
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/inputs")
     file(GLOB test_files "inputs/*")
-    file(COPY ${test_files} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/inputs/")
+    file(COPY ${test_files} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/inputs")
 
     set(unit_tests
             TestDatabase
