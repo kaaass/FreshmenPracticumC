@@ -12,6 +12,7 @@
 #define GetData(type, obj) ((type *) obj->data)
 #define Data(type, obj) (void *) obj,sizeof(type)
 #define Create(type) Database_create(DATA_TYPE_##type)
+#define GetById(type, db, id) ((type *) Database_getById(db,id))
 
 /**
  * 链表结点
@@ -47,6 +48,13 @@ typedef struct {
     DataNode *tail;
 } Header;
 
+/**
+ * 鸭子类型：ID
+ */
+typedef struct {
+    int id;
+} IdLike;
+
 Database *Database_create(int type);
 
 Database *Database_pushBack(Database *head, void *data, size_t size);
@@ -58,5 +66,7 @@ void Database_destroy(Database *head);
 Cursor *Database_begin(Database *head);
 
 Cursor *Cursor_next(Cursor *cursor);
+
+void *Database_getById(Database *head, int id);
 
 #endif //FRESHMAN_PROJ_C_DATABASE_H

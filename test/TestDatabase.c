@@ -43,6 +43,16 @@ void test_cursor() {
     TEST_ASSERT(cur->cur == next);
 }
 
+void test_get_by_id() {
+    Test *test;
+    test = GetById(Test, db, 1);
+    TEST_ASSERT_EQUAL_INT(114, test->num);
+    test = GetById(Test, db, 2);
+    TEST_ASSERT_EQUAL_INT(233, test->num);
+    test = GetById(Test, db, 3);
+    TEST_ASSERT_EQUAL_INT(666, test->num);
+}
+
 void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
@@ -60,7 +70,8 @@ int main() {
     RUN_TEST(test_create_database);
     RUN_TEST(test_pushData);
     RUN_TEST(test_cursor);
-    RUN_TEST(test_foreach);
+    RUN_TEST(test_get_by_id);
+    RUN_TEST(test_foreach); // 需要是最后一个以释放字符串
 
     Database_destroy(db);
 
