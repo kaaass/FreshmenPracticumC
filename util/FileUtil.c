@@ -3,6 +3,7 @@
 //
 #include <stdio.h>
 #include <assert.h>
+#include <errno.h>
 
 #include "FileUtil.h"
 
@@ -13,6 +14,7 @@
  */
 void writeStringToFile(char *filename, stringbuf content) {
     FILE *f = fopen(filename, "w");
+    assert(f);
     fprintf(f, "%s", CSTR(content));
     fflush(f);
 }
@@ -23,11 +25,11 @@ void writeStringToFile(char *filename, stringbuf content) {
  * @return
  */
 stringbuf readStringFromFile(char *filename) {
-    // assert(isExist(filename)); // FIXME: 在Linux上不工作
+    assert(isExist(filename));
     FILE *f = fopen(filename, "r");
+    assert(f);
     stringbuf content = $init$, line;
     char rawLine[200];
-    if (f == NULL) return content;
     while (!feof(f)) {
         fgets(rawLine, 200 - 1, f);
         line = STRING(rawLine);
@@ -43,4 +45,16 @@ stringbuf readStringFromFile(char *filename) {
  */
 bool isExist(char *path) {
     return access(path, F_OK) != -1;
+}
+
+/**
+ * 创建文件夹
+ * @param path
+ */
+void newFolder(char *path) {
+    if (isExist(path))
+        return;
+    if (MKDIR(path) == -1) {
+        fprintf(stderr, "Error creating dir: %s, %d\n", path, errno);
+    }
 }

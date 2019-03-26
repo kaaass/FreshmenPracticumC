@@ -54,7 +54,7 @@ void DataManager_finalize() {
 void DataManager_save(string dir) {
     cJSON *json;
     stringbuf path, content;
-    MKDIR(CSTR(dir));
+    newFolder(CSTR(dir));
     // Config
     path = LITERAL("/Config.json");
     path = concat(2, dir, path);
