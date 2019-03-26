@@ -23,7 +23,7 @@ void writeStringToFile(char *filename, stringbuf content) {
  * @return
  */
 stringbuf readStringFromFile(char *filename) {
-    assert(isExist(filename));
+    // assert(isExist(filename)); // FIXME: 在Linux上不工作
     FILE *f = fopen(filename, "r");
     stringbuf content = $init$, line;
     char rawLine[200];
