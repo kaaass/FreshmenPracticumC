@@ -27,9 +27,11 @@ int compareSellingRecord (const void * a, const void * b){
 
 PurchaseRecord **AccessoryIn(int type){
     int num = 0;
+    Mountings *trans;
     ForEach(cur,PURCHASE_RECORD){
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
-        if(record->partId == type){      //缺少partId转换type的函数
+        trans = GetById(Mountings,MOUNTINGS,record->partId);
+        if(trans->type == type){
             accessoryin[num] = record;
             num++;
         }
@@ -40,9 +42,11 @@ PurchaseRecord **AccessoryIn(int type){
 
 SellingRecord **AccessoryOut(int type){
     int num = 0;
+    Mountings *trans;
     ForEach(cur,SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord, cur);
-        if(record->partId == type){
+        trans = GetById(Mountings,MOUNTINGS,record->partId);
+        if(trans->type == type){
             accessoryout[num] = record;
             num++;
         }
