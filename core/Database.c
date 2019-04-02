@@ -53,6 +53,12 @@ Database *Database_pushBack(Database *head, void *data, size_t size) {
     header->tail->next = node; // 加入链表
     header->tail = node;
     header->cnt++;
+
+    // ID自增
+    // 由于目前都是IdLike，于是无所谓判断
+    IdLike *idNode = GetData(IdLike, node);
+    idNode->id = header->cnt;
+
     return head;
 }
 
