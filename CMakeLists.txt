@@ -6,6 +6,10 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/externals/CMake-codecov/cmake" ${CMAKE_MODULE_PATH})
 find_package(codecov)
 
+if(APPLE)
+    add_definitions(-D LIBICONV_PLUG)
+endif()
+
 add_subdirectory(externals)
 
 aux_source_directory(core module_core)
