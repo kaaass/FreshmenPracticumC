@@ -1,0 +1,68 @@
+{
+	"type":	2,
+	"data":	[
+		{
+			"id": 1,
+			"type": 0,
+			"sellerId": 3,
+			"name": "G801",
+			"amount": 10,
+			"giftPriority": 0,
+			"price": 398
+		},
+		{
+			"id": 2,
+			"type": 1,
+			"sellerId": 4,
+			"name": "三飞燕",
+			"amount": 50,
+			"giftPriority": 1,
+			"price": 20
+		},
+		{
+			"id": 3,
+			"type": 2,
+			"sellerId": 5,
+			"name": "金土坑DDR4 - 8G",
+			"amount": 30,
+			"giftPriority": 0,
+			"price": 369
+		},
+		{
+			"id": 4,
+			"type": 3,
+			"sellerId": 1,
+			"name": "GTX1080Ti",
+			"amount": 30,
+			"giftPriority": 0,
+			"price": 3699
+		},
+		{
+			"id": 5,
+			"type": 4,
+			"sellerId": 6,
+			"name": "1T 机械硬盘",
+			"amount": 70,
+			"giftPriority": 0,
+			"price": 369
+		},
+		{
+			"id": 6,
+			"type": 5,
+			"sellerId": 2,
+			"name": "i7-7700k",
+			"amount": 10,
+			"giftPriority": 0,
+			"price": 2199
+		},
+		{
+			"id": 7,
+			"type": 6,
+			"sellerId": 7,
+			"name": "带鱼",
+			"amount": 25,
+			"giftPriority": 0,
+			"price": 2499
+		}
+	]
+}
