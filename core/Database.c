@@ -37,7 +37,7 @@ Database *Database_create(int type) {
  * @param data 使用Data宏进行数据组织
  * @return 数据库
  */
-Database *Database_pushBack(Database *head, void *data, size_t size) {
+Database *Database_pushBack(Database *head, void *data, size_t size, int type) {
     DataNode *node;
     Header *header;
     void *newData;
@@ -45,6 +45,7 @@ Database *Database_pushBack(Database *head, void *data, size_t size) {
     assert(head);
     node = MALLOC(DataNode);
     header = GetData(Header, head);
+    assert(type == header->defaultDataType);
     newData = malloc(size);
     memcpy(newData, data, size);
     node->dataType = header->defaultDataType;
@@ -56,9 +57,10 @@ Database *Database_pushBack(Database *head, void *data, size_t size) {
     header->cnt++;
 
     // ID自增
-    // 由于目前都是IdLike，于是无所谓判断
-    IdLike *idNode = GetData(IdLike, node);
-    idNode->id = header->cnt;
+    if (type & ID_LIKE) {
+        IdLike *idNode = GetData(IdLike, node);
+        idNode->id = header->cnt;
+    }
 
     return head;
 }
@@ -170,6 +172,7 @@ Cursor *Cursor_next(Cursor *cursor) {
  */
 void *Database_getById(Database *head, int id) {
     assert(head);
+    assert(id ^ ID_LIKE);
     ForEach(cur, head) {
         IdLike *node = GetData(IdLike, cur);
         if (node->id == id) {

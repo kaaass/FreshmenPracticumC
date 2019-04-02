@@ -9,7 +9,7 @@
 /**
  * 数据表：销售记录
  */
-#define DATA_TYPE_SellingRecord 5
+#define DATA_TYPE_SellingRecord 5 | ID_LIKE
 
 enum SellingRecordStatus {
     SELLING_NORMAL = 0, SELLING_DELETED, SELLING_SALES_RETURN, SELLING_GIFT

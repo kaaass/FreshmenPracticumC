@@ -9,7 +9,7 @@
 /**
  * 数据表：进货记录
  */
-#define DATA_TYPE_PurchaseRecord 3
+#define DATA_TYPE_PurchaseRecord 3 | ID_LIKE
 
 enum PurchaseRecordStatus {
     PURCHASE_NORMAL = 0, PURCHASE_DELETED = 1, PURCHASE_SALES_RETURN = 2

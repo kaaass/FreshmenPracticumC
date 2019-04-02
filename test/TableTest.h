@@ -10,7 +10,7 @@
 /**
  * 数据表：测试
  */
-const int DATA_TYPE_Test = 1;
+#define DATA_TYPE_Test 1 | ID_LIKE
 
 typedef struct {
     int id;

@@ -7,7 +7,7 @@
 
 #include "../util/StringUtil.h"
 
-#define DATA_TYPE_Guest 4
+#define DATA_TYPE_Guest 4 | ID_LIKE
 
 typedef struct {
     int id;

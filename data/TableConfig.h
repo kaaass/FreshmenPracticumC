@@ -10,7 +10,7 @@
 /**
  * 数据表：
  */
-#define DATA_TYPE_Config 8
+#define DATA_TYPE_Config 8 | ID_LIKE
 
 typedef struct {
     int id;

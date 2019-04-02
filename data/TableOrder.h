@@ -17,7 +17,7 @@ enum OrderType {
     ORDER_PURCHASE = 0, ORDER_SINGLE_BUY, ORDER_WHOLE_SALE
 };
 
-#define DATA_TYPE_Order 7
+#define DATA_TYPE_Order 7 | ID_LIKE
 
 typedef struct {
     int id;
