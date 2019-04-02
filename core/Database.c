@@ -22,6 +22,7 @@ Database *Database_create(int type) {
     Header *header = MALLOC(Header);
 
     db->dataType = DATA_TYPE_Header;
+    db->dataSize = sizeof(Header);
     header->cnt = 0;
     header->defaultDataType = type;
     header->tail = db;

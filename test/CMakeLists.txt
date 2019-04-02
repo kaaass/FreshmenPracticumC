@@ -8,7 +8,8 @@ if(BUILD_TEST)
             TestDatabase
             TestData
             TestUtil
-            TestSerializer)
+            TestSerializer
+            TestQuery)
     set(_modules) # Stupid way
     foreach(mod ${modules})
         list(APPEND _modules "../${mod}")

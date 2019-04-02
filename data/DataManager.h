@@ -2,6 +2,7 @@
 // Created by guyis on 2019/3/19.
 //
 #include "../core/Database.h"
+#include "../util/StringUtil.h"
 
 #ifndef FRESHMAN_PROJ_C_DATAMANAGER_H
 #define FRESHMAN_PROJ_C_DATAMANAGER_H
