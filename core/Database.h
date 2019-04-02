@@ -10,9 +10,11 @@
 #define CheckType(type, obj) (CheckTypeId(DATA_TYPE_##type, obj) && sizeof(type) == (obj)->dataSize)
 #define ForEach(i, db) for(Cursor *i=Database_begin(db);i!=NULL;i=Cursor_next(i))
 #define GetData(type, obj) ((type *) obj->data)
-#define Data(type, obj) (void *) obj,sizeof(type)
+#define Data(type, obj) (void *) obj,sizeof(type),DATA_TYPE_##type
 #define Create(type) Database_create(DATA_TYPE_##type)
 #define GetById(type, db, id) ((type *) Database_getById(db,id))
+
+#define ID_LIKE (1 << 5)
 
 /**
  * 链表结点
@@ -57,7 +59,7 @@ typedef struct {
 
 Database *Database_create(int type);
 
-Database *Database_pushBack(Database *head, void *data, size_t size);
+Database *Database_pushBack(Database *head, void *data, size_t size, int type);
 
 size_t Database_size(Database *head);
 
@@ -68,5 +70,7 @@ Cursor *Database_begin(Database *head);
 Cursor *Cursor_next(Cursor *cursor);
 
 void *Database_getById(Database *head, int id);
+
+Database *arrayToDatabase(void *arr, size_t size, int type);
 
 #endif //FRESHMAN_PROJ_C_DATABASE_H

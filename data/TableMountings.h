@@ -9,7 +9,7 @@
 /**
  * 数据表：零配件
  */
-#define DATA_TYPE_Mountings 2
+#define DATA_TYPE_Mountings 2 | ID_LIKE
 
 enum MountingsType {
     MOUNTINGS_MOUSE = 0,

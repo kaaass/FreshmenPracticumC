@@ -87,7 +87,7 @@
   },
   "test_database": {
     "database_config": {
-      "type": 8,
+      "type": 40,
       "data": [
         {
           "id": 1,
@@ -106,6 +106,6 @@
         }
       ]
     },
-    "expected": "{\n\t\"type\":\t4,\n\t\"data\":\t[{\n\t\t\t\"id\":\t1,\n\t\t\t\"name\":\t\"DD\",\n\t\t\t\"phone\":\t\"233-3333-3333\"\n\t\t}, {\n\t\t\t\"id\":\t2,\n\t\t\t\"name\":\t\"KAAAsS\",\n\t\t\t\"phone\":\t\"666-6666-6666\"\n\t\t}, {\n\t\t\t\"id\":\t3,\n\t\t\t\"name\":\t\"神楽めあ\",\n\t\t\t\"phone\":\t\"114514\"\n\t\t}]\n}"
+    "expected": "{\n\t\"type\":\t36,\n\t\"data\":\t[{\n\t\t\t\"id\":\t1,\n\t\t\t\"name\":\t\"DD\",\n\t\t\t\"phone\":\t\"233-3333-3333\"\n\t\t}, {\n\t\t\t\"id\":\t2,\n\t\t\t\"name\":\t\"KAAAsS\",\n\t\t\t\"phone\":\t\"666-6666-6666\"\n\t\t}, {\n\t\t\t\"id\":\t3,\n\t\t\t\"name\":\t\"神楽めあ\",\n\t\t\t\"phone\":\t\"114514\"\n\t\t}]\n}"
   }
 }

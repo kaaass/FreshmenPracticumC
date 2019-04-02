@@ -9,7 +9,7 @@
 /**
  * 数据表：供应商
  */
-#define DATA_TYPE_Provider 6
+#define DATA_TYPE_Provider 6 | ID_LIKE
 
 typedef struct {
     int id;
