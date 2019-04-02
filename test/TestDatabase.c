@@ -50,6 +50,24 @@ void test_get_by_id() {
     TEST_ASSERT_EQUAL_INT(666, test->num);
 }
 
+void test_arrayToDatabase() {
+    // 创建一个指针数组以测试
+    Test *ptrArr[3];
+    ptrArr[0] = GetById(Test, db, 1);
+    ptrArr[2] = GetById(Test, db, 2); // 换序
+    ptrArr[1] = GetById(Test, db, 3);
+    Database *newDb = arrayToDatabase(Data(Test, ptrArr), 3);
+    int ind = 0;
+    ForEach(cur, newDb) {
+        Test *record = GetData(Test, cur);
+        TEST_ASSERT_EQUAL_INT(ptrArr[ind]->num, record->num);
+        TEST_ASSERT_EQUAL_INT(ptrArr[ind]->id, record->id);
+        TEST_ASSERT(EQUAL(ptrArr[ind]->str, record->str));
+        ind++;
+    }
+    Database_destroy(newDb);
+}
+
 void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
@@ -68,6 +86,7 @@ int main() {
     RUN_TEST(test_pushData);
     RUN_TEST(test_cursor);
     RUN_TEST(test_get_by_id);
+    RUN_TEST(test_arrayToDatabase);
     RUN_TEST(test_foreach); // 需要是最后一个以释放字符串
 
     Database_destroy(db);

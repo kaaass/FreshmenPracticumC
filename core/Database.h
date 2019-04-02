@@ -2,6 +2,7 @@
 // Created by Gu Yue on 2019/3/12.
 //
 #include <stddef.h>
+#include <stdbool.h>
 
 #ifndef FRESHMAN_PROJ_C_DATABASE_H
 #define FRESHMAN_PROJ_C_DATABASE_H
@@ -61,6 +62,8 @@ Database *Database_create(int type);
 
 Database *Database_pushBack(Database *head, void *data, size_t size, int type);
 
+Database *Database_pushBackAutoInc(Database *head, void *data, size_t size, int type, bool autoInc);
+
 size_t Database_size(Database *head);
 
 void Database_destroy(Database *head);
@@ -71,6 +74,6 @@ Cursor *Cursor_next(Cursor *cursor);
 
 void *Database_getById(Database *head, int id);
 
-Database *arrayToDatabase(void *arr, size_t size, int type);
+Database *arrayToDatabase(void *arr[], size_t size, int type, size_t length);
 
 #endif //FRESHMAN_PROJ_C_DATABASE_H

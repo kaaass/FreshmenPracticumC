@@ -38,6 +38,17 @@ Database *Database_create(int type) {
  * @return 数据库
  */
 Database *Database_pushBack(Database *head, void *data, size_t size, int type) {
+    return Database_pushBackAutoInc(head, data, size, type, true);
+}
+
+/**
+ * 在数据库尾加入节点，允许自动增加id字段
+ * @param head 数据库
+ * @param data 使用Data宏进行数据组织
+ * @param autoInc 是否自动增加
+ * @return 数据库
+ */
+Database *Database_pushBackAutoInc(Database *head, void *data, size_t size, int type, bool autoInc) {
     DataNode *node;
     Header *header;
     void *newData;
@@ -57,7 +68,7 @@ Database *Database_pushBack(Database *head, void *data, size_t size, int type) {
     header->cnt++;
 
     // ID自增
-    if (type & ID_LIKE) {
+    if ((type & ID_LIKE) && autoInc) {
         IdLike *idNode = GetData(IdLike, node);
         idNode->id = header->cnt;
     }
@@ -180,4 +191,22 @@ void *Database_getById(Database *head, int id) {
         }
     }
     return NULL;
+}
+
+/**
+ * 将指针数组转为链表
+ *
+ * 注意：指针数组指向内容将会被复制，id将会重排
+ * @param arr 使用Data宏，传入一个指针数组
+ * @param size 使用Data宏
+ * @param type 使用Data宏
+ * @param length 数组元素个数
+ * @return
+ */
+Database *arrayToDatabase(void *arr[], size_t size, int type, size_t length) {
+    Database *db = Database_create(type);
+    for (int i = 0; i < length; i++) {
+        Database_pushBackAutoInc(db, arr[i], size, type, false);
+    }
+    return db;
 }
