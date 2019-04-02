@@ -14,18 +14,15 @@ void test_create_database() {
 }
 
 void test_pushData() {
-    Test sigle = {.id = 1,
-            .num = 114,
+    Test sigle = {.num = 114,
             .str = STR_BUF("SingleLine")};
     Database_pushBack(db, Data(Test, &sigle));
     TEST_ASSERT_EQUAL_INT(1, Database_size(db));
 
     Test data[] = {
-            {.id = 2,
-                    .num = 233,
+            {.num = 233,
                     .str = STR_BUF("test")},
-            {.id = 3,
-                    .num = 666,
+            {.num = 666,
                     .str = STR_BUF("test2")}
     };
     for (int i = 0; i < 2; i++) {

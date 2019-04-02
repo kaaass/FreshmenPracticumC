@@ -3,3 +3,14 @@
 //
 
 #include "StringUtil.h"
+
+/**
+ * 判断字符串是否为空
+ * @param str
+ * @return
+ */
+bool empty(stringbuf str) {
+    if (str == NULL)
+        return true;
+    return length(str) == 0;
+}
