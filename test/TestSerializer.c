@@ -305,7 +305,7 @@ void test_sellingRecord() {
     // 反序列化
     parsed = cJSON_GetObjectItemCaseSensitive(testData, "selling_record");
     SellingRecord parsedSellingRecord = Deserialize(SellingRecord, parsed);
-    printf("Deserialize SellingRecord: id = %d, partId = %d, status = %d, guestId = %d, amount = %d, total = %f, time = %s, giftId = %d, orderId = %d\n",
+    printf("Deserialize SellingRecord: id = %d, partId = %d, status = %d, guestId = %d, amount = %d, total = %f, time = %s, orderId = %d\n",
            parsedSellingRecord.id, parsedSellingRecord.partId, parsedSellingRecord.status, parsedSellingRecord.guestId,
            parsedSellingRecord.amount, parsedSellingRecord.total, CSTR(Time_toLocalString(parsedSellingRecord.time)),
            parsedSellingRecord.orderId);
