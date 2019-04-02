@@ -81,10 +81,9 @@
       "time": {
         "ts": 1553011044
       },
-      "giftId": 6161616,
       "orderId": 619191
     },
-    "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"giftId\":\t6161616,\n\t\"orderId\":\t619191\n}"
+    "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"orderId\":\t619191\n}"
   },
   "test_database": {
     "database_config": {

@@ -86,7 +86,6 @@ cJSON *serialize_SellingRecord(SellingRecord sr) {
     cJSON_AddNumberToObject(json, "amount", sr.amount);
     cJSON_AddNumberToObject(json, "total", sr.total);
     cJSON_AddItemToObject(json, "time", serialize_Time(sr.time));
-    cJSON_AddNumberToObject(json, "giftId", sr.giftId);
     cJSON_AddNumberToObject(json, "orderId", sr.orderId);
     return json;
 }
@@ -290,7 +289,6 @@ SellingRecord deserialize_SellingRecord(const cJSON *json) {
     cJSON *amount = cJSON_GetObjectItem(json, "amount");
     cJSON *total = cJSON_GetObjectItem(json, "total");
     cJSON *time = cJSON_GetObjectItem(json, "time");
-    cJSON *giftId = cJSON_GetObjectItem(json, "giftId");
     cJSON *orderId = cJSON_GetObjectItem(json, "orderId");
 
     if (cJSON_IsNumber(id) && id->valueint != -1) {
@@ -310,9 +308,6 @@ SellingRecord deserialize_SellingRecord(const cJSON *json) {
     }
     if (cJSON_IsNumber(total)) {
         sellingRecord.total = total->valuedouble;
-    }
-    if (cJSON_IsNumber(giftId) && giftId->valueint != -1) {
-        sellingRecord.giftId = giftId->valueint;
     }
     if (cJSON_IsNumber(orderId) && orderId->valueint != -1) {
         sellingRecord.orderId = orderId->valueint;
@@ -393,7 +388,6 @@ void deserialize_Database(Database *db, const cJSON *json, int type) {
     assert(jsonType->valueint == type);
     data = cJSON_GetObjectItemCaseSensitive(json, "data");
     assert(cJSON_IsArray(data));
-    header->cnt = cJSON_GetArraySize(data);
     // 反序列化结点
     cJSON *cur;
     cJSON_ArrayForEach(cur, data) {
