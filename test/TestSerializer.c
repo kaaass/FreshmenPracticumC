@@ -291,7 +291,6 @@ void test_sellingRecord() {
             .amount = 6111,
             .total = 97.79,
             .time = time,
-            .giftId = 6161616,
             .orderId = 619191
     };
     string expected, json;
@@ -309,7 +308,7 @@ void test_sellingRecord() {
     printf("Deserialize SellingRecord: id = %d, partId = %d, status = %d, guestId = %d, amount = %d, total = %f, time = %s, giftId = %d, orderId = %d\n",
            parsedSellingRecord.id, parsedSellingRecord.partId, parsedSellingRecord.status, parsedSellingRecord.guestId,
            parsedSellingRecord.amount, parsedSellingRecord.total, CSTR(Time_toLocalString(parsedSellingRecord.time)),
-           parsedSellingRecord.giftId, parsedSellingRecord.orderId);
+           parsedSellingRecord.orderId);
     TEST_ASSERT_EQUAL_INT(615, parsedSellingRecord.id);
     TEST_ASSERT_EQUAL_INT(6168, parsedSellingRecord.partId);
     TEST_ASSERT_EQUAL_INT(SELLING_SALES_RETURN, parsedSellingRecord.status);
@@ -317,7 +316,6 @@ void test_sellingRecord() {
     TEST_ASSERT_EQUAL_INT(6111, parsedSellingRecord.amount);
     TEST_ASSERT_EQUAL_FLOAT(97.79, parsedSellingRecord.total);
     TEST_ASSERT_EQUAL_INT(time.timeStamp, parsedSellingRecord.time.timeStamp);
-    TEST_ASSERT_EQUAL_INT(6161616, parsedSellingRecord.giftId);
     TEST_ASSERT_EQUAL_INT(619191, parsedSellingRecord.orderId);
 }
 

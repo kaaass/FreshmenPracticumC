@@ -167,7 +167,6 @@ void test_table_selling_record() {
                     .amount = 1,
                     .total = 1,
                     .time = Time_getNow(),
-                    .giftId = 1,
                     .orderId = 1},
             {.id = 2,
                     .partId = 2,
@@ -176,7 +175,6 @@ void test_table_selling_record() {
                     .amount = 2,
                     .total = 2,
                     .time = Time_getNow(),
-                    .giftId = 2,
                     .orderId = 2}
     };
     for (int i = 0; i < 2; i++) {
@@ -186,9 +184,9 @@ void test_table_selling_record() {
     ForEach(cur, db) {
         SellingRecord *now = GetData(SellingRecord, cur);
         stringbuf timeStr = Time_toLocalString(now->time);
-        printf("Selling Record {Id = %d, partId = %d, status = %d, guestId = %d,amount = %d,total = %f,giftId = %d,orderId = %d,time = %s}\n",
+        printf("Selling Record {Id = %d, partId = %d, status = %d, guestId = %d,amount = %d,total = %f,orderId = %d,time = %s}\n",
                now->id, now->partId,
-               now->status, now->guestId, now->amount, now->total, now->giftId, now->orderId,
+               now->status, now->guestId, now->amount, now->total, now->orderId,
                CSTR(timeStr));
         $STR_BUF(timeStr);
     }

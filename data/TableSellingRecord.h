@@ -23,7 +23,6 @@ typedef struct {
     int amount;
     double total;
     Time time;
-    int giftId;
     int orderId;
 } SellingRecord;
 
