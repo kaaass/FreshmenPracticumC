@@ -1,0 +1,20 @@
+{
+	"type": 8,
+	"data": [
+		{
+			"id": 1,
+			"key": "giftValue",
+			"value": "23333"
+		},
+		{
+			"id": 2,
+			"key": "accountBalance",
+			"value": "66666"
+		},
+		{
+			"id": 3,
+			"key": "giftId",
+			"value": "1"
+		}
+	]
+}
