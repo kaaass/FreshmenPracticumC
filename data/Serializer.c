@@ -384,7 +384,8 @@ cJSON *serialize_Database(Database *db, int type) {
  */
 void deserialize_Database(Database *db, const cJSON *json, int type) {
     assert(db);
-    assert(type == GetData(Header, db)->defaultDataType);
+    Header *header = GetData(Header, db);
+    assert(type == header->defaultDataType);
     // TODO: 先清除数据库内容
     cJSON *jsonType, *data;
     jsonType = cJSON_GetObjectItemCaseSensitive(json, "type");
@@ -392,6 +393,7 @@ void deserialize_Database(Database *db, const cJSON *json, int type) {
     assert(jsonType->valueint == type);
     data = cJSON_GetObjectItemCaseSensitive(json, "data");
     assert(cJSON_IsArray(data));
+    header->cnt = cJSON_GetArraySize(data);
     // 反序列化结点
     cJSON *cur;
     cJSON_ArrayForEach(cur, data) {

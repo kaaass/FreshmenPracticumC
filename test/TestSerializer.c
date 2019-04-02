@@ -387,13 +387,13 @@ void test_database() {
 
 void test_save() {
     DataManager_init();
-    DataManager_save(LITERAL("test_data"));
+    DataManager_save(LITERAL("test_database"));
     DataManager_finalize();
 }
 
 void test_load() {
     DataManager_init();
-    DataManager_load(LITERAL("test_data"));
+    DataManager_load(LITERAL("test_database"));
     DataManager_finalize();
 }
 
