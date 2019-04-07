@@ -10,9 +10,9 @@
 #ifndef FRESHMAN_PROJ_C_CONSULTATION_H
 #define FRESHMAN_PROJ_C_CONSULTATION_H
 
-PurchaseRecord **AccessoryIn(int type);
-SellingRecord **AccessoryOut(int type);
-PurchaseRecord **Supplier(int sellerId);
-SellingRecord **Client(int guestId);
+Database *AccessoryIn(int type);
+Database *AccessoryOut(int type);
+Database *Supplier(int sellerId);
+Database *Client(int guestId);
 
 #endif //FRESHMAN_PROJ_C_CONSULTATION_H
