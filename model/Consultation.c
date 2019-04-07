@@ -3,14 +3,14 @@
 //
 
 #include "Consultation.h"
+#include "../data/TablePurchaseRecord.h"
 #include "../data/TableMountings.h"
 #include "../data/TableSellingRecord.h"
 #include "../data/DataManager.h"
 #include <stdbool.h>
 
 //查询某种配件的进货/销售信息
-PurchaseRecord *accessoryin[1000];
-SellingRecord *accessoryout[1000];
+
 extern Database *PURCHASE_RECORD;
 extern Database *SELLING_RECORD;
 int comparePurchaseRecord (const void * a, const void * b){
@@ -25,7 +25,8 @@ int compareSellingRecord (const void * a, const void * b){
 }
 
 
-PurchaseRecord **AccessoryIn(int type){
+Database *AccessoryIn(int type){
+    PurchaseRecord *accessoryin[1000];
     int num = 0;
     Mountings *trans;
     ForEach(cur,PURCHASE_RECORD){
@@ -37,10 +38,12 @@ PurchaseRecord **AccessoryIn(int type){
         }
     }
     qsort(accessoryin ,num , sizeof(PurchaseRecord*) ,comparePurchaseRecord);
-    return accessoryin;
+    Database *point = arrayToDatabase(Data(PurchaseRecord,accessoryin),num);
+    return point;
 }
 
-SellingRecord **AccessoryOut(int type){
+Database *AccessoryOut(int type){
+    SellingRecord *accessoryout[1000];
     int num = 0;
     Mountings *trans;
     ForEach(cur,SELLING_RECORD){
@@ -52,12 +55,14 @@ SellingRecord **AccessoryOut(int type){
         }
     }
     qsort(accessoryout ,num , sizeof(SellingRecord*) ,compareSellingRecord);
-    return accessoryout;
+    Database *point = arrayToDatabase(Data(SellingRecord,accessoryout),num);
+    return point;
 }
 
 //查询某个供货商的历史进货信息
-PurchaseRecord *supplier[1000];
-PurchaseRecord **Supplier(int sellerId){
+
+Database *Supplier(int sellerId){
+    PurchaseRecord *supplier[1000];
     int num = 0;
     ForEach(cur,PURCHASE_RECORD){
         PurchaseRecord *record = GetData(PurchaseRecord,cur);
@@ -67,12 +72,14 @@ PurchaseRecord **Supplier(int sellerId){
         }
     }
     qsort(supplier,num, sizeof(PurchaseRecord*),comparePurchaseRecord);
-    return supplier;
+    Database *point = arrayToDatabase(Data(PurchaseRecord,supplier),num);
+    return point;
 }
 
 //查询某个客户的历史采购信息
-SellingRecord *guest[1000];
-SellingRecord **Client(int guestId){
+
+Database *Client(int guestId){
+    SellingRecord *guest[1000];
     int num = 0;
     ForEach(cur,SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord,cur);
@@ -82,5 +89,6 @@ SellingRecord **Client(int guestId){
         }
     }
     qsort(guest,num, sizeof(SellingRecord*),compareSellingRecord);
-    return guest;
+    Database *point = arrayToDatabase(Data(SellingRecord,guest),num);
+    return point;
 }
