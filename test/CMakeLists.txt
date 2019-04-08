@@ -10,7 +10,9 @@ if(BUILD_TEST)
             TestUtil
             TestSerializer
             TestQuery
-            TestInsert)
+            TestInsert
+            TestModify
+            TestStat)
     set(_modules) # Stupid way
     foreach(mod ${modules})
         list(APPEND _modules "../${mod}")
