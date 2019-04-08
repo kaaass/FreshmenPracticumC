@@ -71,6 +71,7 @@ cJSON *serialize_PurchaseRecord(PurchaseRecord pr) {
     cJSON_AddNumberToObject(json, "sellerId", pr.sellerId);
     cJSON_AddNumberToObject(json, "amount", pr.amount);
     cJSON_AddNumberToObject(json, "total", pr.total);
+    cJSON_AddNumberToObject(json, "price", pr.price);
     cJSON_AddNumberToObject(json, "orderId", pr.orderId);
     cJSON_AddNumberToObject(json, "status", pr.status);
     cJSON_AddItemToObject(json, "time", serialize_Time(pr.time));
@@ -85,6 +86,7 @@ cJSON *serialize_SellingRecord(SellingRecord sr) {
     cJSON_AddNumberToObject(json, "guestId", sr.guestId);
     cJSON_AddNumberToObject(json, "amount", sr.amount);
     cJSON_AddNumberToObject(json, "total", sr.total);
+    cJSON_AddNumberToObject(json, "price", sr.price);
     cJSON_AddItemToObject(json, "time", serialize_Time(sr.time));
     cJSON_AddNumberToObject(json, "orderId", sr.orderId);
     return json;
@@ -246,6 +248,7 @@ PurchaseRecord deserialize_PurchaseRecord(const cJSON *json) {
     cJSON *sellerId = cJSON_GetObjectItem(json, "sellerId");
     cJSON *amount = cJSON_GetObjectItem(json, "amount");
     cJSON *total = cJSON_GetObjectItem(json, "total");
+    cJSON *price = cJSON_GetObjectItem(json, "price");
     cJSON *orderId = cJSON_GetObjectItem(json, "orderId");
     cJSON *status = cJSON_GetObjectItem(json, "status");
     cJSON *time = cJSON_GetObjectItem(json, "time");
@@ -263,16 +266,16 @@ PurchaseRecord deserialize_PurchaseRecord(const cJSON *json) {
         purchaseRecord.amount = amount->valueint;
     }
     if (cJSON_IsNumber(total)) {
-        purchaseRecord.total = amount->valueint;
+        purchaseRecord.total = total->valuedouble;
+    }
+    if (cJSON_IsNumber(price)) {
+        purchaseRecord.price = price->valuedouble;
     }
     if (cJSON_IsNumber(orderId)) {
         purchaseRecord.orderId = orderId->valueint;
     }
     if (cJSON_IsNumber(status)) {
         purchaseRecord.status = status->valueint;
-    }
-    if (cJSON_IsNumber(total)) {
-        purchaseRecord.total = total->valuedouble;
     }
     purchaseRecord.time = deserialize_Time(time);
     return purchaseRecord;
@@ -288,6 +291,7 @@ SellingRecord deserialize_SellingRecord(const cJSON *json) {
     cJSON *guestId = cJSON_GetObjectItem(json, "guestId");
     cJSON *amount = cJSON_GetObjectItem(json, "amount");
     cJSON *total = cJSON_GetObjectItem(json, "total");
+    cJSON *price = cJSON_GetObjectItem(json, "price");
     cJSON *time = cJSON_GetObjectItem(json, "time");
     cJSON *orderId = cJSON_GetObjectItem(json, "orderId");
 
@@ -308,6 +312,9 @@ SellingRecord deserialize_SellingRecord(const cJSON *json) {
     }
     if (cJSON_IsNumber(total)) {
         sellingRecord.total = total->valuedouble;
+    }
+    if (cJSON_IsNumber(price)) {
+        sellingRecord.price = price->valuedouble;
     }
     if (cJSON_IsNumber(orderId) && orderId->valueint != -1) {
         sellingRecord.orderId = orderId->valueint;

@@ -8,6 +8,7 @@
 			"guestId": 2,
 			"amount": 1,
 			"total": 2499,
+			"price": 2499,
 			"time": {
 				"ts": 1553011044
 			},
@@ -20,6 +21,7 @@
 			"guestId": 3,
 			"amount": 1,
 			"total": 369,
+			"price": 369,
 			"time": {
 				"ts": 1553011344
 			},
@@ -32,6 +34,7 @@
 			"guestId": 3,
 			"amount": 1,
 			"total": 3699,
+			"price": 3699,
 			"time": {
 				"ts": 1553011344
 			},
@@ -44,6 +47,7 @@
 			"guestId": 3,
 			"amount": 1,
 			"total": 20,
+			"price": 20,
 			"time": {
 				"ts": 1553011344
 			},

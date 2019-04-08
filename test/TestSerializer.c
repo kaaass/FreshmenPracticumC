@@ -246,6 +246,7 @@ void test_purchaseRecord() {
             .sellerId = 4864,
             .amount = 461,
             .total = 87562.54,
+            .price = 17.79,
             .orderId = 13434,
             .status = PURCHASE_DELETED,
             .time = time
@@ -290,6 +291,7 @@ void test_sellingRecord() {
             .guestId = 616115,
             .amount = 6111,
             .total = 97.79,
+            .price = 17.79,
             .time = time,
             .orderId = 619191
     };
