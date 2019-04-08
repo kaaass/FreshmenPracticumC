@@ -17,10 +17,11 @@
 #ifndef FRESHMAN_PROJ_C_TABLEMODIFY_H
 #define FRESHMAN_PROJ_C_TABLEMODIFY_H
 
-bool deletePurchaseRecord(PurchaseRecord *purchaseRecord);
-bool deleteSellingRecord(SellingRecord *sellingRecord);
-bool deleteOrder(Order *order);
+bool deletePurchaseRecord(int purchaseRecordId);
+bool deleteSellingRecord(int sellingRecordId);
+bool deleteOrder(int orderId);
 
-bool modifyOrder(Order *order, const int *opId, int opCount, double price);
+bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord *newSellingRecord);
+bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseRecord *newPuachaseRecord);
 
 #endif //FRESHMAN_PROJ_C_TABLEMODIFY_H
