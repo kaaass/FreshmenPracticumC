@@ -54,21 +54,19 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
     if(sellingRecord == NULL) return false;
     if(newSellingRecord == NULL) return false;
 
-    Order newOrder = {
-            .type = order->type,
-            .status = ORDER_SALES_RETURN,
-    };
+    Order *newOrder = malloc(sizeof(Order));
+    newOrder->status = ORDER_SALES_RETURN;
+    newOrder->type = order->type;
     int count = 0;
     for (int i = 0; i < order->opCount; ++i) {
-        if(order->opId[i] != sellingRecordId)
-            newOrder.opId[count++] = order->opId[i];
-        else
-            newOrder.opId[count++] = newSellingRecord->id;
+        newOrder->opId[count++] = order->opId[i];
+
     }
-    newOrder.opCount = count;
+    newOrder->opId[count++] = newSellingRecord->id;
+    newOrder->opCount = count;
     if(!deleteOrder(orderId)) return false;
     if(!deleteSellingRecord(sellingRecordId)) return false;
-    Insert_order(&newOrder);
+    Insert_order(newOrder);
     return true;
 }
 
@@ -79,20 +77,18 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
     if(purchaseRecord == NULL) return false;
     if(newPuachaseRecord == NULL) return false;
 
-    Order newOrder = {
-            .type = order->type,
-            .status = ORDER_SALES_RETURN,
-    };
+    Order *newOrder = malloc(sizeof(Order));
+    newOrder->status = ORDER_SALES_RETURN;
+    newOrder->type = order->type;
+
     int count = 0;
     for (int i = 0; i < order->opCount; ++i) {
-        if(order->opId[i] != purchaseRecordId)
-            newOrder.opId[count++] = order->opId[i];
-        else
-            newOrder.opId[count++] = newPuachaseRecord->id;
+        newOrder->opId[count++] = order->opId[i];
     }
-    newOrder.opCount = count;
+    newOrder->opId[count++] = newPuachaseRecord->id;
+    newOrder->opCount = count;
     if(!deleteOrder(orderId)) return false;
     if(!deletePurchaseRecord(purchaseRecordId)) return false;
-    Insert_order(&newOrder);
+    Insert_order(newOrder);
     return true;
 }
