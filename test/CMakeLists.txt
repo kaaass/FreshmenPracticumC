@@ -9,7 +9,8 @@ if(BUILD_TEST)
             TestData
             TestUtil
             TestSerializer
-            TestQuery)
+            TestQuery
+            TestInsert)
     set(_modules) # Stupid way
     foreach(mod ${modules})
         list(APPEND _modules "../${mod}")

@@ -17,6 +17,7 @@
 bool Insert_hasGuest(string name, string phone) {
     bool matchName = empty(name),
             matchPhone = empty(phone);
+    assert(!(matchName && matchPhone));
     ForEach(cur, GUEST) {
         Guest *data = GetData(Guest, cur);
         if ((matchName || EQUAL(name, data->name)) &&
@@ -64,5 +65,35 @@ bool Insert_hasProvider(string name, string phone) {
  * @param phone
  */
 void Insert_provider(string name, string phone) {
+    assert(!empty(name));
+    assert(!empty(phone));
+    Provider data = {.name = name, .phone = phone};
+    Database_pushBack(PROVIDER, Data(Provider, &data));
+}
 
+/**
+ * 插入SellingRecord记录
+ * @param data
+ */
+void Insert_sellingRecord(SellingRecord *data) {
+    assert(data);
+    Database_pushBack(SELLING_RECORD, Data(SellingRecord, data));
+}
+
+/**
+ * 插入PurchaseRecord记录
+ * @param data
+ */
+void Insert_purchaseRecord(PurchaseRecord *data) {
+    assert(data);
+    Database_pushBack(PURCHASE_RECORD, Data(PurchaseRecord, data));
+}
+
+/**
+ * 插入Order记录
+ * @param data
+ */
+void Insert_order(Order *data) {
+    assert(data);
+    Database_pushBack(ORDER, Data(Order, data));
 }
