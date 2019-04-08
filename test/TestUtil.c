@@ -5,6 +5,8 @@
 
 #include "../util/StringUtil.h"
 #include "../util/Time.h"
+#include "../data/DataManager.h"
+#include "../core/Config.h"
 
 void test_time() {
     Time test = Time_parseTime(1553011000);
@@ -18,10 +20,23 @@ void test_time() {
     TEST_ASSERT_EQUAL_INT(40, test.second);
 }
 
+void test_config() {
+    DataManager_init();
+    // 测试
+    Config_setString(LITERAL("test"), LITERAL("string"));
+    TEST_ASSERT(EQUAL(LITERAL("string"), Config_optString(LITERAL("test"), $init$)));
+    TEST_ASSERT(EQUAL(LITERAL("default"), Config_optString(LITERAL("null"), LITERAL("default"))));
+    Config_setInteger(LITERAL("int"), 233);
+    TEST_ASSERT_EQUAL_INT(233, Config_optInteger(LITERAL("int"), 0));
+    TEST_ASSERT_EQUAL_INT(666, Config_optInteger(LITERAL("null"), 666));
+    DataManager_finalize();
+}
+
 int main() {
     UNITY_BEGIN();
 
     RUN_TEST(test_time);
+    RUN_TEST(test_config);
 
     return UNITY_END();
 }
