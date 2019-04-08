@@ -3,9 +3,8 @@
 //
 #include "Modify.h"
 
-
-//通过PurchaseRecord指针删除单个进货记录
-bool deletePurchaseRecord(PurchaseRecord *purchaseRecord) {
+bool deletePurchaseRecord(int purchaseRecordId) {
+    PurchaseRecord *purchaseRecord = GetById(PurchaseRecord ,PURCHASE_RECORD, purchaseRecordId);
     if(purchaseRecord == NULL) return false;
     purchaseRecord->status = PURCHASE_DELETED;
     Mountings *mountings = NULL;
@@ -16,9 +15,8 @@ bool deletePurchaseRecord(PurchaseRecord *purchaseRecord) {
     return true;
 }
 
-
-//通过SellingRecord指针删除单个销售记录
-bool deleteSellingRecord(SellingRecord *sellingRecord) {
+bool deleteSellingRecord(int sellingRecordId) {
+    SellingRecord *sellingRecord = GetById(SellingRecord, SELLING_RECORD, sellingRecordId);
     if(sellingRecord == NULL) return false;
     sellingRecord->status = SELLING_DELETED;
     Mountings *mountings = NULL;
@@ -28,26 +26,19 @@ bool deleteSellingRecord(SellingRecord *sellingRecord) {
     return true;
 }
 
-
-//通过订单指针删除单个订单
-bool deleteOrder(Order *order) {
+bool deleteOrder(int orderId) {
+    Order *order = GetById(Order, ORDER, orderId);
     if(order == NULL) return false;
     order->status = ORDER_DELETED;
     int type = order->type;
 
     if (type == ORDER_PURCHASE) {
-        PurchaseRecord *purchaseRecord = NULL;
         for (int i = 0; i < order->opCount; ++i) {
-            purchaseRecord = GetById(PurchaseRecord, PURCHASE_RECORD, order->opId[i]);
-            if(purchaseRecord == NULL) return false;
-            if(!deletePurchaseRecord(purchaseRecord)) return false;
+            if(!deletePurchaseRecord(order->opId[i])) return false;
         }
     } else if (type == ORDER_SINGLE_BUY || type == ORDER_WHOLE_SALE) {
-        SellingRecord *sellingRecord = NULL;
         for (int i = 0; i < order->opCount; ++i) {
-            sellingRecord = GetById(SellingRecord, SELLING_RECORD, order->opId[i]);
-            if(sellingRecord == NULL) return false;
-            if(!deleteSellingRecord(sellingRecord)) return false;
+            if(!deleteSellingRecord(order->opId[i])) return false;
         }
     }
     else
@@ -56,20 +47,52 @@ bool deleteOrder(Order *order) {
     return true;
 }
 
-//通过订单数组，修改订单的进货/销售记录
-bool modifyOrder(Order *order, const int *opId, int opCount, double price) {
+bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord *newSellingRecord) {
+    Order *order = GetById(Order, ORDER, orderId);
+    SellingRecord *sellingRecord = GetById(SellingRecord, SELLING_RECORD, sellingRecordId);
     if(order == NULL) return false;
+    if(sellingRecord == NULL) return false;
+    if(newSellingRecord == NULL) return false;
+
     Order newOrder = {
             .type = order->type,
             .status = ORDER_SALES_RETURN,
-            .opCount = opCount,
-            .price = price
     };
-
-    if(!deleteOrder(order)) return false;
-    for (int i = 0; i < opCount; ++i) {
-        newOrder.opId[i] = opId[i];
+    int count = 0;
+    for (int i = 0; i < order->opCount; ++i) {
+        if(order->opId[i] != sellingRecordId)
+            newOrder.opId[count++] = order->opId[i];
+        else
+            newOrder.opId[count++] = newSellingRecord->id;
     }
-    Insert_order(order);
+    newOrder.opCount = count;
+    if(!deleteOrder(orderId)) return false;
+    if(!deleteSellingRecord(sellingRecordId)) return false;
+    Insert_order(&newOrder);
+    return true;
+}
+
+bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseRecord *newPuachaseRecord){
+    Order *order = GetById(Order, ORDER, orderId);
+    PurchaseRecord *purchaseRecord = GetById(PurchaseRecord, PURCHASE_RECORD, purchaseRecordId);
+    if(order == NULL) return false;
+    if(purchaseRecord == NULL) return false;
+    if(newPuachaseRecord == NULL) return false;
+
+    Order newOrder = {
+            .type = order->type,
+            .status = ORDER_SALES_RETURN,
+    };
+    int count = 0;
+    for (int i = 0; i < order->opCount; ++i) {
+        if(order->opId[i] != purchaseRecordId)
+            newOrder.opId[count++] = order->opId[i];
+        else
+            newOrder.opId[count++] = newPuachaseRecord->id;
+    }
+    newOrder.opCount = count;
+    if(!deleteOrder(orderId)) return false;
+    if(!deletePurchaseRecord(purchaseRecordId)) return false;
+    Insert_order(&newOrder);
     return true;
 }
