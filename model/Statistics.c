@@ -23,12 +23,12 @@ int compareGift_situation (const void * a, const void * b){
     if ( ((Present_Situation*)a)->time_recording.timeStamp == ((Present_Situation*)b)->time_recording.timeStamp ) return 0;
     if ( ((Present_Situation*)a)->time_recording.timeStamp >  ((Present_Situation*)b)->time_recording.timeStamp ) return 1;
 }
-int comparePurchaseRecord (const void * a, const void * b){
+int _comparePurchaseRecord(const void *a, const void *b){
     if ( ((PurchaseRecord*)a)->time.timeStamp <  ((PurchaseRecord*)b)->time.timeStamp ) return -1;
     if ( ((PurchaseRecord*)a)->time.timeStamp == ((PurchaseRecord*)b)->time.timeStamp ) return 0;
     if ( ((PurchaseRecord*)a)->time.timeStamp >  ((PurchaseRecord*)b)->time.timeStamp ) return 1;
 }
-int compareSellingRecord (const void * a, const void * b){
+int _compareSellingRecord(const void *a, const void *b){
     if ( ((SellingRecord*)a)->time.timeStamp <  ((SellingRecord*)b)->time.timeStamp ) return -1;
     if ( ((SellingRecord*)a)->time.timeStamp == ((SellingRecord*)b)->time.timeStamp ) return 0;
     if ( ((SellingRecord*)a)->time.timeStamp >  ((SellingRecord*)b)->time.timeStamp ) return 1;
@@ -121,7 +121,7 @@ Database * Print_Sellingrecord(Time a,Time b){
         temp[num] = record;
         num++;
     }
-    qsort(temp ,num , sizeof(SellingRecord*) ,compareSellingRecord);
+    qsort(temp, num, sizeof(SellingRecord *), _compareSellingRecord);
     int ii=0;
     while(num1<num){
         if(temp[num1]->time.timeStamp>=a.timeStamp&&temp[num1]->time.timeStamp>=b.timeStamp)
@@ -146,7 +146,7 @@ Database * Print_Purchaserecord(Time a,Time b){
         temp[num] = record;
         num++;
     }
-    qsort(temp ,num , sizeof(PurchaseRecord*) ,comparePurchaseRecord);
+    qsort(temp, num, sizeof(PurchaseRecord *), _comparePurchaseRecord);
     int ii=0;
     while(num1<num){
         if(temp[num1]->time.timeStamp>=a.timeStamp&&temp[num1]->time.timeStamp>=b.timeStamp)

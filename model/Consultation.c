@@ -11,8 +11,6 @@
 
 //查询某种配件的进货/销售信息
 
-extern Database *PURCHASE_RECORD;
-extern Database *SELLING_RECORD;
 int comparePurchaseRecord (const void * a, const void * b){
     if ( ((PurchaseRecord*)a)->time.timeStamp <  ((PurchaseRecord*)b)->time.timeStamp ) return -1;
     if ( ((PurchaseRecord*)a)->time.timeStamp == ((PurchaseRecord*)b)->time.timeStamp ) return 0;
