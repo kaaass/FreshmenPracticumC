@@ -22,6 +22,7 @@ typedef struct {
     int guestId;
     int amount;
     double total;
+    double price;
     Time time;
     int orderId;
 } SellingRecord;

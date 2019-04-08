@@ -62,13 +62,14 @@
       "sellerId": 4864,
       "amount": 461,
       "total": 87562.54,
+      "price": 17.79,
       "orderId": 13434,
       "status": 1,
       "time": {
         "ts": 1553011022
       }
     },
-    "expected": "{\n\t\"id\":\t654,\n\t\"partId\":\t641,\n\t\"sellerId\":\t4864,\n\t\"amount\":\t461,\n\t\"total\":\t87562.54,\n\t\"orderId\":\t13434,\n\t\"status\":\t1,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011022\n\t}\n}"
+    "expected": "{\n\t\"id\":\t654,\n\t\"partId\":\t641,\n\t\"sellerId\":\t4864,\n\t\"amount\":\t461,\n\t\"total\":\t87562.54,\n\t\"price\":\t17.79,\n\t\"orderId\":\t13434,\n\t\"status\":\t1,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011022\n\t}\n}"
   },
   "test_selling_record": {
     "selling_record": {
@@ -78,12 +79,13 @@
       "guestId": 616115,
       "amount": 6111,
       "total": 97.79,
+      "price": 17.79,
       "time": {
         "ts": 1553011044
       },
       "orderId": 619191
     },
-    "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"orderId\":\t619191\n}"
+    "expected": "{\n\t\"id\":\t615,\n\t\"partId\":\t6168,\n\t\"status\":\t2,\n\t\"guestId\":\t616115,\n\t\"amount\":\t6111,\n\t\"total\":\t97.79,\n\t\"price\":\t17.79,\n\t\"time\":\t{\n\t\t\"ts\":\t1553011044\n\t},\n\t\"orderId\":\t619191\n}"
   },
   "test_database": {
     "database_config": {

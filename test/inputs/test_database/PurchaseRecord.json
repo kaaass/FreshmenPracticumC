@@ -7,6 +7,7 @@
 			"sellerId": 7,
 			"amount": 5,
 			"total": 43732.5,
+			"price": 1750,
 			"orderId": 1,
 			"status": 1,
 			"time": {
@@ -19,6 +20,7 @@
 			"sellerId": 7,
 			"amount": 25,
 			"total": 43732.5,
+			"price": 1750,
 			"orderId": 1,
 			"status": 2,
 			"time": {
