@@ -98,6 +98,11 @@ void UI_setFooterUpdate(string footer) {
 }
 
 void BreadCrumb_enter(string name) {
+    // 更新标题
+    stringbuf title = concat(2, name, LITERAL(" - 进销存系统 v1.0"));
+    UI_setTitle(title);
+    $STR_BUF(title);
+    // 插入面包屑
     Database_pushBack(BREAD_CRUMB, Data(string, &name));
 }
 
