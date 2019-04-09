@@ -68,6 +68,26 @@ void test_arrayToDatabase() {
     Database_destroy(newDb);
 }
 
+void test_pop() {
+    Test data[] = {
+            {.num = 111,
+                    .str = STR_BUF("pop1")},
+            {.num = 222,
+                    .str = STR_BUF("pop2")}
+    }, *test;
+    for (int i = 0; i < 2; i++) {
+        Database_pushBack(db, Data(Test, &data[i]));
+    }
+    TEST_ASSERT_EQUAL_INT(5, Database_size(db));
+    Database_pop(db);
+    TEST_ASSERT_EQUAL_INT(4, Database_size(db));
+    test = GetById(Test, db, 4);
+    TEST_ASSERT_EQUAL_INT(111, test->num);
+    TEST_ASSERT(EQUAL(LITERAL("pop1"), test->str));
+    Database_pop(db);
+    TEST_ASSERT_EQUAL_INT(3, Database_size(db));
+}
+
 void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
@@ -87,6 +107,7 @@ int main() {
     RUN_TEST(test_cursor);
     RUN_TEST(test_get_by_id);
     RUN_TEST(test_arrayToDatabase);
+    RUN_TEST(test_pop);
     RUN_TEST(test_foreach); // 需要是最后一个以释放字符串
 
     Database_destroy(db);

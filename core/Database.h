@@ -16,6 +16,13 @@
 #define GetById(type, db, id) ((type *) Database_getById(db,id))
 
 #define ID_LIKE (1 << 5)
+#define BASIC_TYPE (1 << 6)
+
+/**
+ * 基本数据类型
+ */
+#define DATA_TYPE_string 1 | BASIC_TYPE
+#define DATA_TYPE_int 2 | BASIC_TYPE
 
 /**
  * 链表结点
@@ -27,6 +34,7 @@ typedef struct node {
     struct node *next; // 下一节点
 } DataNode;
 
+typedef DataNode List; // 别名
 typedef DataNode Database; // 别名
 
 /**
@@ -64,13 +72,19 @@ Database *Database_pushBack(Database *head, void *data, size_t size, int type);
 
 Database *Database_pushBackAutoInc(Database *head, void *data, size_t size, int type, bool autoInc);
 
+Database *Database_pop(Database *head);
+
 size_t Database_size(Database *head);
+
+void Database_destroyItem(DataNode* cur);
 
 void Database_destroy(Database *head);
 
 Cursor *Database_begin(Database *head);
 
 Cursor *Cursor_next(Cursor *cursor);
+
+bool Cursor_hasNext(Cursor *cursor);
 
 void *Database_getById(Database *head, int id);
 
