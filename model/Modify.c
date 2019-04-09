@@ -18,6 +18,12 @@ bool deletePurchaseRecord(int purchaseRecordId) {
 bool deleteSellingRecord(int sellingRecordId) {
     SellingRecord *sellingRecord = GetById(SellingRecord, SELLING_RECORD, sellingRecordId);
     if(sellingRecord == NULL) return false;
+
+    //check
+    double accountBalance = Config_optDouble(LITERAL("accountBalance"), -1);
+    if(accountBalance > 0 && accountBalance < sellingRecord->total)
+        return false;
+
     sellingRecord->status = SELLING_DELETED;
     Mountings *mountings = NULL;
     mountings = GetById(Mountings, MOUNTINGS, sellingRecord->partId);
@@ -88,5 +94,12 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
     if(!deleteOrder(orderId)) return false;
     if(!deletePurchaseRecord(purchaseRecordId)) return false;
     Insert_order(&newOrder);
+    return true;
+}
+
+bool modifyMountingsPrice(int mountingsId, double price) {
+    Mountings *mountings = GetById(Mountings, MOUNTINGS, mountingsId);
+    if(mountings == NULL) return false;
+    mountings->price = price;
     return true;
 }
