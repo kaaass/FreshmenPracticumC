@@ -16,12 +16,12 @@ void Welcome_init() {
     BreadCrumb_enter(STR_BUF("首页"));
     READ_SPEC = true;
     stringbuf name[] = {
-            STR_BUF("新增记录"),
-            STR_BUF("批量增加"),
-            STR_BUF("删除记录"),
-            STR_BUF("退出系统")
+            STR_BUF("    新增记录"),
+            STR_BUF("    批量增加"),
+            STR_BUF("    删除记录"),
+            STR_BUF("    退出系统")
     };
-    mainMenu = Menu_create(name, 4, 0, NULL);
+    mainMenu = Menu_create(20, 3, name, 4, 0);
 }
 
 void Welcome_inLoop() {
@@ -39,12 +39,11 @@ void Welcome_inLoop() {
     }
 }
 
-int Welcome_render() {
-    int lineCnt = 0;
+int Welcome_render(int line) {
     stringbuf info = UI_midString(LITERAL("欢迎使用本系统！"));
     printf("%s\n", CSTR(info));
-    lineCnt += 1;
+    line += 1;
     // 主菜单
-    lineCnt += Menu_render(mainMenu);
-    return lineCnt;
+    line += Menu_render(mainMenu, line);
+    return line;
 }

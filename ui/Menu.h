@@ -9,15 +9,17 @@
 #define _MAX_MENU_ITEM 10
 
 typedef struct {
+    int x;
+    int y;
     int num;
     int cur;
+    int line;
     string name[_MAX_MENU_ITEM];
-    string toggle[_MAX_MENU_ITEM];
 } Menu;
 
-Menu *Menu_create(string name[], int num, int def, string toggle[]);
+Menu *Menu_create(int x, int y, string name[], int num, int def);
 
-int Menu_render(Menu *);
+int Menu_render(Menu *menu, int line);
 
 void Menu_inLoop(Menu *);
 

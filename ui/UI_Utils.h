@@ -15,6 +15,17 @@
 int getch(void);
 #endif // _WIN32
 
+typedef struct {
+    int x;
+    int y;
+} Position;
+
 stringbuf UI_midString(stringbuf);
+
+void UI_moveCursor(Position pos);
+
+Position UI_getCursorPos();
+
+void UI_setCursorVisible(bool visible);
 
 #endif //FRESHMAN_PROJ_C_UI_UTILS_H

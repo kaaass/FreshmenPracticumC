@@ -23,6 +23,7 @@ void UI_mainLoop() {
     UI_init();
     UI_render();
     while (true) {
+        UI_setCursorVisible(!READ_SPEC);
         UI_getSpecKey();
         switch (NOW_SCENE) {
             case SCENE_WELCOME:
@@ -40,25 +41,26 @@ int UI_renderHead() {
     printf("%s\n", CSTR(midLine));
     $STR_BUF(titleLine);
     $STR_BUF(midLine);
-    return 1;
+    for (int i = 0; i < CON_WIDTH; i++) putchar('_');
+    return 2;
 }
 
 int UI_renderBreadCrumb() {
-    printf("%s\n", CSTR(LITERAL("首页 > 还没写 > 咕")));
+    printf("%s\n", CSTR(LITERAL(" 首页 > 还没写 > 咕")));
     return 1;
 }
 
-int UI_renderScene() {
+int UI_renderScene(int line) {
     switch (NOW_SCENE) {
         case SCENE_WELCOME:
-            return Welcome_render();
+            return Welcome_render(line);
         default:
             return 0;
     }
 }
 
 int UI_renderFooter() {
-    printf("%s\n", CSTR(LITERAL("请输入：还没写，咕")));
+    printf("%s", CSTR(LITERAL("请输入：还没写，咕")));
     return 1;
 }
 
@@ -71,10 +73,10 @@ void UI_render() {
     // 面包屑
     lineCnt += UI_renderBreadCrumb();
     // 场景
-    lineCnt += UI_renderScene();
+    lineCnt = UI_renderScene(lineCnt);
     // 占位行
-    int blanks = CON_HEIGHT - lineCnt - 2;
-    while (blanks--) printf("\n");
+    int blanks = CON_HEIGHT - lineCnt - 1;
+    while (blanks--) putchar('\n');
     // 页脚
     UI_renderFooter();
 }
