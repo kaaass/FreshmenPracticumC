@@ -55,13 +55,9 @@ double Sell_total() {
 
 double Profits() {return Sell_total()- Purchase_total();}//得到总利润
 
-Database * GIFT = NULL;
-void Gift_situation(){
-    //这里应该先销毁原有GIFT
-    Database *dele=GIFT;
-    GIFT=NULL;
-    Database_destroy(dele);
-    //extern Database * GIFT = NULL;
+
+Database* Gift_situation(){
+    Database * GIFT = NULL;
     GIFT = Create(Present_Situation);
     ForEach(cur, SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord, cur);
@@ -79,10 +75,11 @@ void Gift_situation(){
             Database_pushBack(GIFT,Data(Present_Situation,&temp));
         }
     }
+    return GIFT;
 }//这是得到礼物的总情况,下面输出特定的礼物要提前用此函数
 
 Database * sort_gift(){
-    Gift_situation();
+    Database*GIFT=Gift_situation();
     Present_Situation * gift_situation[1000];
     int num=0;
     ForEach(cur, GIFT){
