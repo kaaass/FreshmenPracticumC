@@ -14,8 +14,8 @@
 #include "Statistics.h"
 #define type_num 5//零部件的种类数
 
-#define DATA_TYPE_Report 10
-#define DATA_TYPE_Any_gift 11
+#define DATA_TYPE_PurchasePot 10
+#define DATA_TYPE_SellPot 11
 #define DATA_TYPE_Present_Situation 12
 
 int compareGift_situation (const void * a, const void * b){
@@ -55,13 +55,9 @@ double Sell_total() {
 
 double Profits() {return Sell_total()- Purchase_total();}//得到总利润
 
-Database * GIFT = NULL;
-void Gift_situation(){
-    //这里应该先销毁原有GIFT
-    Database *dele=GIFT;
-    GIFT=NULL;
-    Database_destroy(dele);
-    //extern Database * GIFT = NULL;
+
+Database* Gift_situation(){
+    Database * GIFT = NULL;
     GIFT = Create(Present_Situation);
     ForEach(cur, SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord, cur);
@@ -79,10 +75,11 @@ void Gift_situation(){
             Database_pushBack(GIFT,Data(Present_Situation,&temp));
         }
     }
+    return GIFT;
 }//这是得到礼物的总情况,下面输出特定的礼物要提前用此函数
 
 Database * sort_gift(){
-    Gift_situation();
+    Database*GIFT=Gift_situation();
     Present_Situation * gift_situation[1000];
     int num=0;
     ForEach(cur, GIFT){
@@ -158,3 +155,39 @@ Database * Print_Purchaserecord(Time a,Time b){
     }
     return arrayToDatabase(Data(PurchaseRecord, temp1),ii);
 }//按照时间顺序查找购买记录
+
+Database * SellScatter(enum MountingsType type_scan){
+    Database * SELLSCATTER=NULL;
+    ForEach(cur,SELLING_RECORD){
+        SellingRecord *record = GetData(SellingRecord, cur);
+        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+        if(type_scan==rec_mountings->type&&(record->status==0||record->status==2||record->status==3))
+        {
+            SellPot temp={
+                    .type=rec_mountings->type,
+                    .price=record->price,
+                    .time_pot=record->time
+            };
+            Database_pushBack(SELLSCATTER,Data(SellPot,&temp));
+        }
+    }
+    return SELLSCATTER;
+}////这是得到某货物时间与售价 点
+
+Database * PurchaseScatter(enum MountingsType type_scan){
+    Database * PURCHASESCATTER=NULL;
+    ForEach(cur,PURCHASE_RECORD){
+        PurchaseRecord *record = GetData(PurchaseRecord, cur);
+        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+        if(type_scan==rec_mountings->type&&(record->status==0||record->status==2))
+        {
+            PurchasePot temp={
+                    .type=rec_mountings->type,
+                    .price=record->price,
+                    .time_pot=record->time
+            };
+            Database_pushBack(PURCHASESCATTER,Data(PurchasePot,&temp));
+        }
+    }
+    return PURCHASESCATTER;
+}////这是得到某货物时间与进价 点
