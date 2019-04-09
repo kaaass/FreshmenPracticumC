@@ -71,7 +71,7 @@ void UI_setTitle(string title) {
 #else
 // 无法于Unix系统实现的函数
 int getch(void) {return 0;}
-void UI_moveCursor(int x, int y) {}
+void UI_moveCursor(Position pos) {}
 Position UI_getCursorPos() {return (Position) {0, 0};}
 void UI_setCursorVisible(bool visible) {}
 void UI_setTitle(string title) {}
