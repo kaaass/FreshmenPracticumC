@@ -18,17 +18,17 @@
 
 //Database * GIFT = NULL;
 
-typedef struct Report {
+typedef struct PurchasePot{
     enum MountingsType type;
-    int amount;
-}Report;
+    double price;
+    Time time_pot;
+}PurchasePot;
 
-typedef struct Any_gift{
-    int amount;
-    double total;
-    Time time;
-    Guest guest;
-}Any_gift;
+typedef struct SellPot{
+    enum MountingsType type;
+    double price;
+    Time time_pot;
+}SellPot;
 
 typedef struct Present_Situation {
     Time time_recording;
@@ -52,5 +52,8 @@ Database * Print_Sellingrecord(Time a,Time b);//按照时间顺序查找销售�
 
 Database * Print_Purchaserecord(Time a,Time b);//按照时间顺序查找购买记录
 
+Database * PurchaseScatter(enum MountingsType type_scan);////这是得到某货物时间与进价 点
+
+Database * SellScatter(enum MountingsType type_scan);////这是得到某货物时间与售价 点
 
 #endif //FRESHMAN_PROJ_C_STATISTIC_H
