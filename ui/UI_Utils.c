@@ -37,11 +37,10 @@ void UI_moveCursor(Position pos) {
  */
 Position UI_getCursorPos() {
     Position pos = {0, 0};
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coordScreen = {0, 0};
+    HANDLE stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-    if (GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+    if (GetConsoleScreenBufferInfo(stdHandle, &csbi)) {
         pos.x = csbi.dwCursorPosition.X;
         pos.y = csbi.dwCursorPosition.Y;
     }
@@ -53,11 +52,11 @@ Position UI_getCursorPos() {
  * @param visible
  */
 void UI_setCursorVisible(bool visible) {
-    HANDLE fd = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cInfo;
     cInfo.dwSize = 1;
     cInfo.bVisible = visible;
-    SetConsoleCursorInfo(fd, &cInfo);
+    SetConsoleCursorInfo(stdHandle, &cInfo);
 }
 
 /**
@@ -68,6 +67,15 @@ void UI_setTitle(string title) {
     SetConsoleTitle(CSTR(title));
 }
 
+/**
+ * 设置文本前景&背景色
+ * @param color
+ */
+void UI_setTextColor(short color) {
+    HANDLE stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(stdHandle, (WORD) color);
+}
+
 #else
 // 无法于Unix系统实现的函数
 int getch(void) {return 0;}
@@ -75,4 +83,5 @@ void UI_moveCursor(Position pos) {}
 Position UI_getCursorPos() {return (Position) {0, 0};}
 void UI_setCursorVisible(bool visible) {}
 void UI_setTitle(string title) {}
+void UI_setTextColor(short color) {}
 #endif // _WIN32

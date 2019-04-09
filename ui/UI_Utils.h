@@ -30,4 +30,6 @@ void UI_setCursorVisible(bool visible);
 
 void UI_setTitle(string title);
 
+void UI_setTextColor(short color);
+
 #endif //FRESHMAN_PROJ_C_UI_UTILS_H
