@@ -29,8 +29,6 @@ void UI_mainLoop();
 
 void UI_render();
 
-stringbuf UI_midString(stringbuf);
-
 void UI_getSpecKey();
 
 void BreadCrumb_enter(string);

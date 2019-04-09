@@ -2,7 +2,6 @@
 // Created by guyis on 2019/4/8.
 //
 
-#include <conio.h>
 #include <stdio.h>
 #include "Welcome.h"
 #include "../UI.h"
