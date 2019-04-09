@@ -12,13 +12,18 @@ typedef struct {
     int num;
     int cur;
     string name[_MAX_MENU_ITEM];
-} *Menu;
+    string toggle[_MAX_MENU_ITEM];
+} Menu;
 
-Menu Menu_create(string name[], int num, int def);
+Menu *Menu_create(string name[], int num, int def, string toggle[]);
 
 int Menu_render(Menu *);
 
 void Menu_inLoop(Menu *);
+
+void Menu_setCur(Menu *, int cur);
+
+void Menu_setCurAndUpdate(Menu *, int cur);
 
 void Menu_destroy(Menu *);
 
