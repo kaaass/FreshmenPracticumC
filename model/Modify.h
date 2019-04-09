@@ -10,6 +10,7 @@
 #include "../data/TableMountings.h"
 #include "../util/Time.h"
 #include "Insert.h"
+#include "../core/Config.h"
 
 #include <stdbool.h>
 #include <assert.h>
@@ -24,4 +25,5 @@ bool deleteOrder(int orderId);
 bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord *newSellingRecord);
 bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseRecord *newPuachaseRecord);
 
+bool modifyMountingsPrice(int mountingsId, double price);
 #endif //FRESHMAN_PROJ_C_TABLEMODIFY_H
