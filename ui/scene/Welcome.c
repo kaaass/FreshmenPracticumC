@@ -6,6 +6,7 @@
 #include "Welcome.h"
 #include "../UI.h"
 #include "../Menu.h"
+#include "../UI_Utils.h"
 
 Menu *mainMenu;
 
