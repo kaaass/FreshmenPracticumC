@@ -12,8 +12,9 @@ Menu *mainMenu;
 
 void Welcome_init() {
     NOW_SCENE = SCENE_WELCOME;
-    TITLE = STR_BUF("进销存系统 v1.0");
+    UI_setTitle(LITERAL("进销存系统 v1.0"));
     BreadCrumb_enter(STR_BUF("首页"));
+    UI_setFooterUpdate(LITERAL("本程序为程序设计基础课程设计项目 (2018级)的实现。"));
     READ_SPEC = true;
     stringbuf name[] = {
             STR_BUF("    新增记录"),
@@ -40,7 +41,7 @@ void Welcome_inLoop() {
 }
 
 int Welcome_render(int line) {
-    stringbuf info = UI_midString(LITERAL("欢迎使用本系统！"));
+    stringbuf info = UI_midString(LITERAL("欢迎使用进销存系统！"));
     printf("%s\n", CSTR(info));
     line += 1;
     // 主菜单
