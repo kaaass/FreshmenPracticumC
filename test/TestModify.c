@@ -12,15 +12,19 @@
 
 void test_func() {
 
+    //test delete PurchaseRecord
     TEST_ASSERT(deletePurchaseRecord(1))
     TEST_ASSERT(GetById(PurchaseRecord, PURCHASE_RECORD, 1)->status == PURCHASE_DELETED)
 
+    //test delete SellingRecord
     TEST_ASSERT(deleteSellingRecord(1))
     TEST_ASSERT(GetById(SellingRecord, SELLING_RECORD, 1)->status == SELLING_DELETED)
 
+    //test delete Order
     TEST_ASSERT(deleteOrder(1))
     TEST_ASSERT(GetById(Order, ORDER, 1)->status == ORDER_DELETED)
 
+    //test modify Order
     PurchaseRecord pr = {.price = 998244353};
     SellingRecord sr = {.price = 1e9 + 7};
 
@@ -32,6 +36,10 @@ void test_func() {
     order = GetById(Order, ORDER, Database_size(ORDER));
     TEST_ASSERT(GetById(SellingRecord, SELLING_RECORD, order->opId[order->opCount-1])->price == sr.price)
 
+    //test modify Mountings
+    TEST_ASSERT(modifyMountingsPrice(1, 998244353))
+    Mountings *mountings = GetById(Mountings, MOUNTINGS, 1);
+    TEST_ASSERT(mountings->price == 998244353)
 }
 
 int main() {
