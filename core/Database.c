@@ -77,6 +77,29 @@ Database *Database_pushBackAutoInc(Database *head, void *data, size_t size, int 
 }
 
 /**
+ * 删除数据库最后一条记录
+ * @param head
+ * @return
+ */
+Database *Database_pop(Database *head) {
+    Header *header;
+    DataNode *cur;
+
+    assert(head);
+    header = GetData(Header, head);
+    if (header->cnt < 1)
+        return head;
+    cur = head;
+    while(cur->next != NULL && cur->next->next != NULL) {
+        cur = cur->next;
+    }
+    Database_destroyItem(cur->next);
+    cur->next = NULL;
+    header->cnt--;
+    return head;
+}
+
+/**
  * 返回数据库记录数
  * @param head 数据库
  * @return 记录数
@@ -94,6 +117,40 @@ size_t Database_size(Database *head) {
 }
 
 /**
+ * 释放链表结点
+ * @param cur
+ */
+void Database_destroyItem(DataNode* cur) {
+    if (cur == NULL)
+        return;
+    // 释放字符串
+    switch (cur->dataType) {
+        case DATA_TYPE_Config:;
+            Config *config = GetData(Config, cur);
+            $STR_BUF(config->key);
+            $STR_BUF(config->value);
+            break;
+        case DATA_TYPE_Guest:;
+            Guest *guest = GetData(Guest, cur);
+            $STR_BUF(guest->name);
+            $STR_BUF(guest->phone);
+            break;
+        case DATA_TYPE_Mountings:;
+            Mountings *mountings = GetData(Mountings, cur);
+            $STR_BUF(mountings->name);
+            break;
+        case DATA_TYPE_Provider:;
+            Provider *provider = GetData(Provider, cur);
+            $STR_BUF(provider->name);
+            $STR_BUF(provider->phone);
+            break;
+        default:
+            break;
+    }
+    free(cur);
+}
+
+/**
  * 回收数据库所占内存
  * @param head 数据库
  * @return
@@ -101,31 +158,7 @@ size_t Database_size(Database *head) {
 void Database_destroy(Database *head) {
     assert(head);
     ForEach(cur, head) {
-        // 释放字符串
-        switch (cur->dataType) {
-            case DATA_TYPE_Config:;
-                Config *config = GetData(Config, cur);
-                $STR_BUF(config->key);
-                $STR_BUF(config->value);
-                break;
-            case DATA_TYPE_Guest:;
-                Guest *guest = GetData(Guest, cur);
-                $STR_BUF(guest->name);
-                $STR_BUF(guest->phone);
-                break;
-            case DATA_TYPE_Mountings:;
-                Mountings *mountings = GetData(Mountings, cur);
-                $STR_BUF(mountings->name);
-                break;
-            case DATA_TYPE_Provider:;
-                Provider *provider = GetData(Provider, cur);
-                $STR_BUF(provider->name);
-                $STR_BUF(provider->phone);
-                break;
-            default:
-                break;
-        }
-        free(cur->cur);
+        Database_destroyItem(cur->cur);
     }
     free(head->data); // 释放表头信息
     free(head);
@@ -164,7 +197,7 @@ Cursor *Cursor_next(Cursor *cursor) {
 
     assert(cursor);
     // 尾节点
-    if (cursor->next == NULL)
+    if (Cursor_hasNext(cursor))
         return NULL;
     next = cursor->next;
     cursor->cur = next;
@@ -173,6 +206,18 @@ Cursor *Cursor_next(Cursor *cursor) {
     cursor->dataSize = next->dataSize;
     cursor->data = next->data;
     return cursor;
+}
+
+/**
+ * 迭代器是否有下一节点
+ * @param cursor
+ * @return
+ */
+bool Cursor_hasNext(Cursor *cursor) {
+    assert(cursor);
+    if (cursor->next == NULL)
+        return true;
+    return false;
 }
 
 /**
