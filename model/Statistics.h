@@ -16,6 +16,8 @@
 #ifndef FRESHMAN_PROJ_C_STATISTIC_H
 #define FRESHMAN_PROJ_C_STATISTIC_H
 
+//Database * GIFT = NULL;
+
 typedef struct Report {
     enum MountingsType type;
     int amount;
@@ -30,9 +32,9 @@ typedef struct Any_gift{
 
 typedef struct Present_Situation {
     Time time_recording;
-    int amount;//对应零件的个数.
+    int amount;////对应零件的个数.
     Guest people;
-    double  AMOUNT;//这是礼物钱数
+    double  AMOUNT;////这是礼物钱数
     enum MountingsType type;
 }Present_Situation;
 
