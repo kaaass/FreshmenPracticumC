@@ -69,10 +69,7 @@ void UI_render() {
     // 面包屑
     lineCnt += UI_renderBreadCrumb();
     // 场景
-    lineCnt = UI_renderScene(lineCnt);
-    // 占位行
-    int blanks = CON_HEIGHT - lineCnt - 1;
-    while (blanks--) putchar('\n');
+    UI_renderScene(lineCnt);
     // 页脚
     UI_renderFooter();
 }
