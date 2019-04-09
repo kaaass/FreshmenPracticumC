@@ -40,7 +40,10 @@ void UI_mainLoop() {
 }
 
 int UI_renderBreadCrumb() {
-    printf("%s\n", CSTR(LITERAL(" 首页 > 还没写 > 咕")));
+    ForEach(cur, BREAD_CRUMB) {
+        printf(" %s > ", CSTR(*GetData(string, cur)));
+    }
+    putchar('\n');
     for (int i = 0; i < CON_WIDTH; i++) putchar('-');
     return 2;
 }
