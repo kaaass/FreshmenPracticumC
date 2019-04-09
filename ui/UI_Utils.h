@@ -28,4 +28,6 @@ Position UI_getCursorPos();
 
 void UI_setCursorVisible(bool visible);
 
+void UI_setTitle(string title);
+
 #endif //FRESHMAN_PROJ_C_UI_UTILS_H

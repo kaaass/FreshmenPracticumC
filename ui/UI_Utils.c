@@ -60,10 +60,19 @@ void UI_setCursorVisible(bool visible) {
     SetConsoleCursorInfo(fd, &cInfo);
 }
 
+/**
+ * 设置窗口标题
+ * @param title
+ */
+void UI_setTitle(string title) {
+    SetConsoleTitle(CSTR(title));
+}
+
 #else
 // 无法于Unix系统实现的函数
 int getch(void) {return 0;}
 void UI_moveCursor(int x, int y) {}
 Position UI_getCursorPos() {return (Position) {0, 0};}
 void UI_setCursorVisible(bool visible) {}
+void UI_setTitle(string title) {}
 #endif // _WIN32

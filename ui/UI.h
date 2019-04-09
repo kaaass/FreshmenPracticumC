@@ -17,8 +17,8 @@
 #define KEY_PGDN 81
 #define KEY_ENTER 13
 
-extern string TITLE;
 extern int NOW_SCENE;
+extern stringbuf FOOTER;
 extern bool READ_SPEC;
 extern int SPEC_KEY;
 
@@ -30,6 +30,8 @@ void UI_mainLoop();
 void UI_render();
 
 void UI_getSpecKey();
+
+void UI_setFooterUpdate(string);
 
 void BreadCrumb_enter(string);
 

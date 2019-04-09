@@ -7,14 +7,15 @@
 #include "UI.h"
 #include "scene/Welcome.h"
 
-string TITLE;
 List *BREAD_CRUMB;
+stringbuf FOOTER;
 int NOW_SCENE;
 bool READ_SPEC;
 int SPEC_KEY = 0;
 
 void UI_init() {
     BREAD_CRUMB = Create(string);
+    FOOTER = $init$;
     // 默认场景
     Welcome_init();
 }
@@ -35,19 +36,11 @@ void UI_mainLoop() {
     }
 }
 
-int UI_renderHead() {
-    stringbuf titleLine = concat(3, LITERAL("----- "), TITLE, LITERAL(" -----"));
-    stringbuf midLine = UI_midString(titleLine);
-    printf("%s\n", CSTR(midLine));
-    $STR_BUF(titleLine);
-    $STR_BUF(midLine);
-    for (int i = 0; i < CON_WIDTH; i++) putchar('_');
-    return 2;
-}
-
 int UI_renderBreadCrumb() {
+    for (int i = 0; i < CON_WIDTH; i++) putchar('-');
     printf("%s\n", CSTR(LITERAL(" 首页 > 还没写 > 咕")));
-    return 1;
+    for (int i = 0; i < CON_WIDTH; i++) putchar('-');
+    return 3;
 }
 
 int UI_renderScene(int line) {
@@ -60,7 +53,8 @@ int UI_renderScene(int line) {
 }
 
 int UI_renderFooter() {
-    printf("%s", CSTR(LITERAL("请输入：还没写，咕")));
+    UI_moveCursor((Position) {0, CON_HEIGHT});
+    printf("%s", CSTR(FOOTER));
     return 1;
 }
 
@@ -68,8 +62,6 @@ void UI_render() {
     int lineCnt = 0;
     // 重绘
     system("cls");
-    // 标题
-    lineCnt += UI_renderHead();
     // 面包屑
     lineCnt += UI_renderBreadCrumb();
     // 场景
@@ -98,6 +90,11 @@ void UI_getSpecKey() {
             }
         }
     }
+}
+
+void UI_setFooterUpdate(string footer) {
+    freeAssign(&FOOTER, cloneString(footer));
+    UI_renderFooter();
 }
 
 void BreadCrumb_enter(string name) {
