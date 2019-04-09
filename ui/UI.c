@@ -7,6 +7,9 @@
 #include "UI.h"
 #include "scene/Welcome.h"
 
+#define COLOR_DEF 0x70
+#define COLOR_FOOTER 0x07
+
 List *BREAD_CRUMB;
 stringbuf FOOTER;
 int NOW_SCENE;
@@ -37,10 +40,9 @@ void UI_mainLoop() {
 }
 
 int UI_renderBreadCrumb() {
-    for (int i = 0; i < CON_WIDTH; i++) putchar('-');
     printf("%s\n", CSTR(LITERAL(" 首页 > 还没写 > 咕")));
     for (int i = 0; i < CON_WIDTH; i++) putchar('-');
-    return 3;
+    return 2;
 }
 
 int UI_renderScene(int line) {
@@ -53,8 +55,10 @@ int UI_renderScene(int line) {
 }
 
 int UI_renderFooter() {
-    UI_moveCursor((Position) {0, CON_HEIGHT});
+    UI_setTextColor(COLOR_FOOTER);
+    UI_moveCursor((Position) {0, CON_HEIGHT - 1});
     printf("%s", CSTR(FOOTER));
+    UI_setTextColor(COLOR_DEF);
     return 1;
 }
 
