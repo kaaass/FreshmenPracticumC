@@ -27,7 +27,9 @@ void test_config() {
     TEST_ASSERT(EQUAL(LITERAL("string"), Config_optString(LITERAL("test"), $init$)));
     TEST_ASSERT(EQUAL(LITERAL("default"), Config_optString(LITERAL("null"), LITERAL("default"))));
     Config_setInteger(LITERAL("int"), 233);
+    Config_setDouble(LITERAL("double"), 233.33);
     TEST_ASSERT_EQUAL_INT(233, Config_optInteger(LITERAL("int"), 0));
+    TEST_ASSERT_EQUAL_FLOAT(233.33, Config_optDouble(LITERAL("double"), 0.0));
     TEST_ASSERT_EQUAL_INT(666, Config_optInteger(LITERAL("null"), 666));
     DataManager_finalize();
 }
