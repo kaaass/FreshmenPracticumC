@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "core/Database.h"
+#include "ui/UI.h"
 
 int main() {
-    printf("Hello world!");
+    UI_mainLoop();
     return 0;
 }

@@ -9,4 +9,8 @@
 
 void Welcome_init();
 
+void Welcome_inLoop();
+
+int Welcome_render();
+
 #endif //FRESHMAN_PROJ_C_WELCOME_H
