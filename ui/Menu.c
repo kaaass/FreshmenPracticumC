@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "../util/MemoryUtil.h"
 #include "UI.h"
+#include "UI_Utils.h"
 
 /**
  * 创建菜单
@@ -16,20 +17,31 @@
  * @param toggle
  * @return
  */
-Menu *Menu_create(string name[], int num, int def, string toggle[]) {
+Menu *Menu_create(int x, int y, string name[], int num, int def) {
     Menu *menu = MALLOC(Menu);
+    menu->x = x;
+    menu->y = y;
     menu->num = num;
     menu->cur = def;
-    for (int i = 0; i < num; ++i) {
-        if (toggle == NULL) {
-            menu->name[i] = concat(2, LITERAL("[   ] "), name[i]);
-            menu->toggle[i] = concat(2, LITERAL("[ * ] "), name[i]);
-        } else {
-            menu->name[i] = name[i];
-            menu->toggle[i] = toggle[i];
-        }
-    }
+    memcpy(menu->name, name, sizeof(string) * num);
     return menu;
+}
+
+void Menu_renderToggle(Menu *menu, int line) {
+    Position cur;
+    Position org = UI_getCursorPos();
+    cur.x = menu->x + 2;
+    cur.y = line + menu->y;
+    for (int i = 0; i < menu->num; ++i) {
+        UI_moveCursor(cur);
+        if (menu->cur == i) {
+            putchar('*');
+        } else {
+            putchar(' ');
+        }
+        cur.y++;
+    }
+    UI_moveCursor(org);
 }
 
 /**
@@ -37,15 +49,15 @@ Menu *Menu_create(string name[], int num, int def, string toggle[]) {
  * @param menu
  * @return 占用行数
  */
-int Menu_render(Menu *menu) {
+int Menu_render(Menu *menu, int line) {
+    menu->line = line;
+    for (int j = 0; j < menu->y; j++) putchar('\n');
     for (int i = 0; i < menu->num; ++i) {
-        if (menu->cur == i) {
-            printf("%s\n", CSTR(menu->toggle[i]));
-        } else {
-            printf("%s\n", CSTR(menu->name[i]));
-        }
+        for (int j = 0; j < menu->x; j++) putchar(' ');
+        printf("[   ] %s\n", CSTR(menu->name[i]));
     }
-    return menu->num;
+    Menu_renderToggle(menu, line);
+    return menu->num + menu->y;
 }
 
 /**
@@ -60,14 +72,14 @@ void Menu_inLoop(Menu *menu) {
                 menu->cur--;
                 if (menu->cur < 0)
                     menu->cur = menu->num - 1;
-                UI_render();
+                Menu_renderToggle(menu, menu->line);
                 break;
             case KEY_DOWN:
             case KEY_PGDN:
                 menu->cur++;
                 if (menu->cur >= menu->num)
                     menu->cur = 0;
-                UI_render();
+                Menu_renderToggle(menu, menu->line);
                 break;
             default:
                 break;
@@ -102,7 +114,6 @@ void Menu_destroy(Menu *menu) {
     assert(menu);
     for (int i = 0; i < menu->num; ++i) {
         $STR_BUF(menu->name[i]);
-        $STR_BUF(menu->toggle[i]);
     }
     free(menu);
 }
