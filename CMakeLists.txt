@@ -33,7 +33,7 @@ add_coverage(freshman_proj_c)
 enable_testing()
 
 # Main test
-add_test (MainRuns freshman_proj_c)
+# add_test (MainRuns freshman_proj_c)
 
 # Unit Test
 option(BUILD_TEST "Build the unit tests" ON)
