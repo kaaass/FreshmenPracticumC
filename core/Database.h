@@ -80,6 +80,8 @@ void Database_destroyItem(DataNode* cur);
 
 void Database_destroy(Database *head);
 
+void Database_clear(Database *head);
+
 Cursor *Database_begin(Database *head);
 
 Cursor *Cursor_next(Cursor *cursor);

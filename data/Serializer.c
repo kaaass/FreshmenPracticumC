@@ -388,7 +388,7 @@ void deserialize_Database(Database *db, const cJSON *json, int type) {
     assert(db);
     Header *header = GetData(Header, db);
     assert(type == header->defaultDataType);
-    // TODO: 先清除数据库内容
+    Database_clear(db);
     cJSON *jsonType, *data;
     jsonType = cJSON_GetObjectItemCaseSensitive(json, "type");
     assert(cJSON_IsNumber(jsonType));

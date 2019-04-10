@@ -61,7 +61,7 @@ stringbuf Config_optString(string key, string defVal) {
 void Config_setInteger(string key, int value) {
     char buf[20];
     sprintf(buf, "%d", value);
-    Config_setString(key, newString(buf));
+    Config_setString(key, STRING(buf));
 }
 
 /**
@@ -74,7 +74,7 @@ void Config_setInteger(string key, int value) {
 void Config_setDouble(string key, double value) {
     char buf[20];
     sprintf(buf, "%f", value);
-    Config_setString(key, newString(buf));
+    Config_setString(key, STRING(buf));
 }
 
 /**

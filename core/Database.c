@@ -165,6 +165,20 @@ void Database_destroy(Database *head) {
 }
 
 /**
+ * 清空数据库内容
+ * @param head
+ */
+void Database_clear(Database *head) {
+    Header *header = GetData(Header, head);
+    ForEach(cur, head) {
+        Database_destroyItem(cur->cur);
+    }
+    header->cnt = 0;
+    header->tail = head;
+    head->next = NULL;
+}
+
+/**
  * 获得数据库的迭代器
  * @param head 数据库
  * @return 迭代器
