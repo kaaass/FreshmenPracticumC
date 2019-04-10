@@ -33,6 +33,10 @@ void UI_getSpecKey();
 
 void UI_setFooterUpdate(string);
 
+void UI_startScene(int sceneId, string title);
+
+void UI_endScene();
+
 void BreadCrumb_enter(string);
 
 void BreadCrumb_exit();
