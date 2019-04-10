@@ -14,6 +14,7 @@
 #define Data(type, obj) (void *) obj,sizeof(type),DATA_TYPE_##type
 #define Create(type) Database_create(DATA_TYPE_##type)
 #define GetById(type, db, id) ((type *) Database_getById(db,id))
+#define Tail(type, db) GetData(type,GetData(Header,db)->tail)
 
 #define ID_LIKE (1 << 5)
 #define BASIC_TYPE (1 << 6)

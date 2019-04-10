@@ -95,6 +95,7 @@ Database *Database_pop(Database *head) {
     }
     Database_destroyItem(cur->next);
     cur->next = NULL;
+    header->tail = cur;
     header->cnt--;
     return head;
 }

@@ -8,6 +8,7 @@
 #include "../Menu.h"
 #include "../UI_Utils.h"
 #include "../../data/DataManager.h"
+#include "About.h"
 
 #define MENU_CNT 7
 
@@ -16,8 +17,6 @@ Menu *mainMenu;
 void updateIntro();
 
 void Welcome_init() {
-    NOW_SCENE = SCENE_WELCOME;
-    BreadCrumb_enter(STR_BUF("首页"));
     READ_SPEC = true;
     stringbuf name[] = {
             STR_BUF("    新增记录"),
@@ -29,7 +28,7 @@ void Welcome_init() {
             STR_BUF("    退出系统")
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
-    updateIntro();
+    UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
 }
 
 void Welcome_inLoop() {
@@ -39,6 +38,9 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
+                case 5:
+                    About_init();
+                    break;
                 case 6:
                     DataManager_save(LITERAL("data"));
                     exit(0);
@@ -58,6 +60,7 @@ int Welcome_render(int line) {
     line += 1;
     // 主菜单
     line += Menu_render(mainMenu, line);
+    updateIntro();
     return line;
 }
 
