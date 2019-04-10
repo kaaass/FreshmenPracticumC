@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <stdio.h>
 
 #include "UI_Utils.h"
 #include "UI.h"
@@ -17,13 +18,19 @@ size_t UI_stringWidth(stringbuf str) {
 }
 
 /**
- * 返回居中字符串
+ * 打印居中字符串
  * @param str
+ * @param 待打印行
  * @return
  */
-stringbuf UI_midString(stringbuf str) {
-    size_t blanks = CON_WIDTH / 2 - UI_stringWidth(str) / 2;
-    return concat(2, repeat(LITERAL(" "), blanks), str);
+void UI_printMidString(stringbuf str, int lineNo) {
+    int blanks = (int) (CON_WIDTH / 2 - UI_stringWidth(str) / 2);
+    Position pos = {
+            .x = blanks,
+            .y = lineNo
+    };
+    UI_moveCursor(pos);
+    printf("%s\n", CSTR(str));
 }
 
 #ifdef _WIN32

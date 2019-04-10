@@ -7,8 +7,9 @@
 #include "../UI.h"
 #include "../Menu.h"
 #include "../UI_Utils.h"
+#include "../../data/DataManager.h"
 
-#define MENU_CNT 4
+#define MENU_CNT 7
 
 Menu *mainMenu;
 
@@ -21,10 +22,13 @@ void Welcome_init() {
     stringbuf name[] = {
             STR_BUF("    新增记录"),
             STR_BUF("    批量增加"),
-            STR_BUF("    删除记录"),
+            STR_BUF("    浏览记录"),
+            STR_BUF("    统计信息"),
+            STR_BUF("     设  置"),
+            STR_BUF("     关  于"),
             STR_BUF("    退出系统")
     };
-    mainMenu = Menu_create(20, 3, name, MENU_CNT, 0);
+    mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     updateIntro();
 }
 
@@ -35,7 +39,8 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
-                case 3:
+                case 6:
+                    DataManager_save(LITERAL("data"));
                     exit(0);
                 default:
                     break;
@@ -45,13 +50,12 @@ void Welcome_inLoop() {
 }
 
 int Welcome_render(int line) {
-    stringbuf info = UI_midString(LITERAL("欢迎使用进销存系统！"));
-    printf("%s\n", CSTR(info));
+    UI_printMidString(LITERAL("欢迎使用进销存系统!"), line);
     line += 1;
-    freeAssign(&info, UI_midString(LITERAL("本程序为程序设计基础课程设计项目 (2018级)的实现。")));
-    printf("\n%s\n", CSTR(info));
-    $STR_BUF(info);
-    line += 2;
+    putchar('\n');
+    line += 1;
+    UI_printMidString(LITERAL("本程序为程序设计基础课程设计项目 (2018级)的实现"), line);
+    line += 1;
     // 主菜单
     line += Menu_render(mainMenu, line);
     return line;
@@ -64,12 +68,21 @@ void updateIntro() {
             instruction = LITERAL("向数据库添加一条购买/进货记录。");
             break;
         case 1:
-            instruction = LITERAL("向数据库添加若干条购买/进货记录，支持从文件中读入。");
+            instruction = LITERAL("从文件中读入，并向数据库添加若干条购买/进货记录。");
             break;
         case 2:
-            instruction = LITERAL("删除一条数据库中的购买/进货记录。");
+            instruction = LITERAL("浏览、修改数据库中的数据。");
             break;
         case 3:
+            instruction = LITERAL("统计数据库的各类信息。");
+            break;
+        case 4:
+            instruction = LITERAL("设置程序的一些信息。");
+            break;
+        case 5:
+            instruction = LITERAL("查看本程序开发者的相关信息。");
+            break;
+        case 6:
             instruction = LITERAL("退出程序并保存当前数据库。");
             break;
         default:
