@@ -22,7 +22,7 @@ typedef struct {
 
 size_t UI_stringWidth(stringbuf str);
 
-stringbuf UI_midString(stringbuf);
+void UI_printMidString(stringbuf str, int lineNo);
 
 void UI_moveCursor(Position pos);
 

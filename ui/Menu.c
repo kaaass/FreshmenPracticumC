@@ -19,7 +19,12 @@
  */
 Menu *Menu_create(int x, int y, string name[], int num, int def) {
     Menu *menu = MALLOC(Menu);
-    menu->x = x;
+    if (x < 0) {
+        // 自动居中
+        menu->x = (int) ((CON_WIDTH - UI_stringWidth(name[0]) - 6) / 2);
+    } else {
+        menu->x = x;
+    }
     menu->y = y;
     menu->num = num;
     menu->cur = def;
