@@ -51,10 +51,11 @@ void Menu_renderToggle(Menu *menu, int line) {
  */
 int Menu_render(Menu *menu, int line) {
     menu->line = line;
-    for (int j = 0; j < menu->y; j++) putchar('\n');
+    Position pos = { .x = menu->x, .y = menu->y + line };
     for (int i = 0; i < menu->num; ++i) {
-        for (int j = 0; j < menu->x; j++) putchar(' ');
+        UI_moveCursor(pos);
         printf("[   ] %s\n", CSTR(menu->name[i]));
+        pos.y++;
     }
     Menu_renderToggle(menu, line);
     return menu->num + menu->y;
