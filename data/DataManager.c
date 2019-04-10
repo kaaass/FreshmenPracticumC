@@ -12,6 +12,7 @@
 #include "TablePurchaseRecord.h"
 #include "TableGuest.h"
 #include "TableSellingRecord.h"
+#include "../core/Config.h"
 
 Database *CONFIG;
 Database *GUEST;
@@ -120,6 +121,11 @@ void DataManager_save(string dir) {
 void DataManager_load(string dir) {
     cJSON *json;
     stringbuf path, content;
+    // 默认数据库创建
+    if (!isExist(CSTR(dir))) {
+        DataManager_reset();
+        DataManager_save(dir);
+    }
     // Config
     path = LITERAL("/Config.json");
     path = concat(2, dir, path);
@@ -176,4 +182,20 @@ void DataManager_load(string dir) {
     DeserializeDB(PurchaseRecord, PURCHASE_RECORD, json);
     cJSON_Delete(json);
     $STR_BUF(path);
+}
+
+/**
+ * 重置数据库信息
+ */
+void DataManager_reset() {
+    Database_clear(CONFIG);
+    Database_clear(GUEST);
+    Database_clear(SELLING_RECORD);
+    Database_clear(ORDER);
+    Database_clear(PROVIDER);
+    Database_clear(MOUNTINGS);
+    Database_clear(PURCHASE_RECORD);
+    // 初始资本
+    Config_setDouble(LITERAL("accountBalance"), 5000000);
+    return;
 }

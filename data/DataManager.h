@@ -19,5 +19,6 @@ void DataManager_init();
 void DataManager_finalize();
 void DataManager_save(string dir);
 void DataManager_load(string dir);
+void DataManager_reset();
 
 #endif //FRESHMAN_PROJ_C_DATAMANAGER_H
