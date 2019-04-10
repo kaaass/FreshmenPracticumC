@@ -20,6 +20,8 @@ typedef struct {
     int y;
 } Position;
 
+size_t UI_stringWidth(stringbuf str);
+
 stringbuf UI_midString(stringbuf);
 
 void UI_moveCursor(Position pos);

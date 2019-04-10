@@ -63,7 +63,7 @@ int UI_renderFooter() {
     printf("%s", CSTR(FOOTER));
     UI_setTextColor(COLOR_DEF);
     Position org = UI_getCursorPos();
-    int clearCnt = (int) (CON_WIDTH - FOOTER->unitCnt);
+    int clearCnt = (int) (CON_WIDTH - UI_stringWidth(FOOTER));
     while (clearCnt--) putchar(' ');
     UI_moveCursor(org);
     return 1;
