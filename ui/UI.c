@@ -62,6 +62,10 @@ int UI_renderFooter() {
     UI_moveCursor((Position) {0, CON_HEIGHT - 1});
     printf("%s", CSTR(FOOTER));
     UI_setTextColor(COLOR_DEF);
+    Position org = UI_getCursorPos();
+    int clearCnt = (int) (CON_WIDTH - FOOTER->unitCnt);
+    while (clearCnt--) putchar(' ');
+    UI_moveCursor(org);
     return 1;
 }
 
@@ -96,6 +100,10 @@ void UI_getSpecKey() {
     }
 }
 
+/**
+ * 设置页脚
+ * @param footer 传入字面字符串常量
+ */
 void UI_setFooterUpdate(string footer) {
     freeAssign(&FOOTER, cloneString(footer));
     UI_renderFooter();

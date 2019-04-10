@@ -11,7 +11,7 @@
  * @return
  */
 stringbuf UI_midString(stringbuf str) {
-    size_t blanks = ((CON_WIDTH - str->unitCnt) / 2);
+    size_t blanks = CON_WIDTH / 2 - str->unitCnt / 2;
     return concat(2, repeat(LITERAL(" "), blanks), str);
 }
 
