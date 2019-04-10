@@ -2,8 +2,19 @@
 // Created by guyis on 2019/4/9.
 //
 
+#include <string.h>
+
 #include "UI_Utils.h"
 #include "UI.h"
+
+/**
+ * 字符串显示长度计算
+ * @param str
+ * @return
+ */
+size_t UI_stringWidth(stringbuf str) {
+    return strlen(CSTR(str));
+}
 
 /**
  * 返回居中字符串
@@ -11,7 +22,7 @@
  * @return
  */
 stringbuf UI_midString(stringbuf str) {
-    size_t blanks = CON_WIDTH / 2 - str->unitCnt / 2;
+    size_t blanks = CON_WIDTH / 2 - UI_stringWidth(str) / 2;
     return concat(2, repeat(LITERAL(" "), blanks), str);
 }
 
