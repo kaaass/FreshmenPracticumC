@@ -20,7 +20,7 @@ void View_init() {
     };
     stringbuf testData[][TABLE_COLUNN_NUM] = {
             {STR_BUF("1"), STR_BUF("测试"), STR_BUF("测试"), STR_BUF("66666"), STR_BUF("测试")},
-            {STR_BUF("2"), STR_BUF("哈哈哈哈"), STR_BUF("测试"), STR_BUF("测试"), STR_BUF("测试")},
+            {STR_BUF("2"), STR_BUF("哈哈哈哈"), STR_BUF("longlonglonglonglonglong"), STR_BUF("我很长我很长我很长我很长"), STR_BUF("测试")},
             {STR_BUF("3"), STR_BUF("测试"), STR_BUF("233333"), STR_BUF("测试"), STR_BUF("测试")},
             {STR_BUF("4"), STR_BUF("你写"), STR_BUF("代码"), STR_BUF("像"), STR_BUF("蔡徐坤")},
             {STR_BUF("5"), STR_BUF("这表格"), STR_BUF("写的"), STR_BUF("累死"), STR_BUF("我了")}

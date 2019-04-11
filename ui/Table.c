@@ -63,9 +63,29 @@ void printBound(Table *table) {
     putchar('+');
 }
 
+char *processString(stringbuf str, int maxLen) {
+    char* buf = CSTR(str);
+    int curLen;
+    // 未超过限制
+    if (strlen(buf) <= maxLen) return buf;
+    // 超过
+    for (int i = 0; i < strlen(buf); i++) {
+        curLen = buf[i] > 0x7F ? 2: 1;
+        if (maxLen - curLen - i + 1 <= 3) {
+            buf[i] = '.';  buf[i+1] = '.';  buf[i+2] = '.';  buf[i+3] = '\0';
+            break;
+        }
+        if (buf[i] > 0x7F) {
+            i++;
+            continue;
+        }
+    }
+    return buf;
+}
+
 void printLine(Table *table, stringbuf content[]) {
     for (int i = 0; i < table->columnNum; i++) {
-        char *buf = CSTR(content[i]);
+        char *buf = processString(content[i], table->columnWidth[i]);
         int len = (int) strlen(buf);
         putchar('|');
         UI_blanks(mid(len, table->columnWidth[i]));
