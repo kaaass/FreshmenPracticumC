@@ -34,4 +34,6 @@ void UI_setTitle(string title);
 
 void UI_setTextColor(short color);
 
+void UI_blanks(int cnt);
+
 #endif //FRESHMAN_PROJ_C_UI_UTILS_H
