@@ -125,7 +125,7 @@ void Database_destroyItem(DataNode* cur) {
     if (cur == NULL)
         return;
     // 释放字符串
-    switch (cur->dataType) {
+    switch (cur->dataType) { // TODO: 增加UI表格的释放
         case DATA_TYPE_Config:;
             Config *config = GetData(Config, cur);
             $STR_BUF(config->key);

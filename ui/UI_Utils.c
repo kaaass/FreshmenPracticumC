@@ -33,6 +33,14 @@ void UI_printMidString(stringbuf str, int lineNo) {
     printf("%s\n", CSTR(str));
 }
 
+/**
+ * 打印空白
+ * @param cnt
+ */
+void UI_blanks(int cnt) {
+    while (cnt--) putchar(' ');
+}
+
 #ifdef _WIN32
 
 #include <windows.h>
