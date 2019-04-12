@@ -27,7 +27,7 @@ void View_init() {
     };
     int columnWidth[] = {10, 21, 21, 21, 21};
     READ_SPEC = true;
-    dataTable = Table_create(-1, 1, 100, 20, 1);
+    dataTable = Table_create(-1, 1, 100, 8, 1);
     Table_setColumnTitle(dataTable, columnName, columnWidth, TABLE_COLUNN_NUM);
     for (int i = 0; i < 5; i++) Table_pushLine(dataTable, testData[i]);
     UI_setFooterUpdate(LITERAL(""));
