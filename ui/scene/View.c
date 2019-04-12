@@ -27,7 +27,7 @@ void View_init() {
     };
     int columnWidth[] = {10, 21, 21, 21, 21};
     READ_SPEC = true;
-    dataTable = Table_create(-1, 1, 100, 8, 1);
+    dataTable = Table_create(-1, 1, 100, 8, 1, 0);
     Table_setColumnTitle(dataTable, columnName, columnWidth, TABLE_COLUNN_NUM);
     for (int i = 0; i < 5; i++) Table_pushLine(dataTable, testData[i]);
     UI_setFooterUpdate(LITERAL(""));
@@ -36,6 +36,7 @@ void View_init() {
 
 void View_inLoop() {
     Table_inLoop(dataTable);
+    UI_setFooterUpdate(Table_getSelection(dataTable));
 }
 
 int View_render(int line) {

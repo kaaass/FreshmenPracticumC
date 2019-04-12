@@ -8,6 +8,7 @@
 #include "UI.h"
 #include "UI_Utils.h"
 
+#define COLOR_HIGHLIGHT 0x87
 #define COLOR_SELECTION 0x07
 
 void Table_renderToggle(Table *table, int line, int orgCur);
@@ -18,10 +19,11 @@ void Table_renderToggle(Table *table, int line, int orgCur);
  * @param y 左上角y轴坐标
  * @param w 宽度
  * @param h 高度
- * @param def 默认选中项
+ * @param def 默认选中项，若为-1则不渲染
+ * @param colDef 默认选中单元格，若为-1则不渲染
  * @return
  */
-Table *Table_create(int x, int y, int w, int h, int def) {
+Table *Table_create(int x, int y, int w, int h, int def, int colDef) {
     Table *table = MALLOC(Table);
     if (x < 0) {
         // 自动居中
@@ -33,6 +35,7 @@ Table *Table_create(int x, int y, int w, int h, int def) {
     table->width = w;
     table->height = h;
     table->cur = def;
+    table->columnCur = colDef;
     table->columns = Create(TableLine);
     table->top = 1;
     return table;
@@ -83,14 +86,16 @@ char *processString(stringbuf str, int maxLen) {
     return buf;
 }
 
-void printLine(Table *table, stringbuf content[]) {
+void printLine(Table *table, stringbuf content[], int highlight) {
     for (int i = 0; i < table->columnNum; i++) {
         char *buf = processString(content[i], table->columnWidth[i]);
         int len = (int) strlen(buf);
         putchar('|');
+        if (highlight == i) UI_setTextColor(COLOR_HIGHLIGHT);
         UI_blanks(mid(len, table->columnWidth[i]));
         printf("%s", buf);
         UI_blanks(table->columnWidth[i] - len - mid(len, table->columnWidth[i]));
+        if (highlight == i) UI_setTextColor(COLOR_SELECTION);
     }
     putchar('|');
 }
@@ -114,7 +119,7 @@ int Table_render(Table *table, int line) {
     printBound(table); pos.y++;
     // 标题
     UI_moveCursor(pos);
-    printLine(table, table->columnName); pos.y++;
+    printLine(table, table->columnName, -1); pos.y++;
     // 边框
     UI_moveCursor(pos);
     printBound(table); pos.y++; // 边框
@@ -129,7 +134,7 @@ int Table_render(Table *table, int line) {
             Table_renderToggle(table, line, -1); pos.y++;
         } else {
             UI_moveCursor(pos);
-            printLine(table, data->content); pos.y++;
+            printLine(table, data->content, -1); pos.y++;
         }
         usedLine++;
     }
@@ -144,13 +149,13 @@ void Table_renderToggle(Table *table, int line, int orgCur) {
         TableLine *data = GetById(TableLine, table->columns, orgCur);
         pos.y = table->y + line + 3 + orgCur - table->top;
         UI_moveCursor(pos);
-        printLine(table, data->content);
+        printLine(table, data->content, -1);
     }
     UI_setTextColor(COLOR_SELECTION);
     TableLine *data = GetById(TableLine, table->columns, table->cur);
     pos.y = table->y + line + 3 + table->cur - table->top;
     UI_moveCursor(pos);
-    printLine(table, data->content);
+    printLine(table, data->content, table->columnCur);
     UI_setTextColor(COLOR_DEF);
 }
 
@@ -164,15 +169,31 @@ void Table_inLoop(Table *table) {
         switch (SPEC_KEY) {
             case KEY_UP:
             case KEY_PGUP:
+                if (table->cur == -1) break; // 不渲染选中
                 table->cur--;
                 if (table->cur < 1)
                     table->cur = (int) Database_size(table->columns);
                 break;
             case KEY_DOWN:
             case KEY_PGDN:
+                if (table->cur == -1) break; // 不渲染选中
                 table->cur++;
                 if (table->cur > (int) Database_size(table->columns))
                     table->cur = 1;
+                break;
+            case KEY_LEFT:
+                if (table->columnCur == -1) break; // 不渲染选中
+                table->columnCur--;
+                if (table->columnCur < 0)
+                    table->columnCur = table->columnNum - 1;
+                Table_renderToggle(table, table->line, -1);
+                break;
+            case KEY_RIGHT:
+                if (table->columnCur == -1) break; // 不渲染选中
+                table->columnCur++;
+                if (table->columnCur >= table->columnNum)
+                    table->columnCur = 0;
+                Table_renderToggle(table, table->line, -1);
                 break;
             default:
                 break;
@@ -230,6 +251,19 @@ void Table_setCur(Table *table, int cur) {
 void Table_setCurAndUpdate(Table *table, int cur) {
     Table_setCur(table, cur);
     UI_render();
+}
+
+/**
+ * 获得选中单元格的文本
+ * @param table 表格控件
+ * @return
+ */
+stringbuf Table_getSelection(Table *table) {
+    int selX = table->columnCur, selY = table->cur;
+    // 是否允许选中
+    if (selX == -1 || selY == -1) return NULL;
+    TableLine *data = GetById(TableLine, table->columns, selY);
+    return data->content[selX];
 }
 
 /**
