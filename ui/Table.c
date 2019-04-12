@@ -167,17 +167,27 @@ void Table_inLoop(Table *table) {
                 table->cur--;
                 if (table->cur < 1)
                     table->cur = (int) Database_size(table->columns);
-                Table_renderToggle(table, table->line, lstCur);
                 break;
             case KEY_DOWN:
             case KEY_PGDN:
                 table->cur++;
                 if (table->cur > (int) Database_size(table->columns))
                     table->cur = 1;
-                Table_renderToggle(table, table->line, lstCur);
                 break;
             default:
                 break;
+        }
+        // 更新绘制
+        if (lstCur != table->cur) {
+            if (table->cur < table->top) {
+                table->top = table->cur;
+                Table_render(table, table->line);
+            } else if (table->cur - table->top >= table->height - 4) {
+                table->top = table->cur - (table->height - 4) + 1;
+                Table_render(table, table->line);
+            } else {
+                Table_renderToggle(table, table->line, lstCur);
+            }
         }
     }
 }
