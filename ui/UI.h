@@ -26,6 +26,8 @@ extern int SPEC_KEY;
 #define CON_WIDTH 120
 #define CON_HEIGHT 30
 
+#define COLOR_DEF 0x70
+
 void UI_mainLoop();
 
 void UI_render();
