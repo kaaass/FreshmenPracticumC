@@ -1,0 +1,10 @@
+//
+// Created by hasee on 2019/4/11.
+//
+
+#ifndef FRESHMAN_PROJ_C_TOTALGIFT_H
+#define FRESHMAN_PROJ_C_TOTALGIFT_H
+
+#define SCENE_TOTAL_GIFT 32
+
+#endif //FRESHMAN_PROJ_C_TOTALGIFT_H
