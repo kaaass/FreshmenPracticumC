@@ -7,8 +7,8 @@
 #include "UI.h"
 #include "scene/Welcome.h"
 #include "scene/About.h"
+#include "scene/View.h"
 
-#define COLOR_DEF 0x70
 #define COLOR_FOOTER 0x07
 
 List *BREAD_CRUMB;
@@ -39,6 +39,9 @@ void UI_mainLoop() {
             case SCENE_ABOUT:
                 About_inLoop();
                 break;
+            case SCENE_VIEW:
+                View_inLoop();
+                break;
             default:
                 return;
         }
@@ -60,6 +63,8 @@ int UI_renderScene(int line) {
             return Welcome_render(line);
         case SCENE_ABOUT:
             return About_render(line);
+        case SCENE_VIEW:
+            return View_render(line);
         default:
             return 0;
     }
@@ -113,6 +118,8 @@ void UI_getSpecKey() {
  * @param footer 传入字面字符串常量
  */
 void UI_setFooterUpdate(string footer) {
+    if (footer == NULL)
+        return;
     freeAssign(&FOOTER, cloneString(footer));
     UI_renderFooter();
 }
