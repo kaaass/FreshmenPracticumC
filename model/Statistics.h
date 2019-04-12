@@ -35,7 +35,7 @@ typedef struct Present_Situation {
     int amount;////对应零件的个数.
     Guest people;
     double  AMOUNT;////这是礼物钱数
-    enum MountingsType type;
+    int partId;
 }Present_Situation;
 
 double Purchase_total();////得到所有进货的价钱

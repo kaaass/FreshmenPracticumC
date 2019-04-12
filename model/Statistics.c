@@ -70,7 +70,8 @@ Database* Gift_situation(){
                     .amount=record->amount,
                     .people=*rec_guest,
                     .AMOUNT=record->total,
-                    .type = rec_mountings->type
+                    //.type = rec_mountings->type
+                    .partId=record->partId
             };
             Database_pushBack(GIFT,Data(Present_Situation,&temp));
         }
@@ -97,7 +98,8 @@ Database * Search_gift(enum MountingsType type){
     int num=0;
     ForEach(cur, db){
         Present_Situation *record = GetData(Present_Situation,cur);
-        if(record->type==type)
+        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+        if(rec_mountings->type==type)
         {
             search_gift[num]=record;
             num++;
