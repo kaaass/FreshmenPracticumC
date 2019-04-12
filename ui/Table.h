@@ -29,9 +29,10 @@ typedef struct {
     int columnNum;
     int top;
     int cur;
+    int columnCur;
 } Table;
 
-Table *Table_create(int x, int y, int w, int h, int def);
+Table *Table_create(int x, int y, int w, int h, int def, int colDef);
 
 void Table_setColumnTitle(Table *table, stringbuf *columnName, int *columnWidth, int columnNum);
 
@@ -46,6 +47,8 @@ void Table_clear(Table *table);
 void Table_setCur(Table *, int cur);
 
 void Table_setCurAndUpdate(Table *, int cur);
+
+stringbuf Table_getSelection(Table *);
 
 void Table_destroy(Table *);
 

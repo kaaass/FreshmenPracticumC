@@ -118,6 +118,8 @@ void UI_getSpecKey() {
  * @param footer 传入字面字符串常量
  */
 void UI_setFooterUpdate(string footer) {
+    if (footer == NULL)
+        return;
     freeAssign(&FOOTER, cloneString(footer));
     UI_renderFooter();
 }
