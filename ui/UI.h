@@ -16,6 +16,7 @@
 #define KEY_RIGHT 77
 #define KEY_PGDN 81
 #define KEY_ENTER 13
+#define KEY_ESC 27
 
 extern int NOW_SCENE;
 extern stringbuf FOOTER;
