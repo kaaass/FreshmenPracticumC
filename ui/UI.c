@@ -137,6 +137,8 @@ void UI_getSpecKey() {
         } else {
             if (key == KEY_ENTER) {
                 SPEC_KEY = KEY_ENTER;
+            } else if (key == KEY_ESC) {
+                SPEC_KEY = KEY_ESC;
             } else {
                 SPEC_KEY = 0;
             }
