@@ -1,0 +1,8 @@
+//
+// Created by hasee on 2019/4/13.
+//
+
+#ifndef FRESHMAN_PROJ_C_SINGLEITEM_H
+#define FRESHMAN_PROJ_C_SINGLEITEM_H
+
+#endif //FRESHMAN_PROJ_C_SINGLEITEM_H
