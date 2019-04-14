@@ -56,4 +56,6 @@ Database * PurchaseScatter(enum MountingsType type_scan);////这是得到某货�
 
 Database * SellScatter(enum MountingsType type_scan);////这是得到某货物时间与售价 点
 
+stringbuf typename(int partid);///得到物品种类
+
 #endif //FRESHMAN_PROJ_C_STATISTIC_H

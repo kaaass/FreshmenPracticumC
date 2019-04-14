@@ -22,7 +22,7 @@ void test_gift_situation(){
     ForEach(cur, db){
         Present_Situation *now = GetData(Present_Situation, cur);
         stringbuf timeStr = Time_toLocalString(now->time_recording);
-        printf("type=%d,AMOUNT=%lf,Guest=%d,amount=%d,time=%s",now->type,now->AMOUNT,now->people.phone,now->amount,CSTR(timeStr));
+        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s",now->AMOUNT,CSTR(now->people.phone),now->amount,CSTR(timeStr));
         $STR_BUF(timeStr);
     }
     Database_destroy(db);
@@ -33,7 +33,7 @@ void test_search_gift(){
     ForEach(cur, db){
         Present_Situation *now = GetData(Present_Situation, cur);
         stringbuf timeStr = Time_toLocalString(now->time_recording);
-        printf("type=%d,AMOUNT=%lf,Guest=%d,amount=%d,time=%s",now->type,now->AMOUNT,now->people.phone,now->amount,CSTR(timeStr));
+        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s",now->AMOUNT,CSTR(now->people.phone),now->amount,CSTR(timeStr));
         $STR_BUF(timeStr);
     }
     Database_destroy(db);
@@ -62,10 +62,10 @@ int main() {
     DataManager_load(LITERAL("inputs/test_database"));
 
 
-    RUN_TEST(test_statistics);
-    RUN_TEST(test_gift_situation);
+    //RUN_TEST(test_statistics);
+    //RUN_TEST(test_gift_situation);
     RUN_TEST(test_search_gift);
-    RUN_TEST(test_time_search_gift);
+    //RUN_TEST(test_time_search_gift);
 
     DataManager_finalize();
 

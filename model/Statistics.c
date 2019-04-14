@@ -12,6 +12,7 @@
 #include "../util/Time.h"
 #include "../data/TableGuest.h"
 #include "Statistics.h"
+#include "../externals/cstring_jslike/cstring_jslike.h"
 #define type_num 5//零部件的种类数
 
 #define DATA_TYPE_PurchasePot 10
@@ -193,3 +194,23 @@ Database * PurchaseScatter(enum MountingsType type_scan){
     }
     return PURCHASESCATTER;
 }////这是得到某货物时间与进价 点
+
+stringbuf typename(int partid){
+    Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,partid);
+    switch (rec_mountings->type){
+        case MOUNTINGS_MOUSE:
+            return STR_BUF("鼠标");
+        case MOUNTINGS_KEYBOARD:
+            return STR_BUF("键盘");
+        case MOUNTINGS_MEMORY:
+            return STR_BUF("内存");
+        case MOUNTINGS_GRAPHICS_CARD:
+            return STR_BUF("显卡");
+        case MOUNTINGS_HARD_DISK:
+            return STR_BUF("硬盘");
+        case MOUNTINGS_CPU:
+            return STR_BUF("CPU");
+        case MOUNTINGS_SCREEN:
+            return STR_BUF("屏幕");
+    }
+}///得到物品种类
