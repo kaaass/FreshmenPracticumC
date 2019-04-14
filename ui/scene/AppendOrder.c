@@ -9,6 +9,7 @@
 #include "../UI_Utils.h"
 #include "../Table.h"
 #include "../../data/TableGuest.h"
+#include "ChooseGuest.h"
 
 #define MENU_CNT 3
 
@@ -57,7 +58,7 @@ void AppendOrder_init() {
      * 初始化数据
      */
     curGuest.id = -1;
-    curGuest.name = STR_BUF("未知");
+    curGuest.name = STR_BUF("尚未选择");
     curGuest.phone = STR_BUF("NaN");
     curCul = 0;
     UI_setFooterUpdate(LITERAL("当前为菜单，使用Tab切换至表格"));
@@ -65,6 +66,8 @@ void AppendOrder_init() {
 }
 
 void AppendOrder_inLoop() {
+    if (CUR_GUEST.id > 0 && CUR_GUEST.id != curGuest.id)
+        curGuest = CUR_GUEST;
     if (curCul == 0) { // 菜单
         Menu_inLoop(appendMenu);
     } else { // 表格
@@ -86,6 +89,7 @@ void AppendOrder_inLoop() {
                         SelectOrderType_init();
                         break;
                     case 4: // 设置客户/供货商
+                        ChooseGuest_init(curGuest.id, CUR_TYPE == ORDER_PURCHASE ? 1: 0);
                         break;
                     case 5: // 完成
                         // TODO: 保存逻辑

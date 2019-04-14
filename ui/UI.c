@@ -9,6 +9,7 @@
 #include "scene/About.h"
 #include "scene/View.h"
 #include "scene/AppendOrder.h"
+#include "scene/ChooseGuest.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -49,6 +50,9 @@ void UI_mainLoop() {
             case SCENE_SELECT_ORDER_TYPE:
                 SelectOrderType_inLoop();
                 break;
+            case SCENE_CHOOSE_GUEST:
+                ChooseGuest_inLoop();
+                break;
             default:
                 return;
         }
@@ -76,6 +80,8 @@ int UI_renderScene(int line) {
             return AppendOrder_render(line);
         case SCENE_SELECT_ORDER_TYPE:
             return SelectOrderType_render(line);
+        case SCENE_CHOOSE_GUEST:
+            return ChooseGuest_render(line);
         default:
             return 0;
     }
