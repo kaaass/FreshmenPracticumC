@@ -46,6 +46,7 @@ typedef struct {
     int dataType; // 当前结点的数据类型
     void *data; // 当前结点的数据
     size_t dataSize; // 当前结点的数据长度
+    DataNode *prev; // 上一个遍历结点
     DataNode *next; // 下一个待遍历结点
 } Cursor;
 
@@ -88,6 +89,8 @@ Cursor *Database_begin(Database *head);
 Cursor *Cursor_next(Cursor *cursor);
 
 bool Cursor_hasNext(Cursor *cursor);
+
+void Database_removeByCursor(Database *db, Cursor *cursor);
 
 void *Database_getById(Database *head, int id);
 
