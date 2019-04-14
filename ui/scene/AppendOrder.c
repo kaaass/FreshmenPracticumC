@@ -25,7 +25,7 @@ int curCul;
 #define SIDE_WIDTH 30
 #define TABLE_COLUNN_NUM 5
 #define TABLE_WIDTH 90
-#define MENU_OP_CNT 6
+#define MENU_OP_CNT 5
 
 void AppendOrder_init() {
     READ_SPEC = true;
@@ -49,8 +49,7 @@ void AppendOrder_init() {
             STR_BUF("  增加记录"),
             STR_BUF("  修改选中"),
             STR_BUF("  删除选中"),
-            STR_BUF("  修改类型"),
-            STR_BUF("  设置客户"),
+            STR_BUF("  设置对象"),
             STR_BUF("   完  成")
     };
     appendMenu = Menu_create(7, 0, menuName, MENU_OP_CNT, 0);
@@ -63,11 +62,10 @@ void AppendOrder_init() {
     curCul = 0;
     UI_setFooterUpdate(LITERAL("当前为菜单，使用Tab切换至表格"));
     UI_startScene(SCENE_APPEND_ORDER, STR_BUF("新增记录"));
+    SelectOrderType_init();
 }
 
 void AppendOrder_inLoop() {
-    if (CUR_GUEST.id > 0 && CUR_GUEST.id != curGuest.id)
-        curGuest = CUR_GUEST;
     if (curCul == 0) { // 菜单
         Menu_inLoop(appendMenu);
     } else { // 表格
@@ -85,13 +83,10 @@ void AppendOrder_inLoop() {
         } else if (SPEC_KEY == KEY_ENTER) {
             if (curCul == 0) { // 菜单下的Enter
                 switch (appendMenu->cur) {
-                    case 3: // 修改类型
-                        SelectOrderType_init();
-                        break;
-                    case 4: // 设置客户/供货商
+                    case 3: // 设置客户/供货商
                         ChooseGuest_init(curGuest.id, CUR_TYPE == ORDER_PURCHASE ? 1: 0);
                         break;
-                    case 5: // 完成
+                    case 4: // 完成
                         // TODO: 保存逻辑
                         UI_endScene();
                         break;
@@ -129,6 +124,9 @@ int AppendOrder_render(int line) {
         UI_printMidStringAt(LITERAL("供货商"), 0, 0, 30, line);
     else
         UI_printMidStringAt(LITERAL("客户"), 0, 0, 30, line);
+    // 更新数据
+    if (CUR_GUEST.id > 0 && CUR_GUEST.id != curGuest.id)
+        curGuest = CUR_GUEST;
     UI_printMidStringAt(curGuest.name, 0, 2, 30, line);
     UI_printMidStringAt(curGuest.phone, 0, 3, 30, line);
     line += 7;

@@ -11,4 +11,6 @@
 
 bool empty(stringbuf);
 
+stringbuf readLine();
+
 #endif //FRESHMAN_PROJ_C_STRINGUTIL_H
