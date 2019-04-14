@@ -8,6 +8,7 @@
 #include "scene/Welcome.h"
 #include "scene/About.h"
 #include "scene/View.h"
+#include "scene/AppendOrder.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -42,6 +43,12 @@ void UI_mainLoop() {
             case SCENE_VIEW:
                 View_inLoop();
                 break;
+            case SCENE_APPEND_ORDER:
+                AppendOrder_inLoop();
+                break;
+            case SCENE_SELECT_ORDER_TYPE:
+                SelectOrderType_inLoop();
+                break;
             default:
                 return;
         }
@@ -65,6 +72,10 @@ int UI_renderScene(int line) {
             return About_render(line);
         case SCENE_VIEW:
             return View_render(line);
+        case SCENE_APPEND_ORDER:
+            return AppendOrder_render(line);
+        case SCENE_SELECT_ORDER_TYPE:
+            return SelectOrderType_render(line);
         default:
             return 0;
     }
@@ -100,17 +111,12 @@ void UI_render() {
  */
 void UI_getSpecKey() {
     if (READ_SPEC) {
+        SPEC_KEY = 0;
         int key = getch();
         if (key == KEY_SIG) {
             SPEC_KEY = getch();
         } else {
-            if (key == KEY_ENTER) {
-                SPEC_KEY = KEY_ENTER;
-            } else if (key == KEY_ESC) {
-                SPEC_KEY = KEY_ESC;
-            } else {
-                SPEC_KEY = 0;
-            }
+            SPEC_KEY = key;
         }
     }
 }

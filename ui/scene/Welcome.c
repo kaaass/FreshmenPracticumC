@@ -10,6 +10,7 @@
 #include "../../data/DataManager.h"
 #include "About.h"
 #include "View.h"
+#include "AppendOrder.h"
 
 #define MENU_CNT 7
 
@@ -30,6 +31,7 @@ void Welcome_init() {
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
+    AppendOrder_init();
 }
 
 void Welcome_inLoop() {
@@ -39,6 +41,9 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
+                case 0:
+                    AppendOrder_init();
+                    break;
                 case 2:
                     View_init();
                     break;
