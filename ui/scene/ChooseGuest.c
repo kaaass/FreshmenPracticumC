@@ -8,8 +8,10 @@
 #include "../Menu.h"
 #include "../../data/DataManager.h"
 #include "../Table.h"
+#include "../UI_Utils.h"
+#include "../../model/Insert.h"
 
-int GUEST_ID = -1, curView = 1;
+int GUEST_ID = -1, curView = 1, curType;
 Guest CUR_GUEST = {.id = -1};
 Menu *selGuestMenu;
 Menu *createGuestMenu;
@@ -36,6 +38,7 @@ void ChooseGuest_init(int guestId, int type) {
         CUR_GUEST.phone = STR_BUF("NaN");
     }
     curView = 1;
+    curType = type;
     /*
      * 初始化菜单
      */
@@ -66,6 +69,12 @@ void ChooseGuest_init(int guestId, int type) {
     UI_startScene(SCENE_CHOOSE_GUEST, type == 0 ? STR_BUF("选择客户"): STR_BUF("选择供货商"));
 }
 
+void updataMenuText() {
+    freeAssign(&createGuestMenu->name[0], concat(2, LITERAL("姓名："), CUR_GUEST.name));
+    freeAssign(&createGuestMenu->name[1], concat(2, LITERAL("电话："), CUR_GUEST.phone));
+    freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
+}
+
 void ChooseGuest_inLoopMain() {
     Menu_inLoop(selGuestMenu);
     if (READ_SPEC) {
@@ -78,6 +87,8 @@ void ChooseGuest_inLoopMain() {
                     UI_render();
                     break;
                 case 1:
+                    freeAssign(&CUR_GUEST.name, $init$);
+                    freeAssign(&CUR_GUEST.phone, $init$);
                     curView = 3;
                     UI_render();
                     break;
@@ -98,8 +109,66 @@ void ChooseGuest_inLoopSelect() {
     }
 }
 
+void addToDatabase () {
+    int id;
+    if (curType == 0) { // 客户
+        if ((id = Insert_hasGuest(CUR_GUEST.name, CUR_GUEST.phone)) != 0) {
+            CUR_GUEST.id = id;
+            return;
+        }
+        Insert_guest(CUR_GUEST.name, CUR_GUEST.phone);
+        CUR_GUEST.id = Database_size(GUEST);
+    } else { // 供货商
+        if ((id = Insert_hasProvider(CUR_GUEST.name, CUR_GUEST.phone)) != 0) {
+            CUR_GUEST.id = id;
+            return;
+        }
+        Insert_provider(CUR_GUEST.name, CUR_GUEST.phone);
+        CUR_GUEST.id = Database_size(PROVIDER);
+    }
+}
+
 void ChooseGuest_inLoopCreate() {
     Menu_inLoop(createGuestMenu);
+    if (READ_SPEC) {
+        if (SPEC_KEY == KEY_ENTER) {
+            switch (createGuestMenu->cur) {
+                case 0: // 输入名称
+                    UI_setFooterUpdate(LITERAL("请输入名称："));
+                    UI_setCursorVisible(true);
+                    freeAssign(&CUR_GUEST.name, readLine());
+                    updataMenuText();
+                    UI_render();
+                    break;
+                case 1: // 输入电话
+                    UI_setFooterUpdate(LITERAL("请输入电话："));
+                    UI_setCursorVisible(true);
+                    freeAssign(&CUR_GUEST.phone, readLine());
+                    updataMenuText();
+                    UI_render();
+                    break;
+                case 2: // 添加
+                    // 校验
+                    if (length(CUR_GUEST.name) < 1) {
+                        UI_setFooterUpdate(LITERAL("姓名不能为空！"));
+                        return;
+                    }
+                    if (length(CUR_GUEST.phone) < 1) {
+                        UI_setFooterUpdate(LITERAL("电话不能为空！"));
+                        return;
+                    }
+                    // 逻辑
+                    addToDatabase();
+                    updataMenuText();
+                    UI_endScene();
+                    break;
+                case 3: // 取消并返回
+                    curView = 1;
+                    UI_render();
+                    break;
+            }
+        }
+    }
 }
 
 int ChooseGuest_renderMain(int line) {

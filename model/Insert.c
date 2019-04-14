@@ -14,7 +14,7 @@
  * @param phone
  * @return
  */
-bool Insert_hasGuest(string name, string phone) {
+int Insert_hasGuest(string name, string phone) {
     bool matchName = empty(name),
             matchPhone = empty(phone);
     assert(!(matchName && matchPhone));
@@ -22,10 +22,10 @@ bool Insert_hasGuest(string name, string phone) {
         Guest *data = GetData(Guest, cur);
         if ((matchName || EQUAL(name, data->name)) &&
             (matchPhone || EQUAL(phone, data->phone))) {
-            return true;
+            return data->id;
         }
     }
-    return false;
+    return 0;
 }
 
 /**
@@ -46,17 +46,17 @@ void Insert_guest(string name, string phone) {
  * @param phone
  * @return
  */
-bool Insert_hasProvider(string name, string phone) {
+int Insert_hasProvider(string name, string phone) {
     bool matchName = empty(name),
             matchPhone = empty(phone);
     ForEach(cur, PROVIDER) {
         Provider *data = GetData(Provider, cur);
         if ((matchName || EQUAL(name, data->name)) &&
             (matchPhone || EQUAL(phone, data->phone))) {
-            return true;
+            return data->id;
         }
     }
-    return false;
+    return 0;
 }
 
 /**
