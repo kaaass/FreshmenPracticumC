@@ -9,6 +9,13 @@
 #include "../Menu.h"
 #include "../UI_Utils.h"
 
+
 #define SCENE_STATISTICS_SITUATION 30
+
+void StatisticsSituation_init();
+
+void StatisticsSituation_inLoop();
+
+int StatisticsSituation_render(int line);
 
 #endif //FRESHMAN_PROJ_C_GIFT_H

@@ -25,6 +25,7 @@ void Items_init(int type){
     };
     Database *create = Search_gift(type);
     int i=0,num=0;
+    ForEach(cur, create){num++;}
     stringbuf testData[num][6];
     ForEach(cur, create){
         Present_Situation *now = GetData(Present_Situation, cur);
@@ -36,11 +37,12 @@ void Items_init(int type){
         testData[i][3] = now->people.name;
         testData[i][4] = now->people.phone;
         testData[i][5] = newString(itoa((int)now->AMOUNT,ch2,10));
+        i++;
     };
     int columnWidth[] = {21, 10, 8, 21,22,12};
     dataTable = Table_create(-1, 1, 100, 8, 1, 0);
     Table_setColumnTitle(dataTable, columnName, columnWidth, 6);
-    for (int i = 0; i < num; i++) Table_pushLine(dataTable, testData[i]);
+    for (int j = 0; j < num; j++) Table_pushLine(dataTable, testData[j]);
     READ_SPEC = true;
     UI_setFooterUpdate(LITERAL("按下Enter键以返回..."));
     switch (type){
@@ -75,7 +77,7 @@ void Items_inLoop(){
     if (READ_SPEC) {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键返回
-            UI_setFooterUpdate(LITERAL("按Enter键返回上一页"));
+            UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
             UI_endScene();
         }
     }
