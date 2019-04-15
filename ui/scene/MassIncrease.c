@@ -73,6 +73,9 @@ void MassIncrease_inLoop(){
                     break;
             }
         }
+        if(SPEC_KEY == KEY_ESC){
+            UI_endScene();
+        }
     }
 }
 
