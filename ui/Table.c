@@ -67,15 +67,18 @@ void printBound(Table *table) {
 }
 
 char *processString(stringbuf str, int maxLen) {
-    char* buf = CSTR(str);
+    char *buf = CSTR(str);
     int curLen;
     // 未超过限制
     if (strlen(buf) <= maxLen) return buf;
     // 超过
     for (int i = 0; i < strlen(buf); i++) {
-        curLen = buf[i] > 0x7F ? 2: 1;
+        curLen = buf[i] > 0x7F ? 2 : 1;
         if (maxLen - curLen - i + 1 <= 3) {
-            buf[i] = '.';  buf[i+1] = '.';  buf[i+2] = '.';  buf[i+3] = '\0';
+            buf[i] = '.';
+            buf[i + 1] = '.';
+            buf[i + 2] = '.';
+            buf[i + 3] = '\0';
             break;
         }
         if (buf[i] > 0x7F) {
@@ -108,21 +111,24 @@ void printLine(Table *table, stringbuf content[], int highlight) {
  */
 int Table_render(Table *table, int line) {
     int itemNum = (int) Database_size(table->columns),
-        usedLine = 4;
+            usedLine = 4;
     table->line = line;
-    Position pos = { .x = table->x, .y = table->y + line };
+    Position pos = {.x = table->x, .y = table->y + line};
     /*
      * 表头
      */
     // 边框
     UI_moveCursor(pos);
-    printBound(table); pos.y++;
+    printBound(table);
+    pos.y++;
     // 标题
     UI_moveCursor(pos);
-    printLine(table, table->columnName, -1); pos.y++;
+    printLine(table, table->columnName, -1);
+    pos.y++;
     // 边框
     UI_moveCursor(pos);
-    printBound(table); pos.y++; // 边框
+    printBound(table);
+    pos.y++; // 边框
     // 打印表内容
     UI_moveCursor(pos);
     ForEach(cur, table->columns) {
@@ -131,10 +137,12 @@ int Table_render(Table *table, int line) {
         if (usedLine >= table->height) break;
         // 打印一行
         if (data->id == table->cur) {
-            Table_renderToggle(table, line, -1); pos.y++;
+            Table_renderToggle(table, line, -1);
+            pos.y++;
         } else {
             UI_moveCursor(pos);
-            printLine(table, data->content, -1); pos.y++;
+            printLine(table, data->content, -1);
+            pos.y++;
         }
         usedLine++;
     }
@@ -144,7 +152,7 @@ int Table_render(Table *table, int line) {
 }
 
 void Table_renderToggle(Table *table, int line, int orgCur) {
-    Position pos = { .x = table->x, .y = table->y + line };
+    Position pos = {.x = table->x, .y = table->y + line};
     if (orgCur >= 0) { // orgCur应位于表内
         TableLine *data = GetById(TableLine, table->columns, orgCur);
         pos.y = table->y + line + 3 + orgCur - table->top;
@@ -157,6 +165,19 @@ void Table_renderToggle(Table *table, int line, int orgCur) {
     UI_moveCursor(pos);
     printLine(table, data->content, table->columnCur);
     UI_setTextColor(COLOR_DEF);
+}
+
+bool renderOutOfSight(Table *table) {
+    if (table->cur < table->top) {
+        table->top = table->cur;
+        Table_render(table, table->line);
+    } else if (table->cur - table->top >= table->height - 4) {
+        table->top = table->cur - (table->height - 4) + 1;
+        Table_render(table, table->line);
+    } else {
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -200,13 +221,7 @@ void Table_inLoop(Table *table) {
         }
         // 更新绘制
         if (lstCur != table->cur) {
-            if (table->cur < table->top) {
-                table->top = table->cur;
-                Table_render(table, table->line);
-            } else if (table->cur - table->top >= table->height - 4) {
-                table->top = table->cur - (table->height - 4) + 1;
-                Table_render(table, table->line);
-            } else {
+            if (!renderOutOfSight(table)) {
                 Table_renderToggle(table, table->line, lstCur);
             }
         }
@@ -249,8 +264,11 @@ void Table_setCur(Table *table, int cur) {
  * @param cur 当前选择项
  */
 void Table_setCurAndUpdate(Table *table, int cur) {
+    int lstCur = table->cur;
     Table_setCur(table, cur);
-    UI_render();
+    if (!renderOutOfSight(table)) {
+        Table_renderToggle(table, table->line, lstCur);
+    }
 }
 
 /**

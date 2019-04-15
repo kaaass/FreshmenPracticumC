@@ -25,7 +25,7 @@ int curCul;
 #define SIDE_WIDTH 30
 #define TABLE_COLUNN_NUM 5
 #define TABLE_WIDTH 90
-#define MENU_OP_CNT 5
+#define MENU_OP_CNT 6
 
 void AppendOrder_init() {
     READ_SPEC = true;
@@ -50,7 +50,8 @@ void AppendOrder_init() {
             STR_BUF("  修改选中"),
             STR_BUF("  删除选中"),
             STR_BUF("  设置对象"),
-            STR_BUF("   完  成")
+            STR_BUF("   完  成"),
+            STR_BUF("   返  回")
     };
     appendMenu = Menu_create(7, 0, menuName, MENU_OP_CNT, 0);
     /*
@@ -75,10 +76,8 @@ void AppendOrder_inLoop() {
         if (SPEC_KEY == KEY_TAB) { // 选单切换
             if (curCul == 0) {
                 curCul = 1;
-                UI_setFooterUpdate(LITERAL("当前为表格，使用Tab切换至菜单"));
             } else {
                 curCul = 0;
-                UI_setFooterUpdate(LITERAL("当前为菜单，使用Tab切换至表格"));
             }
         } else if (SPEC_KEY == KEY_ENTER) {
             if (curCul == 0) { // 菜单下的Enter
@@ -90,9 +89,17 @@ void AppendOrder_inLoop() {
                         // TODO: 保存逻辑
                         UI_endScene();
                         break;
+                    case 5:
+                        UI_endScene();
+                        break;
                 }
             }
         }
+    }
+    if (curCul == 0) {
+        UI_setFooterUpdate(LITERAL("当前为表格，使用Tab切换至菜单"));
+    } else {
+        UI_setFooterUpdate(LITERAL("当前为菜单，使用Tab切换至表格"));
     }
 }
 
@@ -125,8 +132,9 @@ int AppendOrder_render(int line) {
     else
         UI_printMidStringAt(LITERAL("客户"), 0, 0, 30, line);
     // 更新数据
-    if (CUR_GUEST.id > 0 && CUR_GUEST.id != curGuest.id)
-        curGuest = CUR_GUEST;
+    Guest ret = ChooseGuest_result();
+    if (ret.id > 0 && ret.id != curGuest.id)
+        curGuest = ret;
     UI_printMidStringAt(curGuest.name, 0, 2, 30, line);
     UI_printMidStringAt(curGuest.phone, 0, 3, 30, line);
     line += 7;
@@ -142,7 +150,7 @@ void SelectOrderType_init() {
             STR_BUF("    批发销售")
     };
     selectMenu = Menu_create(-1, 10, name, MENU_CNT, CUR_TYPE);
-    UI_setFooterUpdate(LITERAL("按Enter键以选择"));
+    UI_setFooterUpdate(LITERAL("按Enter键以选择，按Esc以返回主页"));
     UI_startScene(SCENE_SELECT_ORDER_TYPE, STR_BUF("选择订单类型"));
 }
 
@@ -152,6 +160,9 @@ void SelectOrderType_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键选择
             CUR_TYPE = selectMenu->cur;
+            UI_endScene();
+        } else if (SPEC_KEY == KEY_ESC) {
+            UI_endScene();
             UI_endScene();
         }
     }

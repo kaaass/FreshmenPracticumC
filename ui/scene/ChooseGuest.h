@@ -18,4 +18,6 @@ void ChooseGuest_inLoop();
 
 int ChooseGuest_render(int);
 
+Guest ChooseGuest_result();
+
 #endif //FRESHMAN_PROJ_C_CHOOSEGUEST_H
