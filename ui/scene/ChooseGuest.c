@@ -2,6 +2,7 @@
 // Created by guyis on 2019/4/14.
 //
 
+#include <assert.h>
 #include "ChooseGuest.h"
 #include "../../data/TableGuest.h"
 #include "../UI.h"
@@ -10,9 +11,10 @@
 #include "../Table.h"
 #include "../UI_Utils.h"
 #include "../../model/Insert.h"
+#include "../../data/TableProvider.h"
 
-int GUEST_ID = -1, curView = 1, curType;
-Guest CUR_GUEST = {.id = -1};
+int curView = 1, curType;
+Guest CUR_GUEST = {.id = -1}, tempGuest;
 Menu *selGuestMenu;
 Menu *createGuestMenu;
 Table *guestList;
@@ -32,13 +34,22 @@ void ChooseGuest_init(int guestId, int type) {
      * 初始化数据
      */
     if (guestId > 0) {
-        CUR_GUEST = *GetById(Guest, GUEST, guestId);
+        if (type == 0) { // 客户
+            CUR_GUEST = *GetById(Guest, GUEST, guestId);
+        } else { // 供应商
+            Provider *data = GetById(Provider, PROVIDER, guestId);
+            CUR_GUEST.name = cloneString(data->name);
+            CUR_GUEST.phone = cloneString(data->phone);
+        }
     } else {
         CUR_GUEST.name = STR_BUF("尚未选择");
         CUR_GUEST.phone = STR_BUF("NaN");
     }
     curView = 1;
     curType = type;
+    tempGuest.id = -1;
+    tempGuest.name = $init$;
+    tempGuest.phone = $init$;
     /*
      * 初始化菜单
      */
@@ -69,10 +80,33 @@ void ChooseGuest_init(int guestId, int type) {
     UI_startScene(SCENE_CHOOSE_GUEST, type == 0 ? STR_BUF("选择客户"): STR_BUF("选择供货商"));
 }
 
-void updataMenuText() {
-    freeAssign(&createGuestMenu->name[0], concat(2, LITERAL("姓名："), CUR_GUEST.name));
-    freeAssign(&createGuestMenu->name[1], concat(2, LITERAL("电话："), CUR_GUEST.phone));
-    freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
+void updateMenuText() {
+    freeAssign(&createGuestMenu->name[0], concat(2, LITERAL("姓名："), tempGuest.name));
+    freeAssign(&createGuestMenu->name[1], concat(2, LITERAL("电话："), tempGuest.phone));
+    // freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
+}
+
+void updateGuestTable() {
+    Table_clear(guestList);
+    stringbuf line[2];
+    if (curType == 0) {
+        // 客户
+        ForEach(cur, GUEST) {
+            Guest *data = GetData(Guest, cur);
+            line[0] = cloneString(data->name);
+            line[1] = cloneString(data->phone);
+            Table_pushLine(guestList, line);
+        }
+    } else {
+        // 供货商
+        ForEach(cur, PROVIDER) {
+            Provider *data = GetData(Provider, cur);
+            line[0] = cloneString(data->name);
+            line[1] = cloneString(data->phone);
+            Table_pushLine(guestList, line);
+        }
+    }
+    Table_setCurAndUpdate(guestList, CUR_GUEST.id == -1 ? 1: CUR_GUEST.id);
 }
 
 void ChooseGuest_inLoopMain() {
@@ -83,12 +117,16 @@ void ChooseGuest_inLoopMain() {
         } else if (SPEC_KEY == KEY_ENTER) {
             switch (selGuestMenu->cur) {
                 case 0:
+                    updateGuestTable();
+                    // 跳转
                     curView = 2;
                     UI_render();
                     break;
                 case 1:
-                    freeAssign(&CUR_GUEST.name, $init$);
-                    freeAssign(&CUR_GUEST.phone, $init$);
+                    tempGuest.id = -1;
+                    freeAssign(&tempGuest.name, $init$);
+                    freeAssign(&tempGuest.phone, $init$);
+                    // 跳转
                     curView = 3;
                     UI_render();
                     break;
@@ -105,12 +143,26 @@ void ChooseGuest_inLoopSelect() {
         if (SPEC_KEY == KEY_ESC) {
             curView = 1;
             UI_render();
+        } else if (SPEC_KEY == KEY_ENTER) {
+            assert(guestList->cur > 0);
+            if (curType == 0) { // 客户
+                Guest *data = GetById(Guest, GUEST, guestList->cur);
+                CUR_GUEST.name = cloneString(data->name);
+                CUR_GUEST.phone = cloneString(data->phone);
+            } else { // 供应商
+                Provider *data = GetById(Provider, PROVIDER, guestList->cur);
+                CUR_GUEST.name = cloneString(data->name);
+                CUR_GUEST.phone = cloneString(data->phone);
+            }
+            CUR_GUEST.id = guestList->cur;
+            UI_endScene();
         }
     }
 }
 
-void addToDatabase () {
+void addToDatabase() {
     int id;
+    CUR_GUEST = tempGuest;
     if (curType == 0) { // 客户
         if ((id = Insert_hasGuest(CUR_GUEST.name, CUR_GUEST.phone)) != 0) {
             CUR_GUEST.id = id;
@@ -136,30 +188,29 @@ void ChooseGuest_inLoopCreate() {
                 case 0: // 输入名称
                     UI_setFooterUpdate(LITERAL("请输入名称："));
                     UI_setCursorVisible(true);
-                    freeAssign(&CUR_GUEST.name, readLine());
-                    updataMenuText();
+                    freeAssign(&tempGuest.name, readLine());
+                    updateMenuText();
                     UI_render();
                     break;
                 case 1: // 输入电话
                     UI_setFooterUpdate(LITERAL("请输入电话："));
                     UI_setCursorVisible(true);
-                    freeAssign(&CUR_GUEST.phone, readLine());
-                    updataMenuText();
+                    freeAssign(&tempGuest.phone, readLine());
+                    updateMenuText();
                     UI_render();
                     break;
                 case 2: // 添加
                     // 校验
-                    if (length(CUR_GUEST.name) < 1) {
+                    if (length(tempGuest.name) < 1) {
                         UI_setFooterUpdate(LITERAL("姓名不能为空！"));
                         return;
                     }
-                    if (length(CUR_GUEST.phone) < 1) {
+                    if (length(tempGuest.phone) < 1) {
                         UI_setFooterUpdate(LITERAL("电话不能为空！"));
                         return;
                     }
                     // 逻辑
                     addToDatabase();
-                    updataMenuText();
                     UI_endScene();
                     break;
                 case 3: // 取消并返回
@@ -220,4 +271,12 @@ int ChooseGuest_render(int line) {
         default:
             return ChooseGuest_renderMain(line);
     }
+}
+
+Guest ChooseGuest_result() {
+    Guest ret = CUR_GUEST;
+    CUR_GUEST.id = -1;
+    CUR_GUEST.name = $init$;
+    CUR_GUEST.phone = $init$;
+    return ret;
 }
