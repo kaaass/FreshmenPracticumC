@@ -45,25 +45,30 @@ void MassIncrease_inLoop(){
     Menu_inLoop(miMenu);
     if(READ_SPEC){
         updatePrint();
-        printf("请输入导入文件的路径：");
         if(SPEC_KEY == KEY_ENTER){
             switch (miMenu->cur) {
                 case 0:
+                    printf("请输入导入文件的路径：");
                     CreatData_Guest();
                     break;
                 case 1:
+                    printf("请输入导入文件的路径：");
                     CreatData_Provider();
                     break;
                 case 2:
+                    printf("请输入导入文件的路径：");
                     CreatData_Mountings();
                     break;
                 case 3:
+                    printf("请输入导入文件的路径：");
                     CreatData_SellingRecord();
                     break;
                 case 4:
+                    printf("请输入导入文件的路径：");
                     CreatData_PurchaseRecord();
                     break;
                 case 5:
+                    printf("请输入导入文件的路径：");
                     CreatData_Order();
                     break;
                 case 6:
