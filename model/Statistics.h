@@ -35,7 +35,7 @@ typedef struct Present_Situation {
     int amount;////对应零件的个数.
     Guest people;
     double  AMOUNT;////这是礼物钱数
-    enum MountingsType type;
+    int partId;
 }Present_Situation;
 
 double Purchase_total();////得到所有进货的价钱
@@ -55,5 +55,7 @@ Database * Print_Purchaserecord(Time a,Time b);//按照时间顺序查找购买�
 Database * PurchaseScatter(enum MountingsType type_scan);////这是得到某货物时间与进价 点
 
 Database * SellScatter(enum MountingsType type_scan);////这是得到某货物时间与售价 点
+
+stringbuf typename(int partid);///得到物品种类
 
 #endif //FRESHMAN_PROJ_C_STATISTIC_H
