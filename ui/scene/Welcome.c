@@ -11,6 +11,7 @@
 #include "About.h"
 #include "View.h"
 #include "AppendOrder.h"
+#include "RecordInput.h"
 
 #define MENU_CNT 7
 
@@ -31,7 +32,6 @@ void Welcome_init() {
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
-    AppendOrder_init();
 }
 
 void Welcome_inLoop() {

@@ -58,6 +58,28 @@ stringbuf readLine() {
     return newString(result);
 }
 
+/**
+ * 转换为整数字符串
+ * @param val
+ * @return
+ */
+stringbuf toIntString(int val) {
+    char buf[100];
+    sprintf(buf, "%d", val);
+    return newString(buf);
+}
+
+/**
+ * 将浮点数转为人民币字符串
+ * @param val
+ * @return
+ */
+stringbuf toRmbString(double val) {
+    char buf[100];
+    sprintf(buf, " %.2lf", val);
+    return concat(2, LITERAL("￥"), STRING(buf));
+}
+
 #elif
 /**
  * 读入一行字符串

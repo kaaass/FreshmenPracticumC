@@ -13,4 +13,8 @@ bool empty(stringbuf);
 
 stringbuf readLine();
 
+stringbuf toIntString(int);
+
+stringbuf toRmbString(double);
+
 #endif //FRESHMAN_PROJ_C_STRINGUTIL_H
