@@ -14,9 +14,11 @@
  */
 void writeStringToFile(char *filename, stringbuf content) {
     FILE *f = fopen(filename, "w");
-    assert(f);
-    fprintf(f, "%s", CSTR(content));
-    fflush(f);
+    if (f != NULL) {
+        fprintf(f, "%s", CSTR(content));
+        fflush(f);
+        fclose(f);
+    }
 }
 
 /**
@@ -27,7 +29,8 @@ void writeStringToFile(char *filename, stringbuf content) {
 stringbuf readStringFromFile(char *filename) {
     assert(isExist(filename));
     FILE *f = fopen(filename, "r");
-    assert(f);
+    if (f == NULL)
+        return $init$;
     stringbuf content = $init$, line;
     char rawLine[200];
     while (!feof(f)) {

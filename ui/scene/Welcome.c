@@ -33,6 +33,8 @@ void Welcome_init() {
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
+    // AppendOrder_init();
+    RecordInput_init((RecordParam) {-1});
 }
 
 void Welcome_inLoop() {
@@ -79,6 +81,7 @@ int Welcome_render(int line) {
 
 void updateIntro() {
     string instruction = NULL;
+    // 根据菜单选择项更新说明
     switch (mainMenu->cur) {
         case 0:
             instruction = LITERAL("向数据库添加一条购买/进货记录。");
