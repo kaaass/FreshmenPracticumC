@@ -3,12 +3,14 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "Config.h"
 #include "../util/StringUtil.h"
 #include "../core/Database.h"
 #include "../data/DataManager.h"
 #include "../data/TableConfig.h"
+#include "../util/MemoryUtil.h"
 
 /**
  * 设置字符串配置
@@ -107,4 +109,61 @@ double Config_optDouble(string key, double defVal) {
         return defVal;
     sscanf(CSTR(data), "%lf", &doubleVal);
     return doubleVal;
+}
+
+/**
+ * 设置Json配置
+ * @param key
+ * @param value
+ */
+void Config_setJson(string key, cJSON *value) {
+    assert(value);
+    string json = STRING(cJSON_PrintUnformatted(value));
+    Config_setString(key, json);
+}
+
+/**
+ * 获取Json配置，不存在返回NULL
+ * @param key
+ * @return
+ */
+cJSON *Config_getJson(string key) {
+    string ret = Config_optString(key, $init$);
+    if (length(ret) < 1)
+        return NULL;
+    return cJSON_Parse(U8_CSTR(ret));
+}
+
+/**
+ * 设置整数数组配置
+ * @param key
+ * @param arr 整数数组
+ * @param n 数组长度
+ */
+void Config_setIntArray(string key, int* arr, int n) {
+    assert(arr);
+    cJSON *json = cJSON_CreateIntArray(arr, n);
+    Config_setJson(key, json);
+    cJSON_Delete(json);
+}
+
+/**
+ * 获取整数数组配置
+ * @param key
+ * @param len
+ * @return 数组首指针，数组长度见Config_getIntArrayLen
+ */
+int *Config_getIntArray(string key, int *len) {
+    cJSON *json = Config_getJson(key);
+    *len = 0;
+    if (json == NULL)
+        return NULL;
+    if (!cJSON_IsArray(json))
+        return NULL;
+    *len = cJSON_GetArraySize(json);
+    int* arr = (int *) malloc(sizeof(int) * *len);
+    for (int i = 0; i < *len; i++) {
+        arr[i] = cJSON_GetArrayItem(json, i)->valueint;
+    }
+    return arr;
 }
