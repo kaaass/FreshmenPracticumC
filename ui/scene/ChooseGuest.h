@@ -9,7 +9,6 @@
 
 #define SCENE_CHOOSE_GUEST 6
 
-extern int GUEST_ID;
 extern Guest CUR_GUEST;
 
 void ChooseGuest_init(int guestId, int type);

@@ -22,8 +22,10 @@ Guest curGuest;
 
 int curCul;
 
+void makeAndSaveOrder();
+
 #define SIDE_WIDTH 30
-#define TABLE_COLUNN_NUM 5
+#define TABLE_COLUMN_NUM 5
 #define TABLE_WIDTH 90
 #define MENU_OP_CNT 6
 
@@ -41,7 +43,7 @@ void AppendOrder_init() {
     };
     int columnWidth[] = {20, 16, 16, 16, 16};
     appendTable = Table_create(SIDE_WIDTH, 0, TABLE_WIDTH, CON_HEIGHT - 4, -1, -1);
-    Table_setColumnTitle(appendTable, columnName, columnWidth, TABLE_COLUNN_NUM);
+    Table_setColumnTitle(appendTable, columnName, columnWidth, TABLE_COLUMN_NUM);
     /*
      * 操作选单
      */
@@ -82,11 +84,17 @@ void AppendOrder_inLoop() {
         } else if (SPEC_KEY == KEY_ENTER) {
             if (curCul == 0) { // 菜单下的Enter
                 switch (appendMenu->cur) {
+                    case 0: // 增加
+                        break;
+                    case 1: // 修改
+                        break;
+                    case 2: // 删除
+                        break;
                     case 3: // 设置客户/供货商
                         ChooseGuest_init(curGuest.id, CUR_TYPE == ORDER_PURCHASE ? 1: 0);
                         break;
                     case 4: // 完成
-                        // TODO: 保存逻辑
+                        makeAndSaveOrder();
                         UI_endScene();
                         break;
                     case 5:
@@ -141,6 +149,15 @@ int AppendOrder_render(int line) {
     Menu_render(appendMenu, line);
     return line;
 }
+
+void makeAndSaveOrder() {
+    // TODO: 保存逻辑
+    // 若进货需要更新mountings的价格，增礼逻辑
+}
+
+/*
+ * 选择类型页面
+ */
 
 void SelectOrderType_init() {
     READ_SPEC = true;

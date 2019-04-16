@@ -21,7 +21,7 @@ Table *guestList;
 
 #define MENU_SEL_GUEST_CNT 2
 #define MENU_CREATE_GUEST_CNT 4
-#define TABLE_COLUNN_NUM 2
+#define TABLE_COLUMN_NUM 2
 
 /**
  * 初始化选择客户视图
@@ -74,15 +74,15 @@ void ChooseGuest_init(int guestId, int type) {
     };
     int columnWidth[] = {20, 20};
     guestList = Table_create(-1, 1, 43, 20, 1, -1);
-    Table_setColumnTitle(guestList, columnName, columnWidth, TABLE_COLUNN_NUM);
+    Table_setColumnTitle(guestList, columnName, columnWidth, TABLE_COLUMN_NUM);
     //
     UI_setFooterUpdate(LITERAL(""));
     UI_startScene(SCENE_CHOOSE_GUEST, type == 0 ? STR_BUF("选择客户"): STR_BUF("选择供货商"));
 }
 
 void updateMenuText() {
-    freeAssign(&createGuestMenu->name[0], concat(2, LITERAL("姓名："), tempGuest.name));
-    freeAssign(&createGuestMenu->name[1], concat(2, LITERAL("电话："), tempGuest.phone));
+    Menu_setItemText(createGuestMenu, 0, concat(2, LITERAL("姓名："), tempGuest.name));
+    Menu_setItemText(createGuestMenu, 1, concat(2, LITERAL("电话："), tempGuest.phone));
     // freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
 }
 
