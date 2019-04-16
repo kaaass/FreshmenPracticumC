@@ -13,7 +13,8 @@ if(BUILD_TEST)
             TestInsert
             TestModify
             TestStat
-            TestForecase)
+            TestForecase
+            TestGift)
     set(_modules) # Stupid way
     foreach(mod ${modules})
         list(APPEND _modules "../${mod}")
