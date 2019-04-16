@@ -35,55 +35,61 @@ void UI_init() {
     Welcome_init();
 }
 
+bool UI_runSceneLoop() {
+    switch (NOW_SCENE) {
+        case SCENE_WELCOME:
+            Welcome_inLoop();
+            break;
+        case SCENE_ABOUT:
+            About_inLoop();
+            break;
+        case SCENE_VIEW:
+            View_inLoop();
+            break;
+        case SCENE_APPEND_ORDER:
+            AppendOrder_inLoop();
+            break;
+        case SCENE_SELECT_ORDER_TYPE:
+            SelectOrderType_inLoop();
+            break;
+        case SCENE_CHOOSE_GUEST:
+            ChooseGuest_inLoop();
+            break;
+        case SCENE_RECORD_INPUT:
+            RecordInput_inLoop();
+            break;
+        case SCENE_STATISTICS_SITUATION:
+            StatisticsSituation_inLoop();
+            break;
+        case SCENE_PROFIT_SITUATION:
+            Profit_inLoop();
+            break;
+        case SCENE_TOTAL_GIFT:
+            TotalGift_inLoop();
+            break;
+        case SCENE_SINGLEITEM:
+            Singleitem_inLoop();
+            break;
+        case SCENE_ITEMS:
+            Items_inLoop();
+            break;
+        case SCENE_MASSINCREASE:
+            MassIncrease_inLoop();
+            break;
+        default:
+            return false;
+    }
+    return true;
+}
+
 void UI_mainLoop() {
     UI_init();
     UI_render();
     while (true) {
         UI_setCursorVisible(!READ_SPEC);
         UI_getSpecKey();
-        switch (NOW_SCENE) {
-            case SCENE_WELCOME:
-                Welcome_inLoop();
-                break;
-            case SCENE_ABOUT:
-                About_inLoop();
-                break;
-            case SCENE_VIEW:
-                View_inLoop();
-                break;
-            case SCENE_APPEND_ORDER:
-                AppendOrder_inLoop();
-                break;
-            case SCENE_SELECT_ORDER_TYPE:
-                SelectOrderType_inLoop();
-                break;
-            case SCENE_CHOOSE_GUEST:
-                ChooseGuest_inLoop();
-                break;
-            case SCENE_RECORD_INPUT:
-                RecordInput_inLoop();
-                break;
-            case SCENE_STATISTICS_SITUATION:
-                StatisticsSituation_inLoop();
-                break;
-            case SCENE_PROFIT_SITUATION:
-                Profit_inLoop();
-                break;
-            case SCENE_TOTAL_GIFT:
-                TotalGift_inLoop();
-                break;
-            case SCENE_SINGLEITEM:
-                Singleitem_inLoop();
-                break;
-            case SCENE_ITEMS:
-                Items_inLoop();
-                break;
-            case SCENE_MASSINCREASE:
-                MassIncrease_inLoop();
-                break;
-            default:
-                return;
-        }
+        if (!UI_runSceneLoop())
+            break;
     }
 }
 
