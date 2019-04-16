@@ -8,6 +8,9 @@
 #include "scene/Welcome.h"
 #include "scene/About.h"
 #include "scene/View.h"
+#include "scene/AppendOrder.h"
+#include "scene/ChooseGuest.h"
+#include "scene/RecordInput.h"
 #include "scene/StatisticsSituation.h"
 #include "scene/TotalGift.h"
 #include "scene/Profit.h"
@@ -47,6 +50,18 @@ void UI_mainLoop() {
                 break;
             case SCENE_VIEW:
                 View_inLoop();
+                break;
+            case SCENE_APPEND_ORDER:
+                AppendOrder_inLoop();
+                break;
+            case SCENE_SELECT_ORDER_TYPE:
+                SelectOrderType_inLoop();
+                break;
+            case SCENE_CHOOSE_GUEST:
+                ChooseGuest_inLoop();
+                break;
+            case SCENE_RECORD_INPUT:
+                RecordInput_inLoop();
                 break;
             case SCENE_STATISTICS_SITUATION:
                 StatisticsSituation_inLoop();
@@ -89,6 +104,14 @@ int UI_renderScene(int line) {
             return About_render(line);
         case SCENE_VIEW:
             return View_render(line);
+        case SCENE_APPEND_ORDER:
+            return AppendOrder_render(line);
+        case SCENE_SELECT_ORDER_TYPE:
+            return SelectOrderType_render(line);
+        case SCENE_CHOOSE_GUEST:
+            return ChooseGuest_render(line);
+        case SCENE_RECORD_INPUT:
+            return RecordInput_render(line);
         case SCENE_STATISTICS_SITUATION:
             return StatisticsSituation_render(line);
         case SCENE_PROFIT_SITUATION:
@@ -137,17 +160,12 @@ void UI_render() {
  */
 void UI_getSpecKey() {
     if (READ_SPEC) {
+        SPEC_KEY = 0;
         int key = getch();
         if (key == KEY_SIG) {
             SPEC_KEY = getch();
         } else {
-            if (key == KEY_ENTER) {
-                SPEC_KEY = KEY_ENTER;
-            } else if (key == KEY_ESC) {
-                SPEC_KEY = KEY_ESC;
-            } else {
-                SPEC_KEY = 0;
-            }
+            SPEC_KEY = key;
         }
     }
 }
