@@ -5,7 +5,7 @@
 #ifndef FRESHMAN_PROJ_C_MASSINCREASE_H
 #define FRESHMAN_PROJ_C_MASSINCREASE_H
 
-#define SCENE_MASSINCREASE 3
+#define SCENE_MASSINCREASE 8
 
 void MassIncrease_init();
 

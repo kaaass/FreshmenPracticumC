@@ -13,6 +13,7 @@
 #include "scene/Profit.h"
 #include "scene/Singleitem.h"
 #include "scene/Items.h"
+#include "scene/MassIncrease.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -62,6 +63,9 @@ void UI_mainLoop() {
             case SCENE_ITEMS:
                 Items_inLoop();
                 break;
+            case SCENE_MASSINCREASE:
+                MassIncrease_inLoop();
+                break;
             default:
                 return;
         }
@@ -95,6 +99,8 @@ int UI_renderScene(int line) {
             return Singleitem_render(line);
         case SCENE_ITEMS:
             return Items_render(line);
+        case SCENE_MASSINCREASE:
+            return MassIncrease_render(line);
             // 注册
         default:
             return 0;
