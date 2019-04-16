@@ -28,27 +28,24 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
     int bound1 = 0, bound2 = 0;
 
     //获取能做gift的Mountigs的id
-    int gifts[10];
-    int giftsCount = 0;
+    int* gifts = NULL;
+    int giftsCount[] = {0};
 
     ForEach(cur, CONFIG) {
 
         Config *config = GetData(Config, cur);
 
-        if(compareString(config->key, LITERAL("giftId")) == STRING_EQUAL) {
-
-            int giftId = Config_optInteger(STR_BUF("giftId"), -1);
-            gifts[giftsCount++] = giftId;
-
-        } else if(compareString(config->key, LITERAL("giftSendingBound1")) == STRING_EQUAL) {
+        if(EQUAL(config->key, LITERAL("giftId"))) {
+            gifts = Config_getIntArray(STR_BUF("giftId"), giftsCount);
+        } else if(EQUAL(config->key, LITERAL("giftSendingBound1"))) {
             bound1 = Config_optInteger(STR_BUF("giftSendingBound1"), -1);
-        } else if(compareString(config->key, LITERAL("giftSendingBound2")) == STRING_EQUAL) {
+        } else if(EQUAL(config->key, LITERAL("giftSendingBound2"))) {
             bound2 = Config_optInteger(STR_BUF("giftSendingBound2"), -1);
         }
     }
 
     //无合适礼品可送
-    if(giftsCount == 0)
+    if(*giftsCount == 0 || gifts == NULL)
         return -2;
     //无合适礼品可送
     else if(tot < bound1)
@@ -58,10 +55,8 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
     int lowId = 0;
     double lowAmount = INT8_MAX;
 
-    for (int i = 0; i < giftsCount; ++i) {
-
+    for (int i = 0; i < *giftsCount; ++i) {
         Mountings* mountings = GetById(Mountings, MOUNTINGS, gifts[i]);
-
         if(tot <= bound2) {
             if(mountings->price <= 100 && mountings->amount < lowAmount) {
                 lowAmount = mountings->amount;
@@ -74,9 +69,7 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
             }
         }
     }
-
     return lowId;
-
 }
 
 bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
@@ -106,4 +99,5 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
     };
     Insert_sellingRecord(&newSellingRecord);
     mountings->amount--;
+    return true;
 }
