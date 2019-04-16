@@ -11,6 +11,7 @@
 #include "About.h"
 #include "View.h"
 #include "StatisticsSituation.h"
+#include "MassIncrease.h"
 
 #define MENU_CNT 7
 
@@ -40,6 +41,9 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
+                case 1:
+                    MassIncrease_init();
+                    break;
                 case 2:
                     View_init();
                     break;
