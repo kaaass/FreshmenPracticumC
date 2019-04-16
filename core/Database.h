@@ -8,7 +8,7 @@
 #define FRESHMAN_PROJ_C_DATABASE_H
 
 #define CheckTypeId(typeId, obj) ((obj)->dataType == typeId)
-#define CheckType(type, obj) (CheckTypeId(DATA_TYPE_##type, obj) && sizeof(type) == (obj)->dataSize)
+#define CheckType(type, obj) (CheckTypeId(DATA_TYPE_##type, obj) && (sizeof(type) == (obj)->dataSize))
 #define ForEach(i, db) for(Cursor *i=Database_begin(db);i!=NULL;i=Cursor_next(i))
 #define GetData(type, obj) ((type *) obj->data)
 #define Data(type, obj) (void *) obj,sizeof(type),DATA_TYPE_##type
