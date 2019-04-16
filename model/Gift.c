@@ -102,7 +102,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
             .amount = 1,
             .price = mountings->price,
             .time = Time_getNow(),
-            .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId;
+            .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId
     };
     Insert_sellingRecord(&newSellingRecord);
     mountings->amount--;
