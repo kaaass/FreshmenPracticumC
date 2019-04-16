@@ -12,6 +12,7 @@
 #include "View.h"
 #include "AppendOrder.h"
 #include "RecordInput.h"
+#include "StatisticsSituation.h"
 
 #define MENU_CNT 7
 
@@ -46,6 +47,9 @@ void Welcome_inLoop() {
                     break;
                 case 2:
                     View_init();
+                    break;
+                case 3:
+                    StatisticsSituation_init();
                     break;
                 case 5:
                     About_init();

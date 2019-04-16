@@ -12,6 +12,7 @@
 #include "../util/Time.h"
 #include "../data/TableGuest.h"
 #include "Statistics.h"
+#include "../externals/cstring_jslike/cstring_jslike.h"
 #define type_num 5//零部件的种类数
 
 #define DATA_TYPE_PurchasePot 10
@@ -70,7 +71,8 @@ Database* Gift_situation(){
                     .amount=record->amount,
                     .people=*rec_guest,
                     .AMOUNT=record->total,
-                    .type = rec_mountings->type
+                    //.type = rec_mountings->type
+                    .partId=record->partId
             };
             Database_pushBack(GIFT,Data(Present_Situation,&temp));
         }
@@ -97,7 +99,8 @@ Database * Search_gift(enum MountingsType type){
     int num=0;
     ForEach(cur, db){
         Present_Situation *record = GetData(Present_Situation,cur);
-        if(record->type==type)
+        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+        if(rec_mountings->type==type)
         {
             search_gift[num]=record;
             num++;
@@ -191,3 +194,23 @@ Database * PurchaseScatter(enum MountingsType type_scan){
     }
     return PURCHASESCATTER;
 }////这是得到某货物时间与进价 点
+
+stringbuf typename(int partid){
+    Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,partid);
+    switch (rec_mountings->type){
+        case MOUNTINGS_MOUSE:
+            return STR_BUF("鼠标");
+        case MOUNTINGS_KEYBOARD:
+            return STR_BUF("键盘");
+        case MOUNTINGS_MEMORY:
+            return STR_BUF("内存");
+        case MOUNTINGS_GRAPHICS_CARD:
+            return STR_BUF("显卡");
+        case MOUNTINGS_HARD_DISK:
+            return STR_BUF("硬盘");
+        case MOUNTINGS_CPU:
+            return STR_BUF("CPU");
+        case MOUNTINGS_SCREEN:
+            return STR_BUF("屏幕");
+    }
+}///得到物品种类

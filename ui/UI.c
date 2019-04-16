@@ -11,6 +11,12 @@
 #include "scene/AppendOrder.h"
 #include "scene/ChooseGuest.h"
 #include "scene/RecordInput.h"
+#include "scene/StatisticsSituation.h"
+#include "scene/TotalGift.h"
+#include "scene/Profit.h"
+#include "scene/Singleitem.h"
+#include "scene/Items.h"
+#include "scene/MassIncrease.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -57,6 +63,24 @@ void UI_mainLoop() {
             case SCENE_RECORD_INPUT:
                 RecordInput_inLoop();
                 break;
+            case SCENE_STATISTICS_SITUATION:
+                StatisticsSituation_inLoop();
+                break;
+            case SCENE_PROFIT_SITUATION:
+                Profit_inLoop();
+                break;
+            case SCENE_TOTAL_GIFT:
+                TotalGift_inLoop();
+                break;
+            case SCENE_SINGLEITEM:
+                Singleitem_inLoop();
+                break;
+            case SCENE_ITEMS:
+                Items_inLoop();
+                break;
+            case SCENE_MASSINCREASE:
+                MassIncrease_inLoop();
+                break;
             default:
                 return;
         }
@@ -88,6 +112,19 @@ int UI_renderScene(int line) {
             return ChooseGuest_render(line);
         case SCENE_RECORD_INPUT:
             return RecordInput_render(line);
+        case SCENE_STATISTICS_SITUATION:
+            return StatisticsSituation_render(line);
+        case SCENE_PROFIT_SITUATION:
+            return Profit_render(line);
+        case SCENE_TOTAL_GIFT:
+            return  TotalGift_render(line);
+        case SCENE_SINGLEITEM:
+            return Singleitem_render(line);
+        case SCENE_ITEMS:
+            return Items_render(line);
+        case SCENE_MASSINCREASE:
+            return MassIncrease_render(line);
+            // 注册
         default:
             return 0;
     }
