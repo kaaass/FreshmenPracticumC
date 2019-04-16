@@ -19,18 +19,31 @@ size_t UI_stringWidth(stringbuf str) {
 
 /**
  * 打印居中字符串
- * @param str
- * @param 待打印行
+ * @param str 待打印行
  * @return
  */
 void UI_printMidString(stringbuf str, int lineNo) {
-    int blanks = (int) (CON_WIDTH / 2 - UI_stringWidth(str) / 2);
+    UI_printMidStringAt(str, 0, 0, CON_WIDTH, lineNo);
+    putchar('\n');
+}
+
+/**
+ * 打印任意位置居中字符串
+ * @param str 待打印行
+ * @param x
+ * @param y
+ * @param w 宽度
+ * @param lineNo
+ * @return
+ */
+void UI_printMidStringAt(stringbuf str, int x, int y, int w, int lineNo) {
+    int blanks = w / 2 - UI_stringWidth(str) / 2;
     Position pos = {
-            .x = blanks,
-            .y = lineNo
+            .x = x + blanks,
+            .y = y + lineNo
     };
     UI_moveCursor(pos);
-    printf("%s\n", CSTR(str));
+    printf("%s", CSTR(str));
 }
 
 /**

@@ -10,6 +10,8 @@
 #include "../../data/DataManager.h"
 #include "About.h"
 #include "View.h"
+#include "AppendOrder.h"
+#include "RecordInput.h"
 #include "StatisticsSituation.h"
 
 #define MENU_CNT 7
@@ -40,6 +42,9 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
+                case 0:
+                    AppendOrder_init();
+                    break;
                 case 2:
                     View_init();
                     break;

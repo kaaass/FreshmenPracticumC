@@ -88,6 +88,20 @@ void test_pop() {
     TEST_ASSERT_EQUAL_INT(3, Database_size(db));
 }
 
+void test_remove() {
+    Test data = {.num = 333,
+                    .str = STR_BUF("rm")};
+    Database_pushBack(db, Data(Test, &data));
+    TEST_ASSERT_EQUAL_INT(4, Database_size(db));
+    ForEach(cur, db) {
+        Test *record = GetData(Test, cur);
+        if (record->num == 333) {
+            Database_removeByCursor(db, cur);
+        }
+    }
+    TEST_ASSERT_EQUAL_INT(3, Database_size(db));
+}
+
 void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
@@ -108,6 +122,7 @@ int main() {
     RUN_TEST(test_get_by_id);
     RUN_TEST(test_arrayToDatabase);
     RUN_TEST(test_pop);
+    RUN_TEST(test_remove);
     RUN_TEST(test_foreach); // 需要是最后一个以释放字符串
 
     Database_destroy(db);

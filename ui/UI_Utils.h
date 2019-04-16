@@ -24,6 +24,8 @@ size_t UI_stringWidth(stringbuf str);
 
 void UI_printMidString(stringbuf str, int lineNo);
 
+void UI_printMidStringAt(stringbuf str, int x, int y, int w, int lineNo);
+
 void UI_moveCursor(Position pos);
 
 Position UI_getCursorPos();
