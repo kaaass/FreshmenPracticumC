@@ -23,6 +23,7 @@ Time Time_parseTime(time_t now) {
     if (now == -1) {
         return result;
     }
+    result.timeStamp = now;
     now += BJS * 60 * 60;
     struct tm *data = gmtime(&now); // UTC 时间
     result.month = data->tm_mon + 1;
@@ -30,7 +31,6 @@ Time Time_parseTime(time_t now) {
     result.hour = data->tm_hour;
     result.minute = data->tm_min;
     result.second = data->tm_sec;
-    result.timeStamp = now;
     return result;
 }
 
