@@ -28,17 +28,17 @@ void test_func() {
     //test insertGift
     TEST_ASSERT(insertGift(sellingRecordset1, 1))
 
-    TEST_ASSERT(insertGift(sellingRecordset2, 2))
+    TEST_ASSERT(insertGift(sellingRecordset2, 1))
     SellingRecord* newSellingRecord = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
     TEST_ASSERT_EQUAL(newSellingRecord->status, SELLING_GIFT);
     TEST_ASSERT_EQUAL(newSellingRecord->partId, 2);
 
-    TEST_ASSERT(insertGift(sellingRecordset3, 3))
+    TEST_ASSERT(insertGift(sellingRecordset3, 1))
     newSellingRecord = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
     TEST_ASSERT_EQUAL(newSellingRecord->status, SELLING_GIFT);
     TEST_ASSERT_EQUAL(newSellingRecord->partId, 1);
 
-    TEST_ASSERT(!insertGift(sellingRecordset4, 4))
+    TEST_ASSERT(!insertGift(sellingRecordset4, 1))
 
 
 }
