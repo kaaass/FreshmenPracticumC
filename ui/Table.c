@@ -187,7 +187,11 @@ bool renderOutOfSight(Table *table) {
 void Table_inLoop(Table *table) {
     int lstCur = table->cur;
     if (READ_SPEC) {
+        // 读入按键并处理
         switch (SPEC_KEY) {
+            /*
+             * 行切换
+             */
             case KEY_UP:
             case KEY_PGUP:
                 if (table->cur == -1) break; // 不渲染选中
@@ -202,6 +206,9 @@ void Table_inLoop(Table *table) {
                 if (table->cur > (int) Database_size(table->columns))
                     table->cur = 1;
                 break;
+            /*
+             * 单元格切换
+             */
             case KEY_LEFT:
                 if (table->columnCur == -1) break; // 不渲染选中
                 table->columnCur--;

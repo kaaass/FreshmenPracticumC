@@ -23,13 +23,14 @@ Time Time_parseTime(time_t now) {
     if (now == -1) {
         return result;
     }
+    result.timeStamp = now;
+    now += BJS * 60 * 60;
     struct tm *data = gmtime(&now); // UTC 时间
     result.month = data->tm_mon + 1;
     result.day = data->tm_mday;
     result.hour = data->tm_hour;
     result.minute = data->tm_min;
     result.second = data->tm_sec;
-    result.timeStamp = now;
     return result;
 }
 
@@ -58,5 +59,8 @@ bool Time_isValid(Time structTime) {
  */
 stringbuf Time_toLocalString(Time structTime) {
     // TODO: 修正为要求的格式
-    return newString(asctime(localtime(&structTime.timeStamp)));
+    char buf[50];
+    sprintf(buf, "%02d月%02d日 %02d:%02d:%02d",
+            structTime.month, structTime.day, structTime.hour, structTime.minute, structTime.second);
+    return newString(buf);
 }
