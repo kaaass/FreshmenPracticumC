@@ -14,25 +14,10 @@
 		{
 			"id": 3,
 			"key": "giftId",
-			"value": "1"
+			"value": "[1, 2, 3, 5]"
 		},
 		{
 			"id": 4,
-			"key": "giftId",
-			"value": "2"
-		},
-		{
-			"id": 5,
-			"key": "giftId",
-			"value": "3"
-		},
-		{
-			"id": 6,
-			"key": "giftId",
-			"value": "5"
-		},
-		{
-			"id": 7,
 			"key": "giftSendingBound2",
 			"value": "2333"
 		}
