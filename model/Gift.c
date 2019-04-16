@@ -3,6 +3,7 @@
 //
 
 #include "Gift.h"
+#include "../core/Config.h"
 
 /**
  * 通过销售记录获取赠送礼品的MountingId
@@ -36,14 +37,13 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
 
         if(compareString(config->key, LITERAL("giftId")) == STRING_EQUAL) {
 
-            int giftId = (int)atoi(CSTR(config->value));
-            Mountings* mountings = GetById(Mountings, MOUNTINGS, giftId);
+            int giftId = Config_optInteger(STR_BUF("giftId"), -1);
             gifts[giftsCount++] = giftId;
 
         } else if(compareString(config->key, LITERAL("giftSendingBound1")) == STRING_EQUAL) {
-            bound1 = (int)atoi(CSTR(config->value));
+            bound1 = Config_optInteger(STR_BUF("giftSendingBound1"), -1);
         } else if(compareString(config->key, LITERAL("giftSendingBound2")) == STRING_EQUAL) {
-            bound2 = (int)atoi(CSTR(config->value));
+            bound2 = Config_optInteger(STR_BUF("giftSendingBound2"), -1);
         }
     }
 
@@ -102,7 +102,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
             .amount = 1,
             .price = mountings->price,
             .time = Time_getNow(),
-            .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId;
+            .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId
     };
     Insert_sellingRecord(&newSellingRecord);
     mountings->amount--;
