@@ -10,6 +10,8 @@
 #include "../../data/DataManager.h"
 #include "About.h"
 #include "View.h"
+#include "AppendOrder.h"
+#include "RecordInput.h"
 #include "StatisticsSituation.h"
 
 #define MENU_CNT 7
@@ -31,6 +33,8 @@ void Welcome_init() {
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
+    // AppendOrder_init();
+    RecordInput_init((RecordParam) {-1});
 }
 
 void Welcome_inLoop() {
@@ -40,6 +44,9 @@ void Welcome_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             // 按下Enter键进入菜单
             switch (mainMenu->cur) {
+                case 0:
+                    AppendOrder_init();
+                    break;
                 case 2:
                     View_init();
                     break;
@@ -74,6 +81,7 @@ int Welcome_render(int line) {
 
 void updateIntro() {
     string instruction = NULL;
+    // 根据菜单选择项更新说明
     switch (mainMenu->cur) {
         case 0:
             instruction = LITERAL("向数据库添加一条购买/进货记录。");

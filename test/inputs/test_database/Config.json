@@ -3,8 +3,8 @@
 	"data": [
 		{
 			"id": 1,
-			"key": "giftValue",
-			"value": "23333"
+			"key": "giftSendingBound1",
+			"value": "233"
 		},
 		{
 			"id": 2,
@@ -14,7 +14,12 @@
 		{
 			"id": 3,
 			"key": "giftId",
-			"value": "1"
+			"value": "[1, 2, 3, 5]"
+		},
+		{
+			"id": 4,
+			"key": "giftSendingBound2",
+			"value": "2333"
 		}
 	]
 }

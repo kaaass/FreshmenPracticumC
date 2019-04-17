@@ -15,7 +15,7 @@ void test_time() {
     $STR_BUF(nowTime);
     TEST_ASSERT_EQUAL_INT(3, test.month);
     TEST_ASSERT_EQUAL_INT(19, test.day);
-    TEST_ASSERT_EQUAL_INT(15, test.hour);
+    TEST_ASSERT_EQUAL_INT(23, test.hour);
     TEST_ASSERT_EQUAL_INT(56, test.minute);
     TEST_ASSERT_EQUAL_INT(40, test.second);
 }
@@ -31,6 +31,14 @@ void test_config() {
     TEST_ASSERT_EQUAL_INT(233, Config_optInteger(LITERAL("int"), 0));
     TEST_ASSERT_EQUAL_FLOAT(233.33, Config_optDouble(LITERAL("double"), 0.0));
     TEST_ASSERT_EQUAL_INT(666, Config_optInteger(LITERAL("null"), 666));
+    // 测试IntArray
+    int arr[] = {233, 666, 114, 514}, n = 4, *got;
+    Config_setIntArray(LITERAL("int_arr"), arr, n);
+    got = Config_getIntArray(LITERAL("int_arr"), &n);
+    TEST_ASSERT_EQUAL_INT(4, n);
+    for (int i = 0; i < n; i++) {
+        TEST_ASSERT_EQUAL_INT(arr[i], got[i]);
+    }
     DataManager_finalize();
 }
 
