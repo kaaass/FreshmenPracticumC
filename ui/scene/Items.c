@@ -1,7 +1,7 @@
 //
 // Created by hasee on 2019/4/13.
 //
-
+/*
 #include <stdio.h>
 #include "Items.h"
 #include "../UI.h"
@@ -92,3 +92,4 @@ void Items_inLoop(){
 int Items_render(int line){
     Table_render(dataTable, line);
 }
+*/
