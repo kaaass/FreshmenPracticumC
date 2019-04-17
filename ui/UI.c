@@ -59,8 +59,8 @@ void UI_mainLoop() {
             case SCENE_SINGLEITEM:
                 Singleitem_inLoop();
                 break;
-            case SCENE_ITEMS:
-                Items_inLoop();
+           // case SCENE_ITEMS:
+             //   Items_inLoop();
                 break;
             default:
                 return;
@@ -93,8 +93,8 @@ int UI_renderScene(int line) {
             return  TotalGift_render(line);
         case SCENE_SINGLEITEM:
             return Singleitem_render(line);
-        case SCENE_ITEMS:
-            return Items_render(line);
+        //case SCENE_ITEMS:
+         //   return Items_render(line);
             // 注册
         default:
             return 0;
