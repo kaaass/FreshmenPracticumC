@@ -15,7 +15,7 @@
 void writeStringToFile(char *filename, stringbuf content) {
     FILE *f = fopen(filename, "w");
     if (f != NULL) {
-        fprintf(f, "%s", CSTR(content));
+        fprintf(f, "%s", U8_CSTR(content));
         fflush(f);
         fclose(f);
     }
