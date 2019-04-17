@@ -8,7 +8,7 @@
 #define FRESHMAN_PROJ_C_DATABASE_H
 
 #define CheckTypeId(typeId, obj) ((obj)->dataType == typeId)
-#define CheckType(type, obj) (CheckTypeId(DATA_TYPE_##type, obj) && sizeof(type) == (obj)->dataSize)
+#define CheckType(type, obj) (CheckTypeId(DATA_TYPE_##type, obj) && (sizeof(type) == (obj)->dataSize))
 #define ForEach(i, db) for(Cursor *i=Database_begin(db);i!=NULL;i=Cursor_next(i))
 #define GetData(type, obj) ((type *) obj->data)
 #define Data(type, obj) (void *) obj,sizeof(type),DATA_TYPE_##type
@@ -46,6 +46,7 @@ typedef struct {
     int dataType; // 当前结点的数据类型
     void *data; // 当前结点的数据
     size_t dataSize; // 当前结点的数据长度
+    DataNode *prev; // 上一个遍历结点
     DataNode *next; // 下一个待遍历结点
 } Cursor;
 
@@ -88,6 +89,8 @@ Cursor *Database_begin(Database *head);
 Cursor *Cursor_next(Cursor *cursor);
 
 bool Cursor_hasNext(Cursor *cursor);
+
+void Database_removeByCursor(Database *db, Cursor *cursor);
 
 void *Database_getById(Database *head, int id);
 

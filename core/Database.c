@@ -196,6 +196,7 @@ Cursor *Database_begin(Database *head) {
     cursor = MALLOC(Cursor);
     cursor->cur = next;
     cursor->next = next->next;
+    cursor->prev = head;
     cursor->dataType = next->dataType;
     cursor->dataSize = next->dataSize;
     cursor->data = next->data;
@@ -215,6 +216,7 @@ Cursor *Cursor_next(Cursor *cursor) {
     if (Cursor_hasNext(cursor))
         return NULL;
     next = cursor->next;
+    cursor->prev = cursor->cur;
     cursor->cur = next;
     cursor->next = next->next;
     cursor->dataType = next->dataType;
@@ -233,6 +235,22 @@ bool Cursor_hasNext(Cursor *cursor) {
     if (cursor->next == NULL)
         return true;
     return false;
+}
+
+/**
+ * 删除数据库项目并释放内存
+ * @param cursor
+ */
+void Database_removeByCursor(Database *db, Cursor *cursor) {
+    assert(cursor);
+    assert(cursor->prev);
+    Database_destroyItem(cursor->cur);
+    cursor->prev->next = cursor->next;
+    Header *header = GetData(Header, db);
+    header->cnt--;
+    if (cursor->next == NULL) {
+        header->tail = cursor->prev;
+    }
 }
 
 /**

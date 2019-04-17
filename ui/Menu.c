@@ -94,6 +94,17 @@ void Menu_inLoop(Menu *menu) {
 }
 
 /**
+ * 设置菜单项目文字并更新绘制
+ * @param menu
+ * @param idx 更改文字的项目
+ * @param text 更改的文字
+ */
+void Menu_setItemText(Menu *menu, int idx, stringbuf text) {
+    freeAssign(&menu->name[idx], text);
+    Menu_render(menu, menu->line);
+}
+
+/**
  * 设置菜单当前显示的项目
  * @param menu
  * @param cur 当前显示项目，0开始，若等于num则无选择项目
