@@ -38,7 +38,7 @@ void MassIncrease_init(){
             STR_BUF("    退出系统")
     };
     miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
-    UI_startScene(SCENE_MASSINCREASE,STR_BUF("首页>批量增加"));
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("批量增加"));
 }
 
 void MassIncrease_inLoop(){
@@ -48,27 +48,21 @@ void MassIncrease_inLoop(){
         if(SPEC_KEY == KEY_ENTER){
             switch (miMenu->cur) {
                 case 0:
-                    printf("请输入导入文件的路径：");
                     CreatData_Guest();
                     break;
                 case 1:
-                    printf("请输入导入文件的路径：");
                     CreatData_Provider();
                     break;
                 case 2:
-                    printf("请输入导入文件的路径：");
                     CreatData_Mountings();
                     break;
                 case 3:
-                    printf("请输入导入文件的路径：");
                     CreatData_SellingRecord();
                     break;
                 case 4:
-                    printf("请输入导入文件的路径：");
                     CreatData_PurchaseRecord();
                     break;
                 case 5:
-                    printf("请输入导入文件的路径：");
                     CreatData_Order();
                     break;
                 case 6:
@@ -125,6 +119,12 @@ void updatePrint(){
 }
 
 void CreatData_Guest(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+            };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("客户"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
@@ -146,6 +146,12 @@ void CreatData_Guest(){
 }
 
 void CreatData_Provider(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+    };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("供货商"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
@@ -167,6 +173,12 @@ void CreatData_Provider(){
 }
 
 void CreatData_Mountings(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+    };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("零部件"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
@@ -188,6 +200,12 @@ void CreatData_Mountings(){
 }
 
 void CreatData_SellingRecord(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+    };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("销售记录"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
@@ -209,6 +227,12 @@ void CreatData_SellingRecord(){
 }
 
 void CreatData_PurchaseRecord(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+    };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("购买记录"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
@@ -230,6 +254,12 @@ void CreatData_PurchaseRecord(){
 }
 
 void CreatData_Order(){
+    READ_SPEC = true;
+    stringbuf name[] = {
+            STR_BUF("    请输入导入文件路径：\n"),
+    };
+    miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
+    UI_startScene(SCENE_MASSINCREASE,STR_BUF("订单"));
     cJSON *json;
     char Approach[200];
     scanf("%[^\n]",Approach);
