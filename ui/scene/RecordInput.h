@@ -6,14 +6,7 @@
 #define FRESHMAN_PROJ_C_RECORDINPUT_H
 
 #include "../../util/Time.h"
-
-typedef struct {
-    int partId;
-    int amount;
-    double price;
-    double total;
-    Time time;
-} RecordParam;
+#include "../../model/Insert.h"
 
 #define SCENE_RECORD_INPUT 7
 

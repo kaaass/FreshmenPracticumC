@@ -31,4 +31,6 @@ typedef struct {
     double price;
 } Mountings;
 
+stringbuf Mountings_getTypeString(enum MountingsType);
+
 #endif //FRESHMAN_PROJ_C_TABLEMOUNTINGS_H

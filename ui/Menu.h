@@ -23,7 +23,7 @@ int Menu_render(Menu *menu, int line);
 
 void Menu_inLoop(Menu *);
 
-void Menu_setItemText(Menu *, int, stringbuf);
+void Menu_setItemText(Menu *menu, int idx, stringbuf text, bool reRender);
 
 void Menu_setCur(Menu *, int cur);
 
