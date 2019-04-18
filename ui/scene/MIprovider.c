@@ -20,7 +20,7 @@ Menu *providerMenu;
 void MIprovider_init(){
     READ_SPEC = true;
     stringbuf name[] = {
-            STR_BUF("\n"),
+            STR_BUF("请输入文件路径"),
     };
     providerMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_MIPROVIDER,STR_BUF("供货商"));
@@ -34,17 +34,19 @@ void MIprovider_inLoop(){
     stringbuf path, content;
     // 默认数据库创建
     if (!isExist(CSTR(dir))) {
-        DataManager_reset();
-        DataManager_save(dir);
+        string instruction = LITERAL("文件不存在，按Esc返回上一页面");
+        UI_setFooterUpdate(instruction);
     }
     // Provider
-    path = LITERAL("/Provider.json");
-    path = concat(2, dir, path);
-    content = readStringFromFile(CSTR(path));
-    json = cJSON_Parse(U8_CSTR(content));
-    DeserializeDB(Provider, PROVIDER, json);
-    cJSON_Delete(json);
-    $STR_BUF(path);
+    else{
+        path = LITERAL("/Provider.json");
+        path = concat(2, dir, path);
+        content = readStringFromFile(CSTR(path));
+        json = cJSON_Parse(U8_CSTR(content));
+        DeserializeDB(Provider, PROVIDER, json);
+        cJSON_Delete(json);
+        $STR_BUF(path);
+    }
 }
 
 int MIprovider_render(int line){
