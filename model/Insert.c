@@ -108,6 +108,8 @@ void Insert_order(Order *data) {
  * @return
  */
 bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderType, float totalPrice, stringbuf *info) {
+    // 账户余额不能是负的
+
     return true;
 }
 
