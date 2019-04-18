@@ -5,7 +5,7 @@
 #ifndef FRESHMAN_PROJ_C_BROWSING_H
 #define FRESHMAN_PROJ_C_BROWSING_H
 
-#define SCENE_BROWSING 3
+#define SCENE_BROWSING 9
 
 void Browsing_init();
 
