@@ -20,7 +20,7 @@ Menu *orderMenu;
 void MIorder_init(){
     READ_SPEC = true;
     stringbuf name[] = {
-            STR_BUF("\n"),
+
     };
     orderMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_MIORDER,STR_BUF("销售记录"));
@@ -34,8 +34,7 @@ void MIorder_inLoop(){
     stringbuf path, content;
     // 默认数据库创建
     if (!isExist(CSTR(dir))) {
-        DataManager_reset();
-        DataManager_save(dir);
+        printf("找不到文件");
     }
     // Order
     path = LITERAL("/Order.json");
