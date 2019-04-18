@@ -14,6 +14,7 @@
 #include "scene/Singleitem.h"
 #include "scene/Items.h"
 #include "scene/MassIncrease.h"
+#include "scene/Browsing.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -65,6 +66,9 @@ void UI_mainLoop() {
                 break;
             case SCENE_MASSINCREASE:
                 MassIncrease_inLoop();
+                break;
+            case SCENE_BROWSING:
+                Browsing_init();
                 break;
             default:
                 return;

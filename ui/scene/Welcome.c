@@ -12,6 +12,7 @@
 #include "View.h"
 #include "StatisticsSituation.h"
 #include "MassIncrease.h"
+#include "Browsing.h"
 
 #define MENU_CNT 7
 
@@ -45,7 +46,7 @@ void Welcome_inLoop() {
                     MassIncrease_init();
                     break;
                 case 2:
-                    View_init();
+                    Browsing_init();
                     break;
                 case 3:
                     StatisticsSituation_init();
