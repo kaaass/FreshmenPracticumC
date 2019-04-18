@@ -74,7 +74,7 @@ void UI_mainLoop() {
                 MassIncrease_inLoop();
                 break;
             case SCENE_BROWSING:
-                Browsing_inLoop();
+//                Browsing_inLoop();
                 break;
             case SCENE_MIGUEST:
                 MIguest_inLoop();

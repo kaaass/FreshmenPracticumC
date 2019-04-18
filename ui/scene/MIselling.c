@@ -47,6 +47,8 @@ void MIselling_inLoop(){
         cJSON_Delete(json);
         $STR_BUF(path);
     }
+    if(SPEC_KEY == KEY_ESC)
+        UI_endScene();
 }
 
 int MIselling_render(int line){
