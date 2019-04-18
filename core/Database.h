@@ -90,7 +90,11 @@ Cursor *Cursor_next(Cursor *cursor);
 
 bool Cursor_hasNext(Cursor *cursor);
 
+void Database_modifyById(Database *head, int id, void *data, size_t size, int type);
+
 void Database_removeByCursor(Database *db, Cursor *cursor);
+
+Cursor *Database_getCursorById(Database *head, int id);
 
 void *Database_getById(Database *head, int id);
 

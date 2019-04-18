@@ -90,7 +90,7 @@ Database *Database_pop(Database *head) {
     if (header->cnt < 1)
         return head;
     cur = head;
-    while(cur->next != NULL && cur->next->next != NULL) {
+    while (cur->next != NULL && cur->next->next != NULL) {
         cur = cur->next;
     }
     Database_destroyItem(cur->next);
@@ -121,7 +121,7 @@ size_t Database_size(Database *head) {
  * 释放链表结点
  * @param cur
  */
-void Database_destroyItem(DataNode* cur) {
+void Database_destroyItem(DataNode *cur) {
     if (cur == NULL)
         return;
     // 释放字符串
@@ -254,21 +254,64 @@ void Database_removeByCursor(Database *db, Cursor *cursor) {
 }
 
 /**
+ * 由ID修改数据库对应结点的内容
+ * @param head
+ * @param id
+ * @param data
+ * @return
+ */
+void Database_modifyById(Database *head, int id, void *data, size_t size, int type) {
+    assert(head);
+    assert(id ^ ID_LIKE);
+    Cursor *cur = Database_getCursorById(head, id);
+    if (cur == NULL)
+        return;
+    DataNode *node = MALLOC(DataNode);
+    void *newData = NULL;
+    newData = malloc(size);
+    memcpy(newData, data, size);
+    node->dataType = type;
+    node->dataSize = size;
+    node->data = newData;
+    node->next = cur->next;
+    // 分配ID
+    IdLike *idLike = newData;
+    idLike->id = ((IdLike *) cur->data)->id;
+    // 删除旧结点
+    Database_destroyItem(cur->cur);
+    // 更换新节点
+    cur->prev->next = node;
+}
+
+/**
+ * 由ID获得数据库对应节点的迭代器
+ * @param head
+ * @param id
+ * @return
+ */
+Cursor *Database_getCursorById(Database *head, int id) {
+    assert(head);
+    assert(id ^ ID_LIKE);
+    ForEach(cur, head) {
+        IdLike *node = GetData(IdLike, cur);
+        if (node->id == id) {
+            return cur;
+        }
+    }
+    return NULL;
+}
+
+/**
  * 由ID获得数据库对应节点
  * @param head
  * @param id
  * @return
  */
 void *Database_getById(Database *head, int id) {
-    assert(head);
-    assert(id ^ ID_LIKE);
-    ForEach(cur, head) {
-        IdLike *node = GetData(IdLike, cur);
-        if (node->id == id) {
-            return node;
-        }
-    }
-    return NULL;
+    Cursor *cur = Database_getCursorById(head, id);
+    if (cur == NULL)
+        return NULL;
+    return cur->data;
 }
 
 /**
