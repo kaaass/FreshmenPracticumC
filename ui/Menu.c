@@ -98,10 +98,12 @@ void Menu_inLoop(Menu *menu) {
  * @param menu
  * @param idx 更改文字的项目
  * @param text 更改的文字
+ * @param reRender 是否重绘
  */
-void Menu_setItemText(Menu *menu, int idx, stringbuf text) {
+void Menu_setItemText(Menu *menu, int idx, stringbuf text, bool reRender) {
     freeAssign(&menu->name[idx], text);
-    Menu_render(menu, menu->line);
+    if (reRender)
+        Menu_render(menu, menu->line);
 }
 
 /**

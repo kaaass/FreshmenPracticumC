@@ -97,3 +97,26 @@ void Insert_order(Order *data) {
     assert(data);
     Database_pushBack(ORDER, Data(Order, data));
 }
+
+/**
+ * 订单添加的正确性检查
+ * @param records
+ * @param curGuest
+ * @param orderType
+ * @param totalPrice
+ * @param info
+ * @return
+ */
+bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderType, float totalPrice, stringbuf *info) {
+    return true;
+}
+
+/**
+ * 订单添加逻辑
+ * @param records
+ * @param curGuest
+ * @param orderType
+ */
+void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType orderType) {
+    // TODO: 若进货需要更新mountings的价格，增礼逻辑
+}

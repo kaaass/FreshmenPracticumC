@@ -81,9 +81,10 @@ void ChooseGuest_init(int guestId, int type) {
 }
 
 void updateMenuText() {
-    Menu_setItemText(createGuestMenu, 0, concat(2, LITERAL("姓名："), tempGuest.name));
-    Menu_setItemText(createGuestMenu, 1, concat(2, LITERAL("电话："), tempGuest.phone));
+    Menu_setItemText(createGuestMenu, 0, concat(2, LITERAL("姓名："), tempGuest.name), false);
+    Menu_setItemText(createGuestMenu, 1, concat(2, LITERAL("电话："), tempGuest.phone), true);
     // freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
+    UI_render();
 }
 
 void updateGuestTable() {
@@ -186,18 +187,12 @@ void ChooseGuest_inLoopCreate() {
         if (SPEC_KEY == KEY_ENTER) {
             switch (createGuestMenu->cur) {
                 case 0: // 输入名称
-                    UI_setFooterUpdate(LITERAL("请输入名称："));
-                    UI_setCursorVisible(true);
-                    freeAssign(&tempGuest.name, readLine());
+                    freeAssign(&tempGuest.name, UI_inputString(LITERAL("请输入名称：")));
                     updateMenuText();
-                    UI_render();
                     break;
                 case 1: // 输入电话
-                    UI_setFooterUpdate(LITERAL("请输入电话："));
-                    UI_setCursorVisible(true);
-                    freeAssign(&tempGuest.phone, readLine());
+                    freeAssign(&tempGuest.phone, UI_inputString(LITERAL("请输入电话：")));
                     updateMenuText();
-                    UI_render();
                     break;
                 case 2: // 添加
                     // 校验
