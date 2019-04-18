@@ -58,9 +58,28 @@ bool Time_isValid(Time structTime) {
  * @return
  */
 stringbuf Time_toLocalString(Time structTime) {
-    // TODO: 修正为要求的格式
     char buf[50];
     sprintf(buf, "%02d月%02d日 %02d:%02d:%02d",
             structTime.month, structTime.day, structTime.hour, structTime.minute, structTime.second);
     return newString(buf);
+}
+
+/**
+ * 获得对应时间的时间戳
+ * @param sTime 时间结构体
+ * @return
+ */
+Time Time_getTimestamp(Time sTime) {
+    struct tm tmTime = {
+            .tm_year = 2019 - 1900,
+            .tm_mon = sTime.month - 1,
+            .tm_mday = sTime.day,
+            .tm_hour = sTime.hour,
+            .tm_min = sTime.minute,
+            .tm_sec = sTime.second
+    };
+    time_t ts = mktime(&tmTime);
+    // ts -= BJS * 60 * 60;
+    sTime.timeStamp = ts;
+    return sTime;
 }

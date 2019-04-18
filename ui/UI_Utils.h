@@ -6,6 +6,7 @@
 #define FRESHMAN_PROJ_C_UI_UTILS_H
 
 #include "../util/StringUtil.h"
+#include "../util/Time.h"
 
 #ifdef _WIN32
 #include <conio.h>
@@ -25,6 +26,14 @@ size_t UI_stringWidth(stringbuf str);
 void UI_printMidString(stringbuf str, int lineNo);
 
 void UI_printMidStringAt(stringbuf str, int x, int y, int w, int lineNo);
+
+bool UI_inputInt(int *num, string tip);
+
+bool UI_inputDouble(double *num, string tip);
+
+bool UI_inputTime(Time *sTime, string tip);
+
+stringbuf UI_inputString(string tip);
 
 void UI_moveCursor(Position pos);
 

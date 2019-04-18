@@ -4,9 +4,11 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "UI_Utils.h"
 #include "UI.h"
+#include "../util/Time.h"
 
 /**
  * 字符串显示长度计算
@@ -52,6 +54,88 @@ void UI_printMidStringAt(stringbuf str, int x, int y, int w, int lineNo) {
  */
 void UI_blanks(int cnt) {
     while (cnt--) putchar(' ');
+}
+
+/**
+ * 读入整数
+ * @param num 保存结果的指针
+ * @param tip 输入提示，若NULL则为默认
+ * @return
+ */
+bool UI_inputInt(int *num, string tip) {
+    bool status;
+    assert(num);
+    if (tip == NULL)
+        tip = LITERAL("请输入整数：");
+    UI_setFooterUpdate(tip);
+    UI_setCursorVisible(true);
+    status = scanf("%d", num) == 1;
+    fflush(stdin);
+    return status;
+}
+
+/**
+ * 读入浮点数
+ * @param num 保存结果的指针
+ * @param tip 输入提示，若NULL则为默认
+ * @return
+ */
+bool UI_inputDouble(double *num, string tip) {
+    bool status;
+    assert(num);
+    if (tip == NULL)
+        tip = LITERAL("请输入浮点数：");
+    UI_setFooterUpdate(tip);
+    UI_setCursorVisible(true);
+    status = scanf("%lf", num) == 1;
+    fflush(stdin);
+    return status;
+}
+
+/**
+ * 读入时间
+ * @param num 保存结果的指针
+ * @param tip 输入提示，若NULL则为默认，暂时会忽略
+ * @return
+ */
+bool UI_inputTime(Time *sTime, string tip) {
+    // TODO: 改进时间的输入方式
+    bool status;
+    Time temp;
+    assert(sTime);
+    status = UI_inputInt(&temp.month, LITERAL("请输入月份："))
+            && temp.month >= 1 && temp.month <= 12;
+    if (status)
+        status &= UI_inputInt(&temp.day, LITERAL("请输入日期："))
+                && temp.day >= 1 && temp.day <= 31;
+    if (status)
+        status &= UI_inputInt(&temp.hour, LITERAL("请输入小时："))
+                && temp.hour >= 0 && temp.hour <= 23;
+    if (status)
+        status &= UI_inputInt(&temp.minute, LITERAL("请输入分钟："))
+                && temp.minute >= 0 && temp.minute <= 59;
+    if (status)
+        status &= UI_inputInt(&temp.second, LITERAL("请输入秒："))
+                && temp.second >= 0 && temp.second <= 59;
+    *sTime = Time_getTimestamp(temp);
+    return status;
+}
+
+/**
+ * 读入字符串
+ * @param str 保存结果的指针
+ * @param tip 输入提示，若NULL则为默认
+ * @return
+ */
+stringbuf UI_inputString(string tip) {
+    stringbuf str;
+    if (tip == NULL)
+        tip = LITERAL("请输入字符串：");
+    UI_setFooterUpdate(tip);
+    UI_setCursorVisible(true);
+    str = readLine();
+    UI_setCursorVisible(false);
+    return str;
 }
 
 #ifdef _WIN32
@@ -124,3 +208,4 @@ void UI_setCursorVisible(bool visible) {}
 void UI_setTitle(string title) {}
 void UI_setTextColor(short color) {}
 #endif // _WIN32
+#pragma clang diagnostic pop
