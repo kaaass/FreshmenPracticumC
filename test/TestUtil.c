@@ -18,6 +18,8 @@ void test_time() {
     TEST_ASSERT_EQUAL_INT(23, test.hour);
     TEST_ASSERT_EQUAL_INT(56, test.minute);
     TEST_ASSERT_EQUAL_INT(40, test.second);
+    test = Time_getTimestamp(test);
+    TEST_ASSERT_EQUAL_INT(1553011000, test.timeStamp);
 }
 
 void test_config() {
