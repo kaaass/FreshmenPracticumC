@@ -78,7 +78,7 @@ Database *Database_pop(Database *head);
 
 size_t Database_size(Database *head);
 
-void Database_destroyItem(DataNode* cur);
+void Database_destroyItem(DataNode *cur, bool protectNode);
 
 void Database_destroy(Database *head);
 

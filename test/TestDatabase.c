@@ -102,6 +102,14 @@ void test_remove() {
     TEST_ASSERT_EQUAL_INT(3, Database_size(db));
 }
 
+void test_modify() {
+    Test newData = {.num = 999,
+            .str = STR_BUF("modify")}, *test;
+    Database_modifyById(db, 3, Data(Test, &newData));
+    test = GetById(Test, db, 3);
+    TEST_ASSERT_EQUAL_INT(999, test->num);
+}
+
 void test_foreach() {
     int cnt = 0;
     ForEach(cur, db) {
@@ -123,6 +131,7 @@ int main() {
     RUN_TEST(test_arrayToDatabase);
     RUN_TEST(test_pop);
     RUN_TEST(test_remove);
+    RUN_TEST(test_modify);
     RUN_TEST(test_foreach); // 需要是最后一个以释放字符串
 
     Database_destroy(db);

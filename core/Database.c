@@ -93,7 +93,7 @@ Database *Database_pop(Database *head) {
     while (cur->next != NULL && cur->next->next != NULL) {
         cur = cur->next;
     }
-    Database_destroyItem(cur->next);
+    Database_destroyItem(cur->next, false);
     cur->next = NULL;
     header->tail = cur;
     header->cnt--;
@@ -121,7 +121,7 @@ size_t Database_size(Database *head) {
  * 释放链表结点
  * @param cur
  */
-void Database_destroyItem(DataNode *cur) {
+void Database_destroyItem(DataNode *cur, bool protectNode) {
     if (cur == NULL)
         return;
     // 释放字符串
@@ -148,7 +148,11 @@ void Database_destroyItem(DataNode *cur) {
         default:
             break;
     }
-    free(cur);
+    if (protectNode) {
+        cur->data = NULL;
+    } else {
+        free(cur);
+    }
 }
 
 /**
@@ -159,7 +163,7 @@ void Database_destroyItem(DataNode *cur) {
 void Database_destroy(Database *head) {
     assert(head);
     ForEach(cur, head) {
-        Database_destroyItem(cur->cur);
+        Database_destroyItem(cur->cur, false);
     }
     free(head->data); // 释放表头信息
     free(head);
@@ -172,7 +176,7 @@ void Database_destroy(Database *head) {
 void Database_clear(Database *head) {
     Header *header = GetData(Header, head);
     ForEach(cur, head) {
-        Database_destroyItem(cur->cur);
+        Database_destroyItem(cur->cur, false);
     }
     header->cnt = 0;
     header->tail = head;
@@ -244,7 +248,7 @@ bool Cursor_hasNext(Cursor *cursor) {
 void Database_removeByCursor(Database *db, Cursor *cursor) {
     assert(cursor);
     assert(cursor->prev);
-    Database_destroyItem(cursor->cur);
+    Database_destroyItem(cursor->cur, false);
     cursor->prev->next = cursor->next;
     Header *header = GetData(Header, db);
     header->cnt--;
@@ -267,20 +271,15 @@ void Database_modifyById(Database *head, int id, void *data, size_t size, int ty
     if (cur == NULL)
         return;
     DataNode *node = MALLOC(DataNode);
-    void *newData = NULL;
-    newData = malloc(size);
+    void *newData = malloc(size);
     memcpy(newData, data, size);
-    node->dataType = type;
-    node->dataSize = size;
-    node->data = newData;
-    node->next = cur->next;
     // 分配ID
     IdLike *idLike = newData;
     idLike->id = ((IdLike *) cur->data)->id;
     // 删除旧结点
-    Database_destroyItem(cur->cur);
+    Database_destroyItem(cur->cur, true);
     // 更换新节点
-    cur->prev->next = node;
+    cur->cur->data = newData;
 }
 
 /**
