@@ -15,6 +15,12 @@
 #include "scene/Items.h"
 #include "scene/MassIncrease.h"
 #include "scene/Browsing.h"
+#include "scene/MIguest.h"
+#include "scene/MIprovider.h"
+#include "scene/MImountings.h"
+#include "scene/MIorder.h"
+#include "scene/MIselling.h"
+#include "scene/MIpurchase.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -68,7 +74,25 @@ void UI_mainLoop() {
                 MassIncrease_inLoop();
                 break;
             case SCENE_BROWSING:
-                Browsing_init();
+                Browsing_inLoop();
+                break;
+            case SCENE_MIGUEST:
+                MIguest_inLoop();
+                break;
+            case SCENE_MIPROVIDER:
+                MIprovider_inLoop();
+                break;
+            case SCENE_MIPURCHASE:
+                MIpurchase_inLoop();
+                break;
+            case SCENE_MIORDER:
+                MIorder_inLoop();
+                break;
+            case SCENE_MISELLING:
+                MIselling_inLoop();
+                break;
+            case SCENE_MIMOUNTINGS:
+                MImountings_inLoop();
                 break;
             default:
                 return;
@@ -105,6 +129,18 @@ int UI_renderScene(int line) {
             return Items_render(line);
         case SCENE_MASSINCREASE:
             return MassIncrease_render(line);
+        case SCENE_MIGUEST:
+            return MIguest_render(line);
+        case SCENE_MIPROVIDER:
+            return MIprovider_render(line);
+        case SCENE_MIMOUNTINGS:
+            return MImountings_render(line);
+        case SCENE_MIORDER:
+            return MIorder_render(line);
+        case SCENE_MISELLING:
+            return MIselling_render(line);
+        case SCENE_MIPURCHASE:
+            return MIpurchase_render(line);
             // 注册
         default:
             return 0;
