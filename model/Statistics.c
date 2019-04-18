@@ -38,6 +38,8 @@ double Purchase_total() {
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
         if (record->status == 0 )
             total = record->total + total;
+        if(record->status == 2)
+            total = -record->total + total;
     }
     return total;
 }//得到所有进货的价钱
