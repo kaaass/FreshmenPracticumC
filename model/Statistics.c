@@ -15,9 +15,7 @@
 #include "../externals/cstring_jslike/cstring_jslike.h"
 #define type_num 5//零部件的种类数
 
-#define DATA_TYPE_PurchasePot 10
-#define DATA_TYPE_SellPot 11
-#define DATA_TYPE_Present_Situation 12
+
 
 int compareGift_situation (const void * a, const void * b){
     if ( ((Present_Situation*)a)->time_recording.timeStamp <  ((Present_Situation*)b)->time_recording.timeStamp ) return -1;
@@ -81,7 +79,7 @@ Database* Gift_situation(){
 }//这是得到礼物的总情况,下面输出特定的礼物要提前用此函数
 
 Database * sort_gift(){
-    Database*GIFT=Gift_situation();
+    Database *GIFT=Gift_situation();
     Present_Situation * gift_situation[1000];
     int num=0;
     ForEach(cur, GIFT){
@@ -92,22 +90,6 @@ Database * sort_gift(){
     qsort(gift_situation,num, sizeof(Present_Situation*),compareGift_situation);
     return arrayToDatabase(Data(Present_Situation, gift_situation),num);
 }//直接用此函数即可，上面Gift_situation()不用用；
-
-Database * Search_gift(enum MountingsType type){
-    Database *db=sort_gift();
-    Present_Situation *search_gift[1000];
-    int num=0;
-    ForEach(cur, db){
-        Present_Situation *record = GetData(Present_Situation,cur);
-        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
-        if(rec_mountings->type==type)
-        {
-            search_gift[num]=record;
-            num++;
-        }
-    }
-    return arrayToDatabase(Data(Present_Situation, search_gift),num);
-}//搜索某件物品的情况
 
 Database * Print_Sellingrecord(Time a,Time b){
     if(a.timeStamp>b.timeStamp)
@@ -214,3 +196,74 @@ stringbuf typename(int partid){
             return STR_BUF("屏幕");
     }
 }///得到物品种类
+
+stringbuf typenamebytype(enum MountingsType type){
+    switch (type){
+        case MOUNTINGS_MOUSE:
+            return STR_BUF("鼠标");
+        case MOUNTINGS_KEYBOARD:
+            return STR_BUF("键盘");
+        case MOUNTINGS_MEMORY:
+            return STR_BUF("内存");
+        case MOUNTINGS_GRAPHICS_CARD:
+            return STR_BUF("显卡");
+        case MOUNTINGS_HARD_DISK:
+            return STR_BUF("硬盘");
+        case MOUNTINGS_CPU:
+            return STR_BUF("CPU");
+        case MOUNTINGS_SCREEN:
+            return STR_BUF("屏幕");
+    }
+}///得到物品种类(通过枚举类型)
+
+Database * Search_gift(int partid){
+    Database *db=sort_gift();
+    Present_Situation *search_gift[1000];
+    int num=0;
+    ForEach(cur, db){
+        Present_Situation *record = GetData(Present_Situation,cur);
+        Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+        if(partid==record->partId)
+        {
+            search_gift[num]=record;
+            num++;
+        }
+    }
+    return arrayToDatabase(Data(Present_Situation, search_gift),num);
+}//搜索某件物品的情况
+
+Database * Search_amount_gift(){
+    Database * AMOUNTGIFT=NULL;
+    AMOUNTGIFT = Create(SingleGift);
+    int count=0;
+    while(count<1000){
+        Database *db=Search_gift(count);
+        if(db==NULL)
+        {
+            count++;
+            continue;
+        }
+        SingleGift searchgift;
+        searchgift.total=0;
+        searchgift.amount=0;
+        bool flag=false;
+        //double total=0;
+        //int amount=0;
+        //stringbuf name;
+        ForEach(cur, db){
+            flag = true;
+            Present_Situation *record = GetData(Present_Situation,cur);
+            Mountings *rec_mountings = GetById(Mountings,MOUNTINGS,record->partId);
+            searchgift.type = rec_mountings->type;
+            searchgift.name = rec_mountings->name;
+            searchgift.total += record->AMOUNT;
+            searchgift.amount += record->amount;
+        }
+        if(flag)
+        {
+            Database_pushBack(AMOUNTGIFT,Data(SingleGift,&searchgift));
+        }
+        count++;
+    }
+    return AMOUNTGIFT;
+}///搜索某件物品的情况,返回值是SingleGift类型的结构体

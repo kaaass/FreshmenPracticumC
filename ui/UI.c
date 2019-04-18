@@ -70,9 +70,6 @@ bool UI_runSceneLoop() {
         case SCENE_SINGLEITEM:
             Singleitem_inLoop();
             break;
-        case SCENE_ITEMS:
-            Items_inLoop();
-            break;
         case SCENE_MASSINCREASE:
             MassIncrease_inLoop();
             break;
@@ -90,6 +87,40 @@ void UI_mainLoop() {
         UI_getSpecKey();
         if (!UI_runSceneLoop())
             break;
+void UI_mainLoop() {
+    UI_init();
+    UI_render();
+    while (true) {
+        UI_setCursorVisible(!READ_SPEC);
+        UI_getSpecKey();
+        switch (NOW_SCENE) {
+            case SCENE_WELCOME:
+                Welcome_inLoop();
+                break;
+            case SCENE_ABOUT:
+                About_inLoop();
+                break;
+            case SCENE_VIEW:
+                View_inLoop();
+                break;
+            case SCENE_STATISTICS_SITUATION:
+                StatisticsSituation_inLoop();
+                break;
+            case SCENE_PROFIT_SITUATION:
+                Profit_inLoop();
+                break;
+            case SCENE_TOTAL_GIFT:
+                TotalGift_inLoop();
+                break;
+            case SCENE_SINGLEITEM:
+                Singleitem_inLoop();
+                break;
+           // case SCENE_ITEMS:
+             //   Items_inLoop();
+                break;
+            default:
+                return;
+        }
     }
 }
 

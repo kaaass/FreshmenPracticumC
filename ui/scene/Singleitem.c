@@ -8,40 +8,54 @@
 #include "../Menu.h"
 #include "../UI_Utils.h"
 #include "Items.h"
-
+#include "../../model/Statistics.h"
+#include "../Table.h"
 Menu *singleMenu;
+Table *dataTable;
 
 void Singleitem_init(){
     READ_SPEC = true;//是否读入上下左右键，读入字符串就要false
-    stringbuf name[] = {
-            STR_BUF("    鼠标"),
-            STR_BUF("    键盘"),
-            STR_BUF("    内存"),
-            STR_BUF("    显卡"),
-            STR_BUF("    硬盘"),
-            STR_BUF("    CPU"),
-            STR_BUF("    显示器")
+    stringbuf columnName[] = {
+            STR_BUF("名称"),
+            STR_BUF("种类"),
+            STR_BUF("总价值"),
+            STR_BUF("数量")
     };
-    singleMenu = Menu_create(-1, 4, name, 7, 0);
+    Database *create = Search_amount_gift();
+    int i=0,num=0;
+    ForEach(cur, create){num++;}
+    stringbuf testData[num][4];
+    ForEach(cur, create){
+        SingleGift *now = GetData(SingleGift, cur);
+        testData[i][0] = now->name;
+        testData[i][1] = typenamebytype(now->type);
+        char ch1[100];
+        sprintf(ch1,"%.2lf",now->total);
+        testData[i][2] = newString(ch1);
+        char ch2[100];
+        sprintf(ch2,"%d",now->amount);
+        testData[i][3] = newString(ch2);
+        i++;
+    };
+    int columnWidth[] = {10, 10, 10,10};
+    dataTable = Table_create(-1, 1, 100, 8, 1, 0);
+    Table_setColumnTitle(dataTable, columnName, columnWidth, 4);
+    for (int j = 0; j < num; j++) Table_pushLine(dataTable, testData[j]);
     UI_startScene(SCENE_SINGLEITEM, STR_BUF("单个浏览"));
-    UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
+    UI_setFooterUpdate(LITERAL("按Enter键返回上一页"));
+
 }
 
-void Singleitem_inLoop(){
+void Singleitem_inLoop() {
     Menu_inLoop(singleMenu);
-    if(READ_SPEC){
-        if(SPEC_KEY == KEY_ESC){
+    if (READ_SPEC) {
+        if (SPEC_KEY == KEY_ENTER) {
+            UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
             UI_endScene();
         }
-        if (SPEC_KEY == KEY_ENTER){
-            Items_init(singleMenu->cur);
-            }
-        }
+    }
 }
 
 int Singleitem_render(int line){
-    UI_printMidString(LITERAL("单个浏览"), line++);
-    putchar('\n'); line += 1;
-    line += Menu_render(singleMenu, line);
-    return line;
+    Table_render(dataTable, line);
 }

@@ -1,7 +1,7 @@
 //
 // Created by hasee on 2019/4/13.
 //
-
+/*
 #ifndef FRESHMAN_PROJ_C_ITEMS_H
 #define FRESHMAN_PROJ_C_ITEMS_H
 
@@ -13,3 +13,4 @@ void Items_inLoop();
 
 int Items_render(int line);
 #endif //FRESHMAN_PROJ_C_ITEMS_H
+*/
