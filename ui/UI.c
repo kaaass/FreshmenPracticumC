@@ -15,7 +15,6 @@
 #include "scene/TotalGift.h"
 #include "scene/Profit.h"
 #include "scene/Singleitem.h"
-#include "scene/Items.h"
 #include "scene/MassIncrease.h"
 
 #define COLOR_FOOTER 0x07
@@ -87,40 +86,6 @@ void UI_mainLoop() {
         UI_getSpecKey();
         if (!UI_runSceneLoop())
             break;
-void UI_mainLoop() {
-    UI_init();
-    UI_render();
-    while (true) {
-        UI_setCursorVisible(!READ_SPEC);
-        UI_getSpecKey();
-        switch (NOW_SCENE) {
-            case SCENE_WELCOME:
-                Welcome_inLoop();
-                break;
-            case SCENE_ABOUT:
-                About_inLoop();
-                break;
-            case SCENE_VIEW:
-                View_inLoop();
-                break;
-            case SCENE_STATISTICS_SITUATION:
-                StatisticsSituation_inLoop();
-                break;
-            case SCENE_PROFIT_SITUATION:
-                Profit_inLoop();
-                break;
-            case SCENE_TOTAL_GIFT:
-                TotalGift_inLoop();
-                break;
-            case SCENE_SINGLEITEM:
-                Singleitem_inLoop();
-                break;
-           // case SCENE_ITEMS:
-             //   Items_inLoop();
-                break;
-            default:
-                return;
-        }
     }
 }
 
@@ -157,8 +122,6 @@ int UI_renderScene(int line) {
             return  TotalGift_render(line);
         case SCENE_SINGLEITEM:
             return Singleitem_render(line);
-        case SCENE_ITEMS:
-            return Items_render(line);
         case SCENE_MASSINCREASE:
             return MassIncrease_render(line);
             // 注册
