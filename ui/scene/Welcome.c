@@ -46,7 +46,7 @@ void Welcome_inLoop() {
                     MassIncrease_init();
                     break;
                 case 2:
-                    Browsing_init();
+//                    Browsing_init();
                     break;
                 case 3:
                     StatisticsSituation_init();

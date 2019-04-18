@@ -20,7 +20,7 @@ Menu *mountingsMenu;
 void MImountings_init(){
     READ_SPEC = true;
     stringbuf name[] = {
-            STR_BUF("\n"),
+            STR_BUF("请输入文件路径"),
     };
     mountingsMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_MIMOUNTINGS,STR_BUF("零部件"));
@@ -34,17 +34,19 @@ void MImountings_inLoop(){
     stringbuf path, content;
     // 默认数据库创建
     if (!isExist(CSTR(dir))) {
-        DataManager_reset();
-        DataManager_save(dir);
+        string instruction = LITERAL("文件不存在，按Esc返回上一页面");
+        UI_setFooterUpdate(instruction);
     }
     // Mountings
-    path = LITERAL("/Mountings.json");
-    path = concat(2, dir, path);
-    content = readStringFromFile(CSTR(path));
-    json = cJSON_Parse(U8_CSTR(content));
-    DeserializeDB(Mountings, MOUNTINGS, json);
-    cJSON_Delete(json);
-    $STR_BUF(path);
+    else{
+        path = LITERAL("/Mountings.json");
+        path = concat(2, dir, path);
+        content = readStringFromFile(CSTR(path));
+        json = cJSON_Parse(U8_CSTR(content));
+        DeserializeDB(Mountings, MOUNTINGS, json);
+        cJSON_Delete(json);
+        $STR_BUF(path);
+    }
 }
 
 int MImountings_render(int line){
