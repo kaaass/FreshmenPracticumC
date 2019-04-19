@@ -3,6 +3,7 @@
 //
 #include "Time.h"
 #include "StringUtil.h"
+#include <stdlib.h>
 
 #define BJS (+8)
 
@@ -78,8 +79,10 @@ Time Time_getTimestamp(Time sTime) {
             .tm_min = sTime.minute,
             .tm_sec = sTime.second
     };
+#ifndef _WIN32
+    setenv("TZ", "Asia/Shanghai", 1);
+#endif
     time_t ts = mktime(&tmTime);
-    // ts -= BJS * 60 * 60;
     sTime.timeStamp = ts;
     return sTime;
 }
