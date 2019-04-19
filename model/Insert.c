@@ -7,6 +7,9 @@
 #include "../data/DataManager.h"
 #include "../data/TableGuest.h"
 #include "../data/TableProvider.h"
+#include "../core/Config.h"
+#include "../data/TableMountings.h"
+#include "Gift.h"
 
 /**
  * 是否存在Guest记录
@@ -77,6 +80,9 @@ void Insert_provider(string name, string phone) {
  */
 void Insert_sellingRecord(SellingRecord *data) {
     assert(data);
+    // 减少库存
+    Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+    mounting->amount -= data->amount;
     Database_pushBack(SELLING_RECORD, Data(SellingRecord, data));
 }
 
@@ -86,6 +92,9 @@ void Insert_sellingRecord(SellingRecord *data) {
  */
 void Insert_purchaseRecord(PurchaseRecord *data) {
     assert(data);
+    // 增加库存
+    Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+    mounting->amount += data->amount;
     Database_pushBack(PURCHASE_RECORD, Data(PurchaseRecord, data));
 }
 
@@ -108,8 +117,24 @@ void Insert_order(Order *data) {
  * @return
  */
 bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderType, float totalPrice, stringbuf *info) {
-    // 账户余额不能是负的
-
+    // 进货时，账户余额不能是负的
+    double accountBalance = Config_optDouble(LITERAL("accountBalance"), 5000000);
+    if (orderType == ORDER_PURCHASE && totalPrice > accountBalance) {
+        *info = STR_BUF("账户余额不能为负！");
+        return false;
+    }
+    // 销售时，货品存量不能为负
+    ForEach(cur, records) {
+        RecordParam *data = GetData(RecordParam, cur);
+        Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+        Provider *provider;
+        if (data->amount > mounting->amount) {
+            provider = GetById(Provider, PROVIDER, mounting->sellerId);
+            *info = concat(3, LITERAL("商品 "), mounting->name
+                    , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
+            return false;
+        }
+    }
     return true;
 }
 
@@ -120,5 +145,62 @@ bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderTy
  * @param orderType
  */
 void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType orderType) {
-    // TODO: 若进货需要更新mountings的价格，增礼逻辑
+    int opId[MAX_OP_ID], opCnt = 0;
+    double totalPrice = 0;
+    int orderId;
+    // 生成订单号
+    orderId = Database_size(ORDER) + 1;
+    // 物品操作
+    ForEach(cur, records) {
+        RecordParam *data = GetData(RecordParam, cur);
+        totalPrice += data->total; // 计算总价
+        // 添加记录
+        if (orderType == ORDER_PURCHASE) { // 进货
+            PurchaseRecord record = {
+                    .partId = data->partId,
+                    .sellerId = curGuest.id,
+                    .amount = data->amount,
+                    .total = data->total,
+                    .price = data->price,
+                    .orderId = orderId,
+                    .status = PURCHASE_NORMAL,
+                    .time = data->time
+            };
+            Insert_purchaseRecord(&record);
+            opId[opCnt++] = Database_size(PURCHASE_RECORD);
+        } else { // 销售
+            SellingRecord record = {
+                    .partId = data->partId,
+                    .guestId = curGuest.id,
+                    .amount = data->amount,
+                    .total = data->total,
+                    .price = data->price,
+                    .orderId = orderId,
+                    .status = SELLING_NORMAL,
+                    .time = data->time
+            };
+            Insert_sellingRecord(&record);
+            opId[opCnt++] = Database_size(SELLING_RECORD);
+        }
+    }
+    // 送礼
+    if (orderType != ORDER_PURCHASE) {
+        if (insertGift(opId, opCnt)) {
+            // 记录下礼品
+            opId[opCnt++] = Database_size(SELLING_RECORD);
+        }
+    }
+    // 插入订单
+    Order order = {
+            .type = orderType,
+            .status = ORDER_NORMAL,
+            .opCount = opCnt,
+            .price = totalPrice
+    };
+    memcpy(order.opId, opId, opCnt * sizeof(int));
+    Insert_order(&order);
+    // 变更账户余额
+    double accountBalance = Config_optDouble(LITERAL("accountBalance"), 5000000);
+    accountBalance += (orderType == ORDER_PURCHASE ? -1: 1) * totalPrice;
+    Config_setDouble(LITERAL("accountBalance"), accountBalance);
 }

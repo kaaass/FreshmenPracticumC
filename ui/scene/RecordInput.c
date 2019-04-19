@@ -95,7 +95,7 @@ void RecordInput_inLoop() {
                         UI_render();
                         break;
                     case 1: // 数量
-                        if (UI_inputInt(&intVal, LITERAL("请输入数量："))) {
+                        if (UI_inputInt(&intVal, LITERAL("请输入数量：")) && intVal > 0) {
                             nowParam.amount = intVal;
                             calcTotal();
                             updateRecordMenuText();
@@ -105,7 +105,7 @@ void RecordInput_inLoop() {
                         }
                         break;
                     case 2: // 价格
-                        if (UI_inputDouble(&doubleVal, LITERAL("请输入单价："))) {
+                        if (UI_inputDouble(&doubleVal, LITERAL("请输入单价：")) && doubleVal > 0) {
                             nowParam.price = doubleVal;
                             calcTotal();
                             updateRecordMenuText();
@@ -115,7 +115,7 @@ void RecordInput_inLoop() {
                         }
                         break;
                     case 3: // 总价
-                        if (UI_inputDouble(&doubleVal, LITERAL("请输入总价："))) {
+                        if (UI_inputDouble(&doubleVal, LITERAL("请输入总价：")) && doubleVal > 0) {
                             nowParam.total = doubleVal;
                             updateRecordMenuText();
                         } else {
