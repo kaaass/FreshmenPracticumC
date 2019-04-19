@@ -136,7 +136,7 @@ bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderTy
         Provider *provider;
         if (data->amount > mounting->amount) {
             provider = GetById(Provider, PROVIDER, mounting->sellerId);
-            *info = concat(3, LITERAL("商品 "), mounting->name
+            *info = concat(5, LITERAL("商品 "), mounting->name
                     , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
             return false;
         }
