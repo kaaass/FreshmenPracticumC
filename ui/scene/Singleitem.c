@@ -27,7 +27,7 @@ void Singleitem_init(){
     ForEach(cur, create){
         SingleGift *now = GetData(SingleGift, cur);
         testData[i][0] = now->name;
-        testData[i][1] = typenamebytype(now->type);
+        testData[i][1] = Mountings_getTypeString(now->type);
         char ch1[100];
         sprintf(ch1,"%.2lf",now->total);
         testData[i][2] = newString(ch1);

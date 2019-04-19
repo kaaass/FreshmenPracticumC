@@ -29,6 +29,8 @@
 #include "scene/BRmountingsout.h"
 #include "scene/BRseller.h"
 #include "scene/BRtime.h"
+#include "scene/ViewPurchase.h"
+#include "scene/ViewSell.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -57,6 +59,12 @@ bool UI_runSceneLoop() {
             break;
         case SCENE_VIEW:
             View_inLoop();
+            break;
+        case SCENE_VIEW_PURCHASE:
+            ViewPurchase_inLoop();
+            break;
+        case SCENE_VIEW_SELL:
+            ViewSell_inLoop();
             break;
         case SCENE_APPEND_ORDER:
             AppendOrder_inLoop();
@@ -158,6 +166,10 @@ int UI_renderScene(int line) {
             return About_render(line);
         case SCENE_VIEW:
             return View_render(line);
+        case SCENE_VIEW_PURCHASE:
+            return ViewPurchase_render(line);
+        case SCENE_VIEW_SELL:
+            return ViewSell_render(line);
         case SCENE_APPEND_ORDER:
             return AppendOrder_render(line);
         case SCENE_SELECT_ORDER_TYPE:
