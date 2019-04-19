@@ -30,9 +30,9 @@ int Insert_hasProvider(string name, string phone);
 
 void Insert_provider(string name, string phone);
 
-void Insert_sellingRecord(SellingRecord *);
+void Insert_sellingRecord(SellingRecord *data, bool change);
 
-void Insert_purchaseRecord(PurchaseRecord *);
+void Insert_purchaseRecord(PurchaseRecord *data, bool change);
 
 void Insert_order(Order *);
 

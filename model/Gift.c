@@ -100,7 +100,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
             .time = Time_getNow(),
             .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId
     };
-    Insert_sellingRecord(&newSellingRecord);
+    Insert_sellingRecord(&newSellingRecord, true);
     mountings->amount--;
     return true;
 }
