@@ -21,6 +21,12 @@
 #include "scene/MIorder.h"
 #include "scene/MIselling.h"
 #include "scene/MIpurchase.h"
+#include "scene/BRguest.h"
+#include "scene/BRmountings.h"
+#include "scene/BRmountingsin.h"
+#include "scene/BRmountingsout.h"
+#include "scene/BRseller.h"
+#include "scene/BRtime.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -74,7 +80,7 @@ void UI_mainLoop() {
                 MassIncrease_inLoop();
                 break;
             case SCENE_BROWSING:
-//                Browsing_inLoop();
+                Browsing_inLoop();
                 break;
             case SCENE_MIGUEST:
                 MIguest_inLoop();
@@ -93,6 +99,24 @@ void UI_mainLoop() {
                 break;
             case SCENE_MIMOUNTINGS:
                 MImountings_inLoop();
+                break;
+            case SCENE_BRTIME:
+                BRtime_inLoop();
+                break;
+            case SCENE_BRSELLER:
+                BRseller_inLoop();
+                break;
+            case SCENE_BRMOUNTINGS:
+                BRmountings_inLoop();
+                break;
+            case SCENE_BRMOUNTINGSIN:
+                BRmountingsin_inLoop();
+                break;
+            case SCENE_BRMOUNTINGSOUT:
+                BRmountingsout_inLoop();
+                break;
+            case SCENE_BRGUEST:
+                BRguest_inLoop();
                 break;
             default:
                 return;
@@ -141,6 +165,20 @@ int UI_renderScene(int line) {
             return MIselling_render(line);
         case SCENE_MIPURCHASE:
             return MIpurchase_render(line);
+        case SCENE_BROWSING:
+            return Browsing_render(line);
+        case SCENE_BRGUEST:
+            return BRguest_render(line);
+        case SCENE_BRMOUNTINGS:
+            return BRmountings_render(line);
+        case SCENE_BRMOUNTINGSIN:
+            return BRmountingsin_render(line);
+        case SCENE_BRMOUNTINGSOUT:
+            return BRmountingsout_render(line);
+        case SCENE_BRSELLER:
+            return BRseller_render(line);
+        case SCENE_BRTIME:
+            return BRtime_render(line);
             // 注册
         default:
             return 0;
