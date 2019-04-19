@@ -15,6 +15,7 @@
 #include "StatisticsSituation.h"
 #include "MassIncrease.h"
 #include "Browsing.h"
+#include "ViewPurchase.h"
 
 #define MENU_CNT 7
 
@@ -35,6 +36,7 @@ void Welcome_init() {
     };
     mainMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_WELCOME, STR_BUF("首页"));
+    ViewPurchase_init();
 }
 
 void Welcome_inLoop() {
@@ -51,7 +53,7 @@ void Welcome_inLoop() {
                     MassIncrease_init();
                     break;
                 case 2:
-                    Browsing_init();
+                    View_init();
                     break;
                 case 3:
                     StatisticsSituation_init();

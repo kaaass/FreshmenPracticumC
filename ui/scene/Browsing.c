@@ -19,7 +19,7 @@
 #include "BRguest.h"
 #include "BRtime.h"
 
-#define MENU_CNT 7
+#define MENU_CNT 4
 
 #define menu 101
 #define form 102
@@ -37,10 +37,10 @@ Table *dataTable;
 void Browsing_init(){
     READ_SPEC = true;
     stringbuf name[] = {
-            STR_BUF("  配 件"),
+            STR_BUF("  配  件"),
             STR_BUF("  供货商"),
-            STR_BUF("  客 户"),
-            STR_BUF("  时 间"),
+            STR_BUF("  客  户"),
+            STR_BUF("  时  间"),
     };
     stringbuf columnName[] = {
             STR_BUF(""),
@@ -51,10 +51,10 @@ void Browsing_init(){
             STR_BUF("")
     };
     mMenu = Menu_create(-7, 3, name, MENU_CNT, 0);
-    UI_startScene(SCENE_BROWSING, STR_BUF("首页>浏览记录"));
+    UI_startScene(SCENE_BROWSING, STR_BUF("浏览记录"));
     //表格
     int columnWidth[] = {24, 8, 8, 19,13,9};
-    dataTable = Table_create(-1, 1, 100, 8, 1, 0);
+    dataTable = Table_create(-1, 1, 100, 8, 0, 0);
     Table_setColumnTitle(dataTable, columnName, columnWidth, 6);
 }
 

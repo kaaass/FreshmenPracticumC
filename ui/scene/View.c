@@ -6,30 +6,33 @@
 #include "../UI.h"
 #include "../Table.h"
 
-#define TABLE_COLUMN_NUM 5
+#define SIDE_WIDTH 30
+#define TABLE_WIDTH 90
+#define TABLE_COLUMN_NUM 6
+
+enum Column { // 表示当前用户在控制哪一栏
+    MENU = 0, RECORD_TABLE
+} curCul;
 
 Table *dataTable;
 
 void View_init() {
+    // TODO: 此页面改为选择进货或销售记录
+    /*
+     * 右边栏：表格
+     */
     stringbuf columnName[] = {
-            STR_BUF("测试"),
-            STR_BUF("列A"),
-            STR_BUF("列B"),
-            STR_BUF("列C"),
-            STR_BUF("列D")
+            STR_BUF("订单号"),
+            STR_BUF("商品名"),
+            STR_BUF("生产厂商"),
+            STR_BUF("供货商"),
+            STR_BUF("数量"),
+            STR_BUF("价格"),
     };
-    stringbuf testData[][TABLE_COLUMN_NUM] = {
-            {STR_BUF("1"), STR_BUF("测试"), STR_BUF("测试"), STR_BUF("66666"), STR_BUF("测试")},
-            {STR_BUF("2"), STR_BUF("哈哈哈哈"), STR_BUF("longlonglonglonglonglong"), STR_BUF("我很长我很长我很长我很长"), STR_BUF("测试")},
-            {STR_BUF("3"), STR_BUF("测试"), STR_BUF("233333"), STR_BUF("测试"), STR_BUF("测试")},
-            {STR_BUF("4"), STR_BUF("你写"), STR_BUF("代码"), STR_BUF("像"), STR_BUF("蔡徐坤")},
-            {STR_BUF("5"), STR_BUF("这表格"), STR_BUF("写的"), STR_BUF("累死"), STR_BUF("我了")}
-    };
-    int columnWidth[] = {10, 21, 21, 21, 21};
+    int columnWidth[] = {8, 16, 20, 20, 9, 10};
     READ_SPEC = true;
-    dataTable = Table_create(-1, 1, 100, 8, 1, 0);
+    dataTable = Table_create(SIDE_WIDTH, 0, TABLE_WIDTH, 27, -1, -1);
     Table_setColumnTitle(dataTable, columnName, columnWidth, TABLE_COLUMN_NUM);
-    for (int i = 0; i < 5; i++) Table_pushLine(dataTable, testData[i]);
     UI_setFooterUpdate(LITERAL(""));
     UI_startScene(SCENE_VIEW, STR_BUF("浏览记录"));
 }
