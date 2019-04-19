@@ -20,13 +20,13 @@ void test_func() {
     TEST_ASSERT_EQUAL(mountingsId, 2);
 
     mountingsId = getGift(sellingRecordset3, 1);
-    TEST_ASSERT_EQUAL(mountingsId, 1);
+    TEST_ASSERT_EQUAL(mountingsId, 5);
 
     mountingsId = getGift(sellingRecordset4, 1);
     TEST_ASSERT_EQUAL(mountingsId, -1);
 
     //test insertGift
-    TEST_ASSERT(insertGift(sellingRecordset1, 1))
+    TEST_ASSERT(!insertGift(sellingRecordset1, 1))
 
     TEST_ASSERT(insertGift(sellingRecordset2, 1))
     SellingRecord* newSellingRecord = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
@@ -36,7 +36,7 @@ void test_func() {
     TEST_ASSERT(insertGift(sellingRecordset3, 1))
     newSellingRecord = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
     TEST_ASSERT_EQUAL(newSellingRecord->status, SELLING_GIFT);
-    TEST_ASSERT_EQUAL(newSellingRecord->partId, 1);
+    TEST_ASSERT_EQUAL(newSellingRecord->partId, 5);
 
     TEST_ASSERT(!insertGift(sellingRecordset4, 1))
 
