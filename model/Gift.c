@@ -51,25 +51,28 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
     else if(tot < bound1)
         return -3;
 
-    //获取库存最少的礼物
-    int lowId = 0;
-    double lowAmount = INT8_MAX;
+    //获取库存最多的礼物
+    int highId = 0;
+    double highAmount = 0;
 
     for (int i = 0; i < *giftsCount; ++i) {
         Mountings* mountings = GetById(Mountings, MOUNTINGS, gifts[i]);
         if(tot <= bound2) {
-            if(mountings->price <= 100 && mountings->amount < lowAmount) {
-                lowAmount = mountings->amount;
-                lowId = gifts[i];
+            if(mountings->price <= 100 && mountings->amount > highAmount) {
+                highAmount = mountings->amount;
+                highId = gifts[i];
             }
         } else {
-            if(mountings->price > 100 && mountings->amount < lowAmount) {
-                lowAmount = mountings->amount;
-                lowId = gifts[i];
+            if(mountings->price > 100 && mountings->amount > highAmount) {
+                highAmount = mountings->amount;
+                highId = gifts[i];
             }
         }
     }
-    return lowId;
+    if(highAmount == 0)
+        return -2;
+    else
+        return highId;
 }
 
 bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
