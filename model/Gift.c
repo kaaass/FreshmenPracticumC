@@ -81,11 +81,11 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
 
     //无合适礼品可送
     if(mountingsId == -2)
-        return true;
+        return false;
 
     //价格太低不送礼品
     if(mountingsId == -3)
-        return true;
+        return false;
 
     //插入新礼品
     Mountings *mountings = GetById(Mountings, MOUNTINGS, mountingsId);
