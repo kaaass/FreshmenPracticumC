@@ -14,6 +14,9 @@
 #include "../../data/DataManager.h"
 #include "../../model/Consultation.h"
 #include "../../model/Statistics.h"
+#include "ChooseGuest.h"
+#include "ChooseMountingsType.h"
+#include "TimeDurationInput.h"
 
 #define SIDE_WIDTH 30
 #define TABLE_WIDTH 90
@@ -50,12 +53,12 @@ void ViewPurchase_init() {
     stringbuf columnName[] = {
             STR_BUF("订单号"),
             STR_BUF("商品名"),
-            STR_BUF("生产厂商"),
             STR_BUF("供货商"),
             STR_BUF("数量"),
             STR_BUF("价格"),
+            STR_BUF("时间"),
     };
-    int columnWidth[] = {8, 16, 20, 20, 9, 10};
+    int columnWidth[] = {6, 24, 13, 9, 14, 17};
     READ_SPEC = true;
     purchaseTable = Table_create(SIDE_WIDTH, 0, TABLE_WIDTH, 27, -1, -1);
     Table_setColumnTitle(purchaseTable, columnName, columnWidth, TABLE_COLUMN_NUM);
@@ -76,12 +79,11 @@ void ViewPurchase_init() {
     curCul = MENU;
     // 初始化条件
     curCond = 0;
-    pCondType = MOUNTINGS_CPU;
+    pCondType = MOUNTINGS_MOUSE;
     pCondProvider.id = -1;
     pCondTimeSt = Time_getNow();
     pCondTimeEd = Time_getNow();
     //
-    updatePTableData();
     UI_setFooterUpdate(LITERAL(""));
     UI_startScene(SCENE_VIEW_PURCHASE, STR_BUF("进货记录"));
     updatePTableData();
@@ -128,9 +130,53 @@ void ViewPurchase_inLoopTable() {
  */
 void ViewPurchase_inLoopMenu() {
     Menu_inLoop(purchaseMenu);
+    if (READ_SPEC) {
+        if (SPEC_KEY == KEY_ENTER) {
+            switch (purchaseMenu->cur) {
+                case 0: // 查看所有
+                    curCond = 0;
+                    updatePTableData();
+                    break;
+                case 1: // 配件种类
+                    ChooseMountingsType_init(pCondType);
+                    break;
+                case 2: // 供货商
+                    ChooseGuest_init(pCondProvider.id, 1);
+                    break;
+                case 3: // 时间段
+                    TimeDurationInput_init();
+                    break;
+            }
+        }
+    }
 }
 
 int ViewPurchase_render(int line) {
+    /*
+     * 更新数据
+     */
+    // 类型
+    if (ChooseMountingsType_hasResult()) {
+        curCond = 1;
+        pCondType = ChooseMountingsType_result();
+        updatePTableData();
+    }
+    // 客户
+    Guest ret = ChooseGuest_result();
+    if (ret.id > 0 && ret.id != pCondProvider.id) {
+        curCond = 2;
+        pCondProvider.id = ret.id;
+        pCondProvider.name = ret.name;
+        pCondProvider.phone = ret.phone;
+        updatePTableData();
+    }
+    // 时间段
+    if (TimeDurationInput_hasResult()) {
+        curCond = 3;
+        pCondTimeSt = TimeDurationInput_resultSt();
+        pCondTimeEd = TimeDurationInput_resultEd();
+        updatePTableData();
+    }
     /*
      * 右侧试图
      */
@@ -145,13 +191,31 @@ int ViewPurchase_render(int line) {
     else
         UI_printMidStringAt(LITERAL("表格"), 0, 2, 30, line);
     line += 5;
+    UI_printMidStringAt(LITERAL("当前条件"), 0, 0, 30, line);
+    switch (curCond) {
+        case 0:
+            UI_printMidStringAt(LITERAL("无"), 0, 2, 30, line);
+            break;
+        case 1:
+            UI_printMidStringAt(concat(2, LITERAL("配件种类："), Mountings_getTypeString(pCondType)), 0, 2, 30, line);
+            break;
+        case 2:
+            UI_printMidStringAt(concat(2, LITERAL("供货商："), pCondProvider.name), 0, 2, 30, line);
+            break;
+        case 3:
+            UI_printMidStringAt(concat(3, LITERAL("时间段："),
+                    Time_toLocalString(pCondTimeSt), LITERAL("-")), 0, 2, 30, line);
+            UI_printMidStringAt(Time_toLocalString(pCondTimeEd), 0, 3, 30, line);
+            break;
+    }
+    line += 5;
     UI_printMidStringAt(LITERAL("操作说明"), 0, 0, 30, line);
     UI_printMidStringAt(LITERAL("Tab - 切换表格/菜单"), 0, 2, 30, line);
     UI_printMidStringAt(LITERAL("Enter - (菜单)选择筛选条件"), 0, 3, 30, line);
     UI_printMidStringAt(LITERAL("X - (表格)修改记录"), 0, 4, 30, line);
     UI_printMidStringAt(LITERAL("R - (表格)删除记录"), 0, 5, 30, line);
     UI_printMidStringAt(LITERAL("Esc - 退出页面"), 0, 6, 30, line);
-    line += 10;
+    line += 9;
     Menu_render(purchaseMenu, line);
     return line;
 }
@@ -185,12 +249,13 @@ void updatePTableData() {
         PurchaseRecord *data = GetData(PurchaseRecord, cur);
         Mountings *mountings = GetById(Mountings, MOUNTINGS, data->partId);
         Provider *provider = GetById(Provider, PROVIDER, mountings->sellerId);
+        Provider *seller = GetById(Provider, PROVIDER, data->sellerId);
         line[0] = toIntString(data->orderId);
-        line[1] = mountings->name;
-        line[2] = provider->name;
-        line[3] = provider->name;
-        line[4] = toIntString(data->amount);
-        line[5] = toRmbString(data->total);
+        line[1] = concat(4, mountings->name, LITERAL(" ("), provider->name, LITERAL(")"));
+        line[2] = seller->name;
+        line[3] = toIntString(data->amount);
+        line[4] = toRmbString(data->total);
+        line[5] = Time_toLocalString(data->time);
         Table_pushLine(purchaseTable, line);
     }
     UI_render();

@@ -32,6 +32,8 @@
 #include "scene/BRtime.h"
 #include "scene/ViewPurchase.h"
 #include "scene/ViewSell.h"
+#include "scene/ChooseMountingsType.h"
+#include "scene/TimeDurationInput.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -66,6 +68,12 @@ bool UI_runSceneLoop() {
             break;
         case SCENE_VIEW_SELL:
             ViewSell_inLoop();
+            break;
+        case SCENE_CHOOSE_MOUNTINGS_TYPE:
+            ChooseMountingsType_inLoop();
+            break;
+        case SCENE_TIME_DURATION_INPUT:
+            TimeDurationInput_inLoop();
             break;
         case SCENE_APPEND_ORDER:
             AppendOrder_inLoop();
@@ -174,6 +182,10 @@ int UI_renderScene(int line) {
             return ViewPurchase_render(line);
         case SCENE_VIEW_SELL:
             return ViewSell_render(line);
+        case SCENE_CHOOSE_MOUNTINGS_TYPE:
+            return ChooseMountingsType_render(line);
+        case SCENE_TIME_DURATION_INPUT:
+            return TimeDurationInput_render(line);
         case SCENE_APPEND_ORDER:
             return AppendOrder_render(line);
         case SCENE_SELECT_ORDER_TYPE:
