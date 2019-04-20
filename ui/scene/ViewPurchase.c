@@ -34,6 +34,8 @@ void ViewPurchase_inLoopMenu();
 
 void ViewPurchase_inLoopTable();
 
+void updatePTableData();
+
 /**
  * 进货记录查询页面：初始化
  */
@@ -74,6 +76,7 @@ void ViewPurchase_init() {
     pCondTimeSt = Time_getNow();
     pCondTimeEd = Time_getNow();
     //
+    updatePTableData();
     UI_setFooterUpdate(LITERAL(""));
     UI_startScene(SCENE_VIEW_PURCHASE, STR_BUF("进货记录"));
 }
@@ -144,4 +147,16 @@ int ViewPurchase_render(int line) {
     UI_printMidStringAt(LITERAL("Esc - 退出页面"), 0, 6, 30, line);
     line += 10;
     Menu_render(purchaseMenu, line);
+    return line;
+}
+
+/*
+ * 数据更新
+ */
+
+/**
+ * 根据条件更新数据表
+ */
+void updatePTableData() {
+    Table_clear(purchaseTable);
 }
