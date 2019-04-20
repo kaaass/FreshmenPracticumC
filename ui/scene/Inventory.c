@@ -26,7 +26,7 @@ void Inventory_init(){
     ForEach(cur, MOUNTINGS){
         Mountings *now = GetData(Mountings,cur);
         testData[i][0] = now->name;
-        testData[i][1] = typenamebytype(now->type);
+        testData[i][1] = Mountings_getTypeString(now->type);
         char ch[100];
         sprintf(ch,"%d",now->amount);
         testData[i][2] = newString(ch);
