@@ -120,7 +120,7 @@ Database *Print_Sellingrecord(Time a, Time b) {
     qsort(temp, num, sizeof(SellingRecord *), _compareSellingRecord);
     int ii = 0;
     while (num1 < num) {
-        if (temp[num1]->time.timeStamp >= a.timeStamp && temp[num1]->time.timeStamp >= b.timeStamp) {
+        if (temp[num1]->time.timeStamp >= a.timeStamp && temp[num1]->time.timeStamp <= b.timeStamp) {
             temp1[ii] = temp[num1];
             ii++;
         }
@@ -148,7 +148,7 @@ Database *Print_Purchaserecord(Time a, Time b) {
     qsort(temp, num, sizeof(PurchaseRecord *), _comparePurchaseRecord);
     int ii = 0;
     while (num1 < num) {
-        if (temp[num1]->time.timeStamp >= a.timeStamp && temp[num1]->time.timeStamp >= b.timeStamp) {
+        if (temp[num1]->time.timeStamp >= a.timeStamp && temp[num1]->time.timeStamp <= b.timeStamp) {
             temp1[ii] = temp[num1];
             ii++;
         }
