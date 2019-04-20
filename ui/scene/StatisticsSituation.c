@@ -11,6 +11,7 @@
 #include "Profit.h"
 #include "TotalGift.h"
 #include "Singleitem.h"
+#include "Inventory.h"
 Menu *statMenu;
 
 void StatisticsSituation_init() {
@@ -18,9 +19,10 @@ void StatisticsSituation_init() {
     stringbuf name[] = {
             STR_BUF("    利润"),
             STR_BUF("    礼物总情况"),
-            STR_BUF("    单个礼物查询")
+            STR_BUF("    单个礼物查询"),
+            STR_BUF("    库存查询")
     };
-    statMenu = Menu_create(-1, 4, name, 3, 0);
+    statMenu = Menu_create(-1, 4, name, 4, 0);
     UI_startScene(SCENE_STATISTICS_SITUATION, STR_BUF("统计信息"));
     UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
 }
@@ -41,6 +43,9 @@ void StatisticsSituation_inLoop(){
                     break;
                 case 2:
                     Singleitem_init();
+                    break;
+                case 3:
+                    Inventory_init();
                     break;
                 default:
                     break;
