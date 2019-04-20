@@ -11,6 +11,9 @@
 #include "../../data/TableMountings.h"
 #include "../../data/TableProvider.h"
 #include "../UI_Utils.h"
+#include "../../data/DataManager.h"
+#include "../../model/Consultation.h"
+#include "../../model/Statistics.h"
 
 #define SIDE_WIDTH 30
 #define TABLE_WIDTH 90
@@ -21,6 +24,7 @@ Menu *purchaseMenu;
 List *purchaseRecords;
 
 // 查询条件
+int curCond;
 enum MountingsType pCondType;
 Provider pCondProvider;
 Time pCondTimeSt;
@@ -71,6 +75,7 @@ void ViewPurchase_init() {
     purchaseRecords = Create(PurchaseRecord);
     curCul = MENU;
     // 初始化条件
+    curCond = 0;
     pCondType = MOUNTINGS_CPU;
     pCondProvider.id = -1;
     pCondTimeSt = Time_getNow();
@@ -79,6 +84,7 @@ void ViewPurchase_init() {
     updatePTableData();
     UI_setFooterUpdate(LITERAL(""));
     UI_startScene(SCENE_VIEW_PURCHASE, STR_BUF("进货记录"));
+    updatePTableData();
 }
 
 void ViewPurchase_inLoop() {
@@ -159,4 +165,33 @@ int ViewPurchase_render(int line) {
  */
 void updatePTableData() {
     Table_clear(purchaseTable);
+    // Database_destroy(purchaseRecords);
+    switch (curCond) {
+        case 0: // 查看所有
+            purchaseRecords = PURCHASE_RECORD; // TODO: 顺序不对
+            break;
+        case 1: // 配件种类
+            purchaseRecords = AccessoryIn(pCondType);
+            break;
+        case 2: // 供货商
+            purchaseRecords = Supplier(pCondProvider.id);
+            break;
+        case 3: // 时间段
+            purchaseRecords = Print_Purchaserecord(pCondTimeSt, pCondTimeEd);
+            break;
+    }
+    stringbuf line[TABLE_COLUMN_NUM];
+    ForEach(cur, purchaseRecords) {
+        PurchaseRecord *data = GetData(PurchaseRecord, cur);
+        Mountings *mountings = GetById(Mountings, MOUNTINGS, data->partId);
+        Provider *provider = GetById(Provider, PROVIDER, mountings->sellerId);
+        line[0] = toIntString(data->orderId);
+        line[1] = mountings->name;
+        line[2] = provider->name;
+        line[3] = provider->name;
+        line[4] = toIntString(data->amount);
+        line[5] = toRmbString(data->total);
+        Table_pushLine(purchaseTable, line);
+    }
+    UI_render();
 }
