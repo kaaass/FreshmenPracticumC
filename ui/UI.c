@@ -16,6 +16,7 @@
 #include "scene/Profit.h"
 #include "scene/Singleitem.h"
 #include "scene/MassIncrease.h"
+#include "scene/Inventory.h"
 #include "scene/Browsing.h"
 #include "scene/MIguest.h"
 #include "scene/MIprovider.h"
@@ -132,6 +133,9 @@ bool UI_runSceneLoop() {
         case SCENE_BRGUEST:
             BRguest_inLoop();
             break;
+        case SCENE_INVENTORY:
+            Inventory_inLoop();
+            break;
         default:
             return false;
     }
@@ -214,6 +218,8 @@ int UI_renderScene(int line) {
             return BRseller_render(line);
         case SCENE_BRTIME:
             return BRtime_render(line);
+        case SCENE_INVENTORY:
+            return Inventory_render(line);
             // 注册
         default:
             return 0;

@@ -111,8 +111,11 @@ Database *Print_Sellingrecord(Time a, Time b) {
     int num = 0, num1 = 0;
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *record = GetData(SellingRecord, cur);
-        temp[num] = record;
-        num++;
+        if(record->status==0||record->status==2)
+        {
+            temp[num] = record;
+            num++;
+        }
     }
     qsort(temp, num, sizeof(SellingRecord *), _compareSellingRecord);
     int ii = 0;
@@ -136,8 +139,11 @@ Database *Print_Purchaserecord(Time a, Time b) {
     int num = 0, num1 = 0;
     ForEach(cur, PURCHASE_RECORD) {
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
-        temp[num] = record;
-        num++;
+        if(record->status==0||record->status==2)
+        {
+            temp[num] = record;
+            num++;
+        }
     }
     qsort(temp, num, sizeof(PurchaseRecord *), _comparePurchaseRecord);
     int ii = 0;
