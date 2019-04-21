@@ -142,6 +142,8 @@ void ViewPurchase_inLoopTable() {
                 } else {
                     UI_setFooterUpdate(concat(2, LITERAL("删除失败！"), reason));
                 }
+            } else {
+                UI_setFooterUpdate(LITERAL(""));
             }
         } else if (SPEC_KEY == 'X' || SPEC_KEY == 'x') {
             enterModifyLogic();
