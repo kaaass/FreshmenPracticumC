@@ -32,7 +32,7 @@ void MIpurchase_inLoop(){
     scanf("%[^\n]",Approach);
     string dir = STRING(Approach);
     stringbuf path, content;
-    // 默认数据库创建
+    // 检测文件存在
     if (!isExist(CSTR(dir))) {
         string instruction = LITERAL("文件不存在，按Esc返回上一页面");
         UI_setFooterUpdate(instruction);
@@ -43,7 +43,10 @@ void MIpurchase_inLoop(){
         path = concat(2, dir, path);
         content = readStringFromFile(CSTR(path));
         json = cJSON_Parse(U8_CSTR(content));
-        DeserializeDB(PurchaseRecord, PURCHASE_RECORD, json);
+        ForEach(cur,json){
+            PurchaseRecord *record = GetData(PurchaseRecord,cur);
+            Database_pushBack(PURCHASE_RECORD,Data(PurchaseRecord,record));
+        }
         cJSON_Delete(json);
         $STR_BUF(path);
     }
