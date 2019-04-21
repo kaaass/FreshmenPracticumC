@@ -77,24 +77,30 @@ void Insert_provider(string name, string phone) {
 /**
  * 插入SellingRecord记录
  * @param data
+ * @param change 是否改变库存
  */
-void Insert_sellingRecord(SellingRecord *data) {
+void Insert_sellingRecord(SellingRecord *data, bool change) {
     assert(data);
     // 减少库存
-    Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
-    mounting->amount -= data->amount;
+    if (change) {
+        Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+        mounting->amount -= data->amount;
+    }
     Database_pushBack(SELLING_RECORD, Data(SellingRecord, data));
 }
 
 /**
  * 插入PurchaseRecord记录
  * @param data
+ * @param change 是否改变库存
  */
-void Insert_purchaseRecord(PurchaseRecord *data) {
+void Insert_purchaseRecord(PurchaseRecord *data, bool change) {
     assert(data);
     // 增加库存
-    Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
-    mounting->amount += data->amount;
+    if (change) {
+        Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+        mounting->amount += data->amount;
+    }
     Database_pushBack(PURCHASE_RECORD, Data(PurchaseRecord, data));
 }
 
@@ -130,7 +136,7 @@ bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderTy
         Provider *provider;
         if (data->amount > mounting->amount) {
             provider = GetById(Provider, PROVIDER, mounting->sellerId);
-            *info = concat(3, LITERAL("商品 "), mounting->name
+            *info = concat(5, LITERAL("商品 "), mounting->name
                     , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
             return false;
         }
@@ -166,7 +172,7 @@ void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType order
                     .status = PURCHASE_NORMAL,
                     .time = data->time
             };
-            Insert_purchaseRecord(&record);
+            Insert_purchaseRecord(&record, true);
             opId[opCnt++] = Database_size(PURCHASE_RECORD);
         } else { // 销售
             SellingRecord record = {
@@ -179,7 +185,7 @@ void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType order
                     .status = SELLING_NORMAL,
                     .time = data->time
             };
-            Insert_sellingRecord(&record);
+            Insert_sellingRecord(&record, true);
             opId[opCnt++] = Database_size(SELLING_RECORD);
         }
     }

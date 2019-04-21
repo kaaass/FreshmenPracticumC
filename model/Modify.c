@@ -59,7 +59,7 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
     if(order == NULL) return false;
     if(sellingRecord == NULL) return false;
     if(newSellingRecord == NULL) return false;
-    Insert_sellingRecord(newSellingRecord);
+    Insert_sellingRecord(newSellingRecord, false);
     Order newOrder = {.status = ORDER_SALES_RETURN, .type = order->type};
     SellingRecord *newSellingRecord2 = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
     int count = 0;
@@ -82,7 +82,7 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
     if(order == NULL) return false;
     if(purchaseRecord == NULL) return false;
     if(newPuachaseRecord == NULL) return false;
-    Insert_purchaseRecord(newPuachaseRecord);
+    Insert_purchaseRecord(newPuachaseRecord, false);
     Order newOrder = {.status = ORDER_SALES_RETURN, .type = order->type};
     PurchaseRecord *newPuachaseRecord2 = GetById(PurchaseRecord, PURCHASE_RECORD, Database_size(PURCHASE_RECORD));
     int count = 0;
