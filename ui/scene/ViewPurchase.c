@@ -17,6 +17,8 @@
 #include "ChooseGuest.h"
 #include "ChooseMountingsType.h"
 #include "TimeDurationInput.h"
+#include "../../model/Modify.h"
+#include "RecordInput.h"
 
 #define SIDE_WIDTH 30
 #define TABLE_WIDTH 90
@@ -42,6 +44,10 @@ void ViewPurchase_inLoopMenu();
 void ViewPurchase_inLoopTable();
 
 void updatePTableData();
+
+int getSelPurchaseId();
+
+void enterModifyLogic();
 
 /**
  * 进货记录查询页面：初始化
@@ -98,6 +104,8 @@ void ViewPurchase_inLoop() {
             // 切换左右
             if (curCul == MENU) {
                 curCul = RECORD_TABLE;
+                if (purchaseTable->cur == -1 && Database_size(purchaseRecords) > 0)
+                    Table_setCurAndUpdate(purchaseTable, 1);
             } else if (curCul == RECORD_TABLE) {
                 curCul = MENU;
             }
@@ -123,6 +131,47 @@ void ViewPurchase_inLoop() {
  */
 void ViewPurchase_inLoopTable() {
     Table_inLoop(purchaseTable);
+    if (READ_SPEC) {
+        if (SPEC_KEY == KEY_DEL) {
+            if (EQUAL(LITERAL("y"), UI_inputString(LITERAL("是否确定要删除？[y/n]")))) {
+                stringbuf reason = $init$;
+                int pId = getSelPurchaseId();
+                if (deletePurchaseRecord(pId, &reason)) {
+                    UI_setFooterUpdate(LITERAL("删除成功！"));
+                    updatePTableData();
+                } else {
+                    UI_setFooterUpdate(concat(2, LITERAL("删除失败！"), reason));
+                }
+            }
+        } else if (SPEC_KEY == 'X' || SPEC_KEY == 'x') {
+            enterModifyLogic();
+        }
+    }
+}
+
+void enterModifyLogic() {
+    int pId = getSelPurchaseId();
+    PurchaseRecord *record = GetById(PurchaseRecord, PURCHASE_RECORD, pId);
+    RecordParam param = {
+            .id = pId,
+            .partId = record->partId,
+            .price = record->price,
+            .total = record->total,
+            .amount = record->amount,
+            .time = record->time
+    };
+    RecordInput_init(param);
+}
+
+int getSelPurchaseId() {
+    int sel = purchaseTable->cur, ind = 1;
+    ForEach(cur, purchaseRecords) {
+        PurchaseRecord *data = GetData(PurchaseRecord, cur);
+        if (ind++ == sel) {
+            return data->id;
+        }
+    }
+    return -1;
 }
 
 /**
@@ -177,6 +226,27 @@ int ViewPurchase_render(int line) {
         pCondTimeEd = TimeDurationInput_resultEd();
         updatePTableData();
     }
+    // 修改
+    RecordParam modRet = RecordInput_result();
+    if (modRet.partId > 0) {
+        PurchaseRecord *org = GetById(PurchaseRecord, PURCHASE_RECORD, modRet.id);
+        stringbuf reason = $init$;
+        PurchaseRecord after = {
+                .orderId = org->orderId,
+                .partId = modRet.partId,
+                .time = modRet.time,
+                .amount = modRet.amount,
+                .total = modRet.total,
+                .price = modRet.price,
+                .sellerId = org->sellerId,
+                .status = org->status
+        };
+        if (modifyOrderOfPurchaseRecord(org->orderId, modRet.id, &after, &reason)) {
+            UI_setFooterUpdate(LITERAL("修改成功！"));
+        } else {
+            UI_setFooterUpdate(concat(2, LITERAL("修改失败！"), reason));
+        }
+    }
     /*
      * 右侧试图
      */
@@ -213,7 +283,7 @@ int ViewPurchase_render(int line) {
     UI_printMidStringAt(LITERAL("Tab - 切换表格/菜单"), 0, 2, 30, line);
     UI_printMidStringAt(LITERAL("Enter - (菜单)选择筛选条件"), 0, 3, 30, line);
     UI_printMidStringAt(LITERAL("X - (表格)修改记录"), 0, 4, 30, line);
-    UI_printMidStringAt(LITERAL("R - (表格)删除记录"), 0, 5, 30, line);
+    UI_printMidStringAt(LITERAL("DEL - (表格)删除记录"), 0, 5, 30, line);
     UI_printMidStringAt(LITERAL("Esc - 退出页面"), 0, 6, 30, line);
     line += 9;
     Menu_render(purchaseMenu, line);
@@ -258,5 +328,7 @@ void updatePTableData() {
         line[5] = Time_toLocalString(data->time);
         Table_pushLine(purchaseTable, line);
     }
+    if (Database_size(purchaseRecords) > 0)
+        Table_setCur(purchaseTable, 1);
     UI_render();
 }

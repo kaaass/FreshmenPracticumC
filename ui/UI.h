@@ -18,6 +18,7 @@
 #define KEY_ENTER 13
 #define KEY_ESC 27
 #define KEY_TAB 9
+#define KEY_DEL 83
 
 extern int NOW_SCENE;
 extern stringbuf FOOTER;
