@@ -91,10 +91,9 @@ Database *Client(int guestId){
     return point;
 }
 
-Database *QueryAll(){
+Database *QueryAll_Pur(){
     PurchaseRecord *pur[1000];
-    SellingRecord *sel[1000];
-    int num1 = 0, num2 = 0;
+    int num1 = 0;
     ForEach(cur,PURCHASE_RECORD){
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
         if(record->status==PURCHASE_NORMAL||record->status==PURCHASE_SALES_RETURN){
@@ -104,19 +103,20 @@ Database *QueryAll(){
     }
     qsort(pur,num1, sizeof(PurchaseRecord*),comparePurchaseRecord);
     Database *point = arrayToDatabase(Data(PurchaseRecord,pur),num1);
-    ForEach(cur,SELLING_RECORD){
-        SellingRecord *record = GetData(SellingRecord,cur);
+    return point;
+}
+
+Database *QueryAll_Sel(){
+    SellingRecord *sel[1000];
+    int num = 0;
+    ForEach(cur, SELLING_RECORD){
+        SellingRecord *record = GetData(SellingRecord, cur);
         if(record->status==SELLING_NORMAL||record->status==SELLING_SALES_RETURN){
-            sel[num2] = record;
-            num2++;
+            sel[num] = record;
+            num++;
         }
     }
-    qsort(sel,num2, sizeof(SellingRecord*),compareSellingRecord);
-    Database *point1 = arrayToDatabase(Data(SellingRecord,sel),num2);
-    Database *tem = point;
-    while(tem->next!=NULL){
-        tem = tem->next;
-    }
-    tem->next = point1;
+    qsort(sel,num, sizeof(SellingRecord*),compareSellingRecord);
+    Database *point = arrayToDatabase(Data(SellingRecord,sel),num);
     return point;
 }
