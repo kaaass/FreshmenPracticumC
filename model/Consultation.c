@@ -30,7 +30,7 @@ Database *AccessoryIn(int type){
     ForEach(cur,PURCHASE_RECORD){
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
         trans = GetById(Mountings,MOUNTINGS,record->partId);
-        if(trans->type == type){
+        if(trans->type == type&&(record->status==PURCHASE_NORMAL||record->status==PURCHASE_SALES_RETURN)){
             accessoryin[num] = record;
             num++;
         }
@@ -47,7 +47,7 @@ Database *AccessoryOut(int type){
     ForEach(cur,SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord, cur);
         trans = GetById(Mountings,MOUNTINGS,record->partId);
-        if(trans->type == type){
+        if(trans->type == type&&(record->status==SELLING_NORMAL||record->status==SELLING_SALES_RETURN)){
             accessoryout[num] = record;
             num++;
         }
@@ -64,7 +64,7 @@ Database *Supplier(int sellerId){
     int num = 0;
     ForEach(cur,PURCHASE_RECORD){
         PurchaseRecord *record = GetData(PurchaseRecord,cur);
-        if(record->sellerId == sellerId){
+        if(record->sellerId == sellerId&&(record->status==PURCHASE_NORMAL||record->status==PURCHASE_SALES_RETURN)){
             supplier[num] = record;
             num++;
         }
@@ -81,12 +81,42 @@ Database *Client(int guestId){
     int num = 0;
     ForEach(cur,SELLING_RECORD){
         SellingRecord *record = GetData(SellingRecord,cur);
-        if(record->guestId ==guestId){
+        if(record->guestId ==guestId&&(record->status==SELLING_NORMAL||record->status==SELLING_SALES_RETURN)){
             guest[num] = record;
             num++;
         }
     }
     qsort(guest,num, sizeof(SellingRecord*),compareSellingRecord);
     Database *point = arrayToDatabase(Data(SellingRecord,guest),num);
+    return point;
+}
+
+Database *QueryAll(){
+    PurchaseRecord *pur[1000];
+    SellingRecord *sel[1000];
+    int num1 = 0, num2 = 0;
+    ForEach(cur,PURCHASE_RECORD){
+        PurchaseRecord *record = GetData(PurchaseRecord, cur);
+        if(record->status==PURCHASE_NORMAL||record->status==PURCHASE_SALES_RETURN){
+            pur[num1] = record;
+            num1++;
+        }
+    }
+    qsort(pur,num1, sizeof(PurchaseRecord*),comparePurchaseRecord);
+    Database *point = arrayToDatabase(Data(PurchaseRecord,pur),num1);
+    ForEach(cur,SELLING_RECORD){
+        SellingRecord *record = GetData(SellingRecord,cur);
+        if(record->status==SELLING_NORMAL||record->status==SELLING_SALES_RETURN){
+            sel[num2] = record;
+            num2++;
+        }
+    }
+    qsort(sel,num2, sizeof(SellingRecord*),compareSellingRecord);
+    Database *point1 = arrayToDatabase(Data(SellingRecord,sel),num2);
+    Database *tem = point;
+    while(tem->next!=NULL){
+        tem = tem->next;
+    }
+    tem->next = point1;
     return point;
 }

@@ -11,8 +11,13 @@
 #define FRESHMAN_PROJ_C_CONSULTATION_H
 
 Database *AccessoryIn(int type);
+
 Database *AccessoryOut(int type);
+
 Database *Supplier(int sellerId);
+
 Database *Client(int guestId);
+
+Database *QueryAll();
 
 #endif //FRESHMAN_PROJ_C_CONSULTATION_H
