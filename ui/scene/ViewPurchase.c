@@ -304,7 +304,7 @@ void updatePTableData() {
     // Database_destroy(purchaseRecords);
     switch (curCond) {
         case 0: // 查看所有
-            purchaseRecords = PURCHASE_RECORD; // TODO: 顺序不对
+            purchaseRecords = QueryAll_Pur();
             break;
         case 1: // 配件种类
             purchaseRecords = AccessoryIn(pCondType);

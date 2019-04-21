@@ -302,7 +302,7 @@ void updateSTableData() {
     // Database_destroy(purchaseRecords);
     switch (curCond) {
         case 0: // 查看所有
-            sellRecords = SELLING_RECORD; // TODO: 顺序不对
+            sellRecords = QueryAll_Sel();
             break;
         case 1: // 配件种类
             sellRecords = AccessoryOut(sCondType);
