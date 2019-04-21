@@ -27,6 +27,7 @@
 #include "scene/ViewSell.h"
 #include "scene/ChooseMountingsType.h"
 #include "scene/TimeDurationInput.h"
+#include "scene/Settings.h"
 
 #define COLOR_FOOTER 0x07
 
@@ -116,6 +117,9 @@ bool UI_runSceneLoop() {
         case SCENE_INVENTORY:
             Inventory_inLoop();
             break;
+        case SCENE_SETTINGS:
+            Settings_inLoop();
+            break;
         default:
             return false;
     }
@@ -190,6 +194,8 @@ int UI_renderScene(int line) {
             return MIpurchase_render(line);
         case SCENE_INVENTORY:
             return Inventory_render(line);
+        case SCENE_SETTINGS:
+            return Settings_render(line);
             // 注册
         default:
             return 0;
