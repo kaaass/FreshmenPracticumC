@@ -3,7 +3,7 @@
 //
 #include "Modify.h"
 
-bool deletePurchaseRecord(int purchaseRecordId) {
+bool deletePurchaseRecord(int purchaseRecordId, stringbuf *reason) {
     PurchaseRecord *purchaseRecord = GetById(PurchaseRecord ,PURCHASE_RECORD, purchaseRecordId);
     if(purchaseRecord == NULL) return false;
     purchaseRecord->status = PURCHASE_DELETED;
@@ -15,7 +15,7 @@ bool deletePurchaseRecord(int purchaseRecordId) {
     return true;
 }
 
-bool deleteSellingRecord(int sellingRecordId) {
+bool deleteSellingRecord(int sellingRecordId, stringbuf *reason) {
     SellingRecord *sellingRecord = GetById(SellingRecord, SELLING_RECORD, sellingRecordId);
     if(sellingRecord == NULL) return false;
 
@@ -40,11 +40,11 @@ bool deleteOrder(int orderId) {
 
     if (type == ORDER_PURCHASE) {
         for (int i = 0; i < order->opCount; ++i) {
-            if(!deletePurchaseRecord(order->opId[i])) return false;
+            if(!deletePurchaseRecord(order->opId[i], NULL)) return false;
         }
     } else if (type == ORDER_SINGLE_BUY || type == ORDER_WHOLE_SALE) {
         for (int i = 0; i < order->opCount; ++i) {
-            if(!deleteSellingRecord(order->opId[i])) return false;
+            if(!deleteSellingRecord(order->opId[i], NULL)) return false;
         }
     }
     else
@@ -53,10 +53,14 @@ bool deleteOrder(int orderId) {
     return true;
 }
 
-bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord *newSellingRecord) {
+bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord *newSellingRecord, stringbuf *reason) {
+    // TODO: 增加错误原因
     Order *order = GetById(Order, ORDER, orderId);
     SellingRecord *sellingRecord = GetById(SellingRecord, SELLING_RECORD, sellingRecordId);
-    if(order == NULL) return false;
+    if(order == NULL) {
+        *reason = STR_BUF("订单不存在！");
+        return false;
+    }
     if(sellingRecord == NULL) return false;
     if(newSellingRecord == NULL) return false;
     Insert_sellingRecord(newSellingRecord, false);
@@ -71,15 +75,19 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
     newOrder.opId[count++] = newSellingRecord2->id;
     newOrder.opCount = count;
     if(!deleteOrder(orderId)) return false;
-    if(!deleteSellingRecord(sellingRecordId)) return false;
+    if(!deleteSellingRecord(sellingRecordId, NULL)) return false;
     Insert_order(&newOrder);
     return true;
 }
 
-bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseRecord *newPuachaseRecord){
+bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseRecord *newPuachaseRecord, stringbuf *reason) {
+    // TODO: 增加错误原因
     Order *order = GetById(Order, ORDER, orderId);
     PurchaseRecord *purchaseRecord = GetById(PurchaseRecord, PURCHASE_RECORD, purchaseRecordId);
-    if(order == NULL) return false;
+    if(order == NULL) {
+        *reason = STR_BUF("订单不存在！");
+        return false;
+    }
     if(purchaseRecord == NULL) return false;
     if(newPuachaseRecord == NULL) return false;
     Insert_purchaseRecord(newPuachaseRecord, false);
@@ -92,7 +100,7 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
     newOrder.opId[count++] = newPuachaseRecord2->id;
     newOrder.opCount = count;
     if(!deleteOrder(orderId)) return false;
-    if(!deletePurchaseRecord(purchaseRecordId)) return false;
+    if(!deletePurchaseRecord(purchaseRecordId, NULL)) return false;
     Insert_order(&newOrder);
     return true;
 }
