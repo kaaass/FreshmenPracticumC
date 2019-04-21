@@ -12,26 +12,28 @@
 #include "../util/Time.h"
 
 
-void test_statistics(){
-    printf("%lf\n",Purchase_total());
-    printf("%lf\n",Sell_total());
-    printf("%lf\n",Profits());
+void test_statistics() {
+    printf("%lf\n", Purchase_total());
+    printf("%lf\n", Sell_total());
+    printf("%lf\n", Profits());
 }
 
-void test_gift_situation(){
-    Database *db=sort_gift();
-    ForEach(cur, db){
+void test_gift_situation() {
+    Database *db = sort_gift();
+    ForEach(cur, db) {
         Present_Situation *now = GetData(Present_Situation, cur);
         stringbuf timeStr = Time_toLocalString(now->time_recording);
-        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s",now->AMOUNT,CSTR(now->people.phone),now->amount,CSTR(timeStr));
+        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s", now->AMOUNT, CSTR(now->people.phone), now->amount,
+               CSTR(timeStr));
         $STR_BUF(timeStr);
     }
     Database_destroy(db);
 }
-void test_time_search_gift(){
+
+void test_time_search_gift() {
     Time a = Time_parseTime(1553011043);
     Time b = Time_parseTime(1553011344);
-    Database *db=Print_Sellingrecord(a, b);
+    Database *db = Print_Sellingrecord(a, b);
     ForEach(cur, db) {
         SellingRecord *now = GetData(SellingRecord, cur);
         stringbuf timeStr = Time_toLocalString(now->time);
@@ -43,26 +45,29 @@ void test_time_search_gift(){
     }
     Database_destroy(db);
 }
-void test_search_gift(){
-    Database *db=Search_gift(2);
-    ForEach(cur, db){
+
+void test_search_gift() {
+    Database *db = Search_gift(2);
+    ForEach(cur, db) {
         Present_Situation *now = GetData(Present_Situation, cur);
         stringbuf timeStr = Time_toLocalString(now->time_recording);
-        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s",now->AMOUNT,CSTR(now->people.phone),now->amount,CSTR(timeStr));
+        printf("AMOUNT=%lf,Guest=%s,amount=%d,time=%s", now->AMOUNT, CSTR(now->people.phone), now->amount,
+               CSTR(timeStr));
         $STR_BUF(timeStr);
     }
     Database_destroy(db);
 }
 
-void test_search_amount_gift(){
-    Database *db=Search_amount_gift();
-    ForEach(cur,db){
-        SingleGift *now = GetData(SingleGift,cur);
-       printf("name=%s,total=%.2lf,amount=%d",CSTR(now->name),now->total,now->amount);
+void test_search_amount_gift() {
+    Database *db = Search_amount_gift();
+    ForEach(cur, db) {
+        SingleGift *now = GetData(SingleGift, cur);
+        printf("partId=%d,total=%.2lf,amount=%d", now->partId, now->total, now->amount);
     }
 }
-void test_purchase_scatter(){
-   PurchaseScatter(1);
+
+void test_purchase_scatter() {
+    PurchaseScatter(1);
 }
 
 int main() {
