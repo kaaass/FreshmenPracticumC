@@ -14,7 +14,6 @@
 #include "RecordInput.h"
 #include "StatisticsSituation.h"
 #include "MassIncrease.h"
-#include "Browsing.h"
 #include "ViewPurchase.h"
 #include "ViewSell.h"
 
