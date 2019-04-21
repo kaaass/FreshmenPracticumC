@@ -326,7 +326,7 @@ void updateSTableData() {
         line[1] = concat(4, mountings->name, LITERAL(" ("), provider->name, LITERAL(")"));
         line[2] = guest->name;
         line[3] = toIntString(data->amount);
-        line[4] = toRmbString(data->total);
+        line[4] = data->status == SELLING_GIFT ? STR_BUF("礼品"): toRmbString(data->total);
         line[5] = Time_toLocalString(data->time);
         Table_pushLine(sellTable, line);
     }
