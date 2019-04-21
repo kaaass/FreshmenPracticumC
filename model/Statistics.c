@@ -45,10 +45,8 @@ double Purchase_total() {
     double total = 0;
     ForEach(cur, PURCHASE_RECORD) {
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
-        if (record->status == 0)
+        if (record->status == PURCHASE_NORMAL || record->status == PURCHASE_SALES_RETURN)
             total = record->total + total;
-        if (record->status == 2)
-            total = -record->total + total;
     }
     return total;
 }//得到所有进货的价钱
@@ -57,7 +55,7 @@ double Sell_total() {
     double total = 0;
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *record = GetData(SellingRecord, cur);
-        if (record->status == 0)
+        if (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN)
             total = record->total + total;
     }
     return total;
@@ -233,7 +231,7 @@ Database *Search_amount_gift() {
             Present_Situation *record = GetData(Present_Situation, cur);
             Mountings *rec_mountings = GetById(Mountings, MOUNTINGS, record->partId);
             searchgift.type = rec_mountings->type;
-            searchgift.name = rec_mountings->name;
+            searchgift.partId = rec_mountings->id;
             searchgift.total += record->AMOUNT;
             searchgift.amount += record->amount;
         }

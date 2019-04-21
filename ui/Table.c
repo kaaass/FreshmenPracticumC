@@ -186,6 +186,8 @@ bool renderOutOfSight(Table *table) {
  */
 void Table_inLoop(Table *table) {
     int lstCur = table->cur;
+    if (Database_size(table->columns) <= 0) // 若无数据则不允许操作
+        return;
     if (READ_SPEC) {
         // 读入按键并处理
         switch (SPEC_KEY) {

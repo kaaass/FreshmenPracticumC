@@ -28,7 +28,7 @@ typedef struct {
     stringbuf name;
     int amount;
     int giftPriority;
-    double price;
+    double price; // 最近进货价格
 } Mountings;
 
 stringbuf Mountings_getTypeString(enum MountingsType);
