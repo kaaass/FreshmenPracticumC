@@ -28,9 +28,8 @@ void MIorder_init(){
 
 void MIorder_inLoop(){
     cJSON *json;
-    char Approach[200];
-    scanf("%[^\n]",Approach);
-    string dir = STRING(Approach);
+    string dir;
+    dir = UI_inputString(LITERAL("请输入文件路径："));
     stringbuf path, content;
     // 检测文件存在
     if (!isExist(CSTR(dir))) {
