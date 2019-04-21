@@ -13,6 +13,7 @@
 #include "../../model/Statistics.h"
 #include "../Table.h"
 #include "../../model/Forecase.h"
+#include "../../data/TableProvider.h"
 
 Table *dataTable;
 
@@ -37,8 +38,10 @@ void Inventory_init() {
     time_t nowTime = time(NULL);
     ForEach(cur, MOUNTINGS) {
         Mountings *now = GetData(Mountings, cur);
+        Provider *provider = GetById(Provider, PROVIDER, now->sellerId);
+
         testData[0] = Mountings_getTypeString(now->type);
-        testData[1] = now->name;
+        testData[1] = concat(4, now->name, LITERAL(" ("), provider->name, LITERAL(")")),
         testData[2] = toIntString(now->amount);
         testData[3] = toRmbString(now->price);
         testData[4] = toRmbString(forecasePurchasePrice(nowTime, now->id));
