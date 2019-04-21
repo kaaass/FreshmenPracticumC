@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <assert.h>
 
@@ -63,15 +64,14 @@ void UI_blanks(int cnt) {
  * @return
  */
 bool UI_inputInt(int *num, string tip) {
-    bool status;
+    char *end;
     assert(num);
     if (tip == NULL)
         tip = LITERAL("请输入整数：");
-    UI_setFooterUpdate(tip);
-    UI_setCursorVisible(true);
-    status = scanf("%d", num) == 1;
-    fflush(stdin);
-    return status;
+    stringbuf input = UI_inputString(tip);
+    *num = strtol(U8_CSTR(input), &end, 10);
+    while (*end != '\0' && isspace(*end)) end++;
+    return *end == '\0';
 }
 
 /**
@@ -81,15 +81,14 @@ bool UI_inputInt(int *num, string tip) {
  * @return
  */
 bool UI_inputDouble(double *num, string tip) {
-    bool status;
+    char *end;
     assert(num);
     if (tip == NULL)
         tip = LITERAL("请输入浮点数：");
-    UI_setFooterUpdate(tip);
-    UI_setCursorVisible(true);
-    status = scanf("%lf", num) == 1;
-    fflush(stdin);
-    return status;
+    stringbuf input = UI_inputString(tip);
+    *num = strtod(U8_CSTR(input), &end);
+    while (*end != '\0' && isspace(*end)) end++;
+    return *end == '\0';
 }
 
 /**
