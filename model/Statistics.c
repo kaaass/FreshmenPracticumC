@@ -18,27 +18,21 @@
 
 
 int compareGift_situation(const void *a, const void *b) {
-    if (((Present_Situation *) a)->time_recording.timeStamp <
-        ((Present_Situation *) b)->time_recording.timeStamp)
-        return -1;
-    if (((Present_Situation *) a)->time_recording.timeStamp ==
-        ((Present_Situation *) b)->time_recording.timeStamp)
-        return 0;
-    if (((Present_Situation *) a)->time_recording.timeStamp >
-        ((Present_Situation *) b)->time_recording.timeStamp)
-        return 1;
+    time_t tsA = (*(Present_Situation **) a)->time_recording.timeStamp,
+            tsB = (*(Present_Situation **) b)->time_recording.timeStamp;
+    return tsB - tsA;
 }
 
 int _comparePurchaseRecord(const void *a, const void *b) {
-    if (((PurchaseRecord *) a)->time.timeStamp < ((PurchaseRecord *) b)->time.timeStamp) return -1;
-    if (((PurchaseRecord *) a)->time.timeStamp == ((PurchaseRecord *) b)->time.timeStamp) return 0;
-    if (((PurchaseRecord *) a)->time.timeStamp > ((PurchaseRecord *) b)->time.timeStamp) return 1;
+    time_t tsA = (*(PurchaseRecord **) a)->time.timeStamp,
+            tsB = (*(PurchaseRecord **) b)->time.timeStamp;
+    return tsB - tsA;
 }
 
 int _compareSellingRecord(const void *a, const void *b) {
-    if (((SellingRecord *) a)->time.timeStamp < ((SellingRecord *) b)->time.timeStamp) return -1;
-    if (((SellingRecord *) a)->time.timeStamp == ((SellingRecord *) b)->time.timeStamp) return 0;
-    if (((SellingRecord *) a)->time.timeStamp > ((SellingRecord *) b)->time.timeStamp) return 1;
+    time_t tsA = (*(SellingRecord **) a)->time.timeStamp,
+            tsB = (*(SellingRecord **) b)->time.timeStamp;
+    return tsB - tsA;
 }
 
 double Purchase_total() {
