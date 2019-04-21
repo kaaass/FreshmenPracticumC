@@ -10,14 +10,14 @@
 
 void About_init() {
     READ_SPEC = true;
-    UI_setFooterUpdate(LITERAL("按下Enter键以返回..."));
+    UI_setFooterUpdate(LITERAL("按下Esc键以返回..."));
     UI_startScene(SCENE_ABOUT, STR_BUF("关于"));
 }
 
 void About_inLoop() {
     if (READ_SPEC) {
-        if (SPEC_KEY == KEY_ENTER) {
-            // 按下Enter键返回
+        if (SPEC_KEY == KEY_ESC) {
+            // 按下Esc键返回
             UI_endScene();
         }
     }

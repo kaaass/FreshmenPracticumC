@@ -11,9 +11,10 @@
 #include "../UI_Utils.h"
 #include "../Table.h"
 #include "../../data/TableProvider.h"
+#include "../../model/Forecase.h"
 
 #define MENU_RECORD_CNT 6
-#define TABLE_COLUMN_NUM 5
+#define TABLE_COLUMN_NUM 6
 
 RecordParam CUR_REC_PARAM, nowParam;
 enum RECORD_VIEW {
@@ -67,9 +68,10 @@ void RecordInput_init(RecordParam nowVal) {
             STR_BUF("供货商"),
             STR_BUF("名称"),
             STR_BUF("库存"),
-            STR_BUF("价格")
+            STR_BUF("价格"),
+            STR_BUF("预测(进货/销售)")
     };
-    int columnWidth[] = {20, 30, 20, 10, 20};
+    int columnWidth[] = {15, 25, 20, 10, 10, 20};
     mountingTable = Table_create(-1, 0, 106, 27, -1, -1);
     Table_setColumnTitle(mountingTable, columnName, columnWidth, TABLE_COLUMN_NUM);
     //
@@ -160,15 +162,19 @@ void RecordInput_inLoop() {
 void loadTableData() {
     Table_clear(mountingTable);
     stringbuf line[5];
+    time_t curTime = time(NULL);
     ForEach(cur, MOUNTINGS) {
         Mountings *data = GetData(Mountings, cur);
         Provider *provider = GetById(Provider, PROVIDER, data->sellerId);
+        double forcPurPrice = forecasePurchasePrice(curTime, data->id),
+            forcSellPrice = forecaseSellingPrice(curTime, data->id);
         assert(provider); // provider期望不为空
         line[0] = Mountings_getTypeString(data->type);
         line[1] = concat(4, provider->name, LITERAL(" ("), provider->phone, LITERAL(")"));
         line[2] = cloneString(data->name);
         line[3] = toIntString(data->amount);
         line[4] = toRmbString(data->price);
+        line[5] = concat(3, toRmbString(forcPurPrice), LITERAL("/"), toRmbString(forcSellPrice));
         Table_pushLine(mountingTable, line);
     }
     mountingTable->columnCur = 0;
