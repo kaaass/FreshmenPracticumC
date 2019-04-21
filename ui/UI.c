@@ -17,19 +17,12 @@
 #include "scene/Singleitem.h"
 #include "scene/MassIncrease.h"
 #include "scene/Inventory.h"
-#include "scene/Browsing.h"
 #include "scene/MIguest.h"
 #include "scene/MIprovider.h"
 #include "scene/MImountings.h"
 #include "scene/MIorder.h"
 #include "scene/MIselling.h"
 #include "scene/MIpurchase.h"
-#include "scene/BRguest.h"
-#include "scene/BRmountings.h"
-#include "scene/BRmountingsin.h"
-#include "scene/BRmountingsout.h"
-#include "scene/BRseller.h"
-#include "scene/BRtime.h"
 #include "scene/ViewPurchase.h"
 #include "scene/ViewSell.h"
 #include "scene/ChooseMountingsType.h"
@@ -102,9 +95,6 @@ bool UI_runSceneLoop() {
         case SCENE_MASSINCREASE:
             MassIncrease_inLoop();
             break;
-        case SCENE_BROWSING:
-            Browsing_inLoop();
-            break;
         case SCENE_MIGUEST:
             MIguest_inLoop();
             break;
@@ -122,24 +112,6 @@ bool UI_runSceneLoop() {
             break;
         case SCENE_MIMOUNTINGS:
             MImountings_inLoop();
-            break;
-        case SCENE_BRTIME:
-            BRtime_inLoop();
-            break;
-        case SCENE_BRSELLER:
-            BRseller_inLoop();
-            break;
-        case SCENE_BRMOUNTINGS:
-            BRmountings_inLoop();
-            break;
-        case SCENE_BRMOUNTINGSIN:
-            BRmountingsin_inLoop();
-            break;
-        case SCENE_BRMOUNTINGSOUT:
-            BRmountingsout_inLoop();
-            break;
-        case SCENE_BRGUEST:
-            BRguest_inLoop();
             break;
         case SCENE_INVENTORY:
             Inventory_inLoop();
@@ -216,20 +188,6 @@ int UI_renderScene(int line) {
             return MIselling_render(line);
         case SCENE_MIPURCHASE:
             return MIpurchase_render(line);
-        case SCENE_BROWSING:
-            return Browsing_render(line);
-        case SCENE_BRGUEST:
-            return BRguest_render(line);
-        case SCENE_BRMOUNTINGS:
-            return BRmountings_render(line);
-        case SCENE_BRMOUNTINGSIN:
-            return BRmountingsin_render(line);
-        case SCENE_BRMOUNTINGSOUT:
-            return BRmountingsout_render(line);
-        case SCENE_BRSELLER:
-            return BRseller_render(line);
-        case SCENE_BRTIME:
-            return BRtime_render(line);
         case SCENE_INVENTORY:
             return Inventory_render(line);
             // 注册
