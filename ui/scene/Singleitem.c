@@ -9,52 +9,56 @@
 #include "../UI_Utils.h"
 #include "../../model/Statistics.h"
 #include "../Table.h"
-Menu *singleMenu;
+#include "../../data/TableProvider.h"
+
 Table *dataTable;
 
-void Singleitem_init(){
-    READ_SPEC = true;//是否读入上下左右键，读入字符串就要false
+void Singleitem_init() {
+    /*
+     * 初始化表格
+     */
     stringbuf columnName[] = {
-            STR_BUF("名称"),
             STR_BUF("种类"),
+            STR_BUF("名称"),
             STR_BUF("总价值"),
-            STR_BUF("数量")
+            STR_BUF("数量"),
+            STR_BUF("库存")
     };
+    int columnWidth[] = {10, 25, 15, 10, 10};
+    dataTable = Table_create(-1, 1, 76, 25, 1, 0);
+    Table_setColumnTitle(dataTable, columnName, columnWidth, 5);
+    /*
+     * 初始化数据
+     */
     Database *create = Search_amount_gift();
-    int i=0,num=0;
-    ForEach(cur, create){num++;}
-    stringbuf testData[num][4];
-    ForEach(cur, create){
+    stringbuf testData[5];
+    ForEach(cur, create) {
         SingleGift *now = GetData(SingleGift, cur);
-        testData[i][0] = now->name;
-        testData[i][1] = Mountings_getTypeString(now->type);
-        char ch1[100];
-        sprintf(ch1,"%.2lf",now->total);
-        testData[i][2] = newString(ch1);
-        char ch2[100];
-        sprintf(ch2,"%d",now->amount);
-        testData[i][3] = newString(ch2);
-        i++;
-    };
-    int columnWidth[] = {10, 10, 10,10};
-    dataTable = Table_create(-1, 1, 100, 8, 1, 0);
-    Table_setColumnTitle(dataTable, columnName, columnWidth, 4);
-    for (int j = 0; j < num; j++) Table_pushLine(dataTable, testData[j]);
-    UI_startScene(SCENE_SINGLEITEM, STR_BUF("单个浏览"));
-    UI_setFooterUpdate(LITERAL("按Enter键返回上一页"));
-
+        Mountings *mountings = GetById(Mountings, MOUNTINGS, now->partId);
+        Provider *provider = GetById(Provider, PROVIDER, mountings->sellerId);
+        testData[0] = Mountings_getTypeString(now->type);
+        testData[1] = concat(4, mountings->name, LITERAL(" ("), provider->name, LITERAL(")")),
+        testData[2] = toRmbString(now->total);
+        testData[3] = toIntString(now->amount);
+        testData[4] = toIntString(mountings->amount);
+        Table_pushLine(dataTable, testData);
+    }
+    //
+    READ_SPEC = true;
+    UI_startScene(SCENE_SINGLEITEM, STR_BUF("礼物情况统计"));
+    UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
 }
 
 void Singleitem_inLoop() {
-    Menu_inLoop(singleMenu);
+    Table_inLoop(dataTable);
+    UI_setFooterUpdate(concat(2, LITERAL("按ESC键返回上一页。当前选中："), Table_getSelection(dataTable)));
     if (READ_SPEC) {
-        if (SPEC_KEY == KEY_ENTER) {
-            UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
+        if (SPEC_KEY == KEY_ESC) {
             UI_endScene();
         }
     }
 }
 
-int Singleitem_render(int line){
+int Singleitem_render(int line) {
     Table_render(dataTable, line);
 }

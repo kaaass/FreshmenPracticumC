@@ -85,7 +85,6 @@ void Insert_sellingRecord(SellingRecord *data, bool change) {
     if (change) {
         Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
         mounting->amount -= data->amount;
-        mounting->price = data->price;
     }
     Database_pushBack(SELLING_RECORD, Data(SellingRecord, data));
 }

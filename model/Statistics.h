@@ -45,7 +45,7 @@ typedef struct Present_Situation {
 
 typedef struct singleGift{
     enum MountingsType type;
-    stringbuf name;
+    int partId;
     double total;
     int amount;
 }SingleGift;

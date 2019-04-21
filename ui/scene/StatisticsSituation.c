@@ -17,10 +17,10 @@ Menu *statMenu;
 void StatisticsSituation_init() {
     READ_SPEC = true;//是否读入上下左右键，读入字符串就要false
     stringbuf name[] = {
-            STR_BUF("    利润"),
-            STR_BUF("    礼物总情况"),
-            STR_BUF("    单个礼物查询"),
-            STR_BUF("    库存查询")
+            STR_BUF("    当前利润情况"),
+            STR_BUF("    礼物赠送记录"),
+            STR_BUF("    礼物情况统计"),
+            STR_BUF("    库存物品查询")
     };
     statMenu = Menu_create(-1, 4, name, 4, 0);
     UI_startScene(SCENE_STATISTICS_SITUATION, STR_BUF("统计信息"));
