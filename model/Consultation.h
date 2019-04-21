@@ -18,6 +18,8 @@ Database *Supplier(int sellerId);
 
 Database *Client(int guestId);
 
-Database *QueryAll();
+Database *QueryAll_Pur();
+
+Database *QueryAll_Sel();
 
 #endif //FRESHMAN_PROJ_C_CONSULTATION_H
