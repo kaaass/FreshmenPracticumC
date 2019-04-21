@@ -16,6 +16,7 @@
 #include "MassIncrease.h"
 #include "ViewPurchase.h"
 #include "ViewSell.h"
+#include "Settings.h"
 
 #define MENU_CNT 7
 
@@ -56,6 +57,9 @@ void Welcome_inLoop() {
                     break;
                 case 3:
                     StatisticsSituation_init();
+                    break;
+                case 4:
+                    Settings_init();
                     break;
                 case 5:
                     About_init();
