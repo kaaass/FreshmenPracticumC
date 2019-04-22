@@ -27,28 +27,36 @@ void MIpurchase_init(){
 }
 
 void MIpurchase_inLoop(){
-    cJSON *json;
-    char Approach[200];
-    scanf("%[^\n]",Approach);
-    string dir = STRING(Approach);
-    stringbuf path, content;
-    // 默认数据库创建
-    if (!isExist(CSTR(dir))) {
-        string instruction = LITERAL("文件不存在，按Esc返回上一页面");
-        UI_setFooterUpdate(instruction);
+    Menu_inLoop(purchaseMenu);
+    if(READ_SPEC){
+        cJSON *json;
+        string dir;
+        dir = UI_inputString(LITERAL("请输入文件路径："));
+        stringbuf content;
+        // 检测文件存在
+        if (!isExist(CSTR(dir))) {
+            string instruction = LITERAL("文件不存在，按Esc返回上一页面");
+            UI_setFooterUpdate(instruction);
+            if(SPEC_KEY == KEY_ESC)
+                UI_endScene();
+        }
+        // PurchaseRecord
+        else{
+            content = readStringFromFile(CSTR(dir));
+            json = cJSON_Parse(U8_CSTR(content));
+            ForEach(cur,json){
+                PurchaseRecord *record = GetData(PurchaseRecord,cur);
+                Database_pushBack(PURCHASE_RECORD,Data(PurchaseRecord,record));
+            }
+            cJSON_Delete(json);
+            string instruction = LITERAL("导入成功，按Esc返回上一页面");
+            UI_setFooterUpdate(instruction);
+            if(SPEC_KEY == KEY_ESC)
+                UI_endScene();
+        }
+        if(SPEC_KEY == KEY_ESC)
+            UI_endScene();
     }
-    // PurchaseRecord
-    else{
-        path = LITERAL("/PurchaseRecord.json");
-        path = concat(2, dir, path);
-        content = readStringFromFile(CSTR(path));
-        json = cJSON_Parse(U8_CSTR(content));
-        DeserializeDB(PurchaseRecord, PURCHASE_RECORD, json);
-        cJSON_Delete(json);
-        $STR_BUF(path);
-    }
-    if(SPEC_KEY == KEY_ESC)
-        UI_endScene();
 }
 
 int MIpurchase_render(int line){

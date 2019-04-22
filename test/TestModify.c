@@ -26,13 +26,18 @@ void test_func() {
 
     //test modify Order
     PurchaseRecord pr = {.price = 998244353};
+    Insert_purchaseRecord(&pr, false);
+    PurchaseRecord *record1 = GetById(PurchaseRecord, PURCHASE_RECORD, Database_size(PURCHASE_RECORD));
     SellingRecord sr = {.price = 1e9 + 7};
+    Insert_sellingRecord(&sr, false);
+    SellingRecord *record2 = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
 
-    TEST_ASSERT(modifyOrderOfPurchaseRecord(1, 1, &pr, NULL))
+    TEST_ASSERT(modifyOrderOfPurchaseRecord(5, 3, record1, NULL))
     Order *order = GetById(Order, ORDER, Database_size(ORDER));
+
     TEST_ASSERT(GetById(PurchaseRecord, PURCHASE_RECORD, order->opId[order->opCount-1])->price == pr.price)
 
-    TEST_ASSERT(modifyOrderOfSellingRecord(3, 1, &sr, NULL))
+    TEST_ASSERT(modifyOrderOfSellingRecord(3, 1, record2, NULL))
     order = GetById(Order, ORDER, Database_size(ORDER));
     TEST_ASSERT(GetById(SellingRecord, SELLING_RECORD, order->opId[order->opCount-1])->price == sr.price)
 
