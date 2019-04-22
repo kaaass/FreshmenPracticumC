@@ -82,14 +82,14 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
 
     order->status = ORDER_DELETED;
     Order newOrder = {.status = ORDER_SALES_RETURN, .type = order->type};
-    SellingRecord *newSellingRecord2 = GetById(SellingRecord, SELLING_RECORD, Database_size(SELLING_RECORD));
     int count = 0;
     for (int i = 0; i < order->opCount; ++i) {
-        newOrder.opId[count++] = order->opId[i];
-
+        SellingRecord* record = GetById(SellingRecord, SELLING_RECORD, order->opId[i]);
+        if(record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN)
+            newOrder.opId[count++] = order->opId[i];
     }
 
-    newOrder.opId[count++] = newSellingRecord2->id;
+    newOrder.opId[count++] = newSellingRecord->id;
     newOrder.opCount = count;
     Insert_order(&newOrder);
 
@@ -98,7 +98,6 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
         SellingRecord* record = GetById(SellingRecord, SELLING_RECORD, newOrder.opId[i]);
         record->orderId = newOrderId;
     }
-    Insert_sellingRecord(newSellingRecord, false);
     return true;
 }
 
@@ -124,12 +123,13 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
 
     order->status = ORDER_DELETED;
     Order newOrder = {.status = ORDER_SALES_RETURN, .type = order->type};
-    PurchaseRecord *newPuachaseRecord2 = GetById(PurchaseRecord, PURCHASE_RECORD, Database_size(PURCHASE_RECORD));
     int count = 0;
     for (int i = 0; i < order->opCount; ++i) {
-        newOrder.opId[count++] = order->opId[i];
+        PurchaseRecord* record = GetById(PurchaseRecord, PURCHASE_RECORD, order->opId[i]);
+        if(record->status == PURCHASE_NORMAL || record->status == PURCHASE_SALES_RETURN)
+            newOrder.opId[count++] = order->opId[i];
     }
-    newOrder.opId[count++] = newPuachaseRecord2->id;
+    newOrder.opId[count++] = newPuachaseRecord->id;
     newOrder.opCount = count;
 
     Insert_order(&newOrder);
@@ -138,7 +138,6 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
         PurchaseRecord* record = GetById(PurchaseRecord, PURCHASE_RECORD, newOrder.opId[i]);
         record->orderId = newOrderId;
     }
-    Insert_purchaseRecord(newPuachaseRecord, false);
 
     return true;
 }
