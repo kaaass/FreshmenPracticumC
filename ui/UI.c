@@ -20,7 +20,6 @@
 #include "scene/MIguest.h"
 #include "scene/MIprovider.h"
 #include "scene/MImountings.h"
-#include "scene/MIorder.h"
 #include "scene/MIselling.h"
 #include "scene/MIpurchase.h"
 #include "scene/ViewPurchase.h"
@@ -105,9 +104,6 @@ bool UI_runSceneLoop() {
         case SCENE_MIPURCHASE:
             MIpurchase_inLoop();
             break;
-        case SCENE_MIORDER:
-            MIorder_inLoop();
-            break;
         case SCENE_MISELLING:
             MIselling_inLoop();
             break;
@@ -186,8 +182,6 @@ int UI_renderScene(int line) {
             return MIprovider_render(line);
         case SCENE_MIMOUNTINGS:
             return MImountings_render(line);
-        case SCENE_MIORDER:
-            return MIorder_render(line);
         case SCENE_MISELLING:
             return MIselling_render(line);
         case SCENE_MIPURCHASE:

@@ -46,7 +46,9 @@ void MImountings_inLoop(){
         else{
             content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
-            ForEach(cur,json){
+            Database *tempDb = Create(Mountings);
+            DeserializeDB(Mountings, tempDb, json);
+            ForEach(cur,tempDb){
                 Mountings *record = GetData(Mountings,cur);
                 Database_pushBack(MOUNTINGS,Data(Mountings,record));
             }

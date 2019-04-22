@@ -17,19 +17,19 @@
 
 Menu *guestMenu;
 
-void MIguest_init(){
+void MIguest_init() {
     READ_SPEC = true;
     stringbuf name[] = {
             STR_BUF("请输入文件路径"),
     };
     guestMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
-    UI_startScene(SCENE_MIGUEST,STR_BUF("客户"));
+    UI_startScene(SCENE_MIGUEST, STR_BUF("客户"));
 }
 
-void MIguest_inLoop(){
+void MIguest_inLoop() {
     Menu_inLoop(guestMenu);
-    if(READ_SPEC){
-        if(SPEC_KEY == KEY_ESC)
+    if (READ_SPEC) {
+        if (SPEC_KEY == KEY_ESC)
             UI_endScene();
         cJSON *json;
         string dir;
@@ -39,28 +39,30 @@ void MIguest_inLoop(){
         if (!isExist(CSTR(dir))) {
             string instruction = LITERAL("文件不存在，按Esc返回上一页面");
             UI_setFooterUpdate(instruction);
-            if(SPEC_KEY == KEY_ESC)
+            if (SPEC_KEY == KEY_ESC)
                 UI_endScene();
         }
-        // Guest
-        else{
+            // Guest
+        else {
             content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
-            ForEach(cur,json){
-                Guest *record = GetData(Guest,cur);
-                Database_pushBack(GUEST,Data(Guest,record));
+            Database *guests = Create(Guest);
+            DeserializeDB(Guest, guests, json);
+            ForEach(cur, guests) {
+                Guest *record = GetData(Guest, cur);
+                Database_pushBack(GUEST, Data(Guest, record));
             }
             cJSON_Delete(json);
             string instruction = LITERAL("导入成功，按Esc返回上一页面");
             UI_setFooterUpdate(instruction);
-            if(SPEC_KEY == KEY_ESC)
+            if (SPEC_KEY == KEY_ESC)
                 UI_endScene();
         }
 
     }
 }
 
-int MIguest_render(int line){
+int MIguest_render(int line) {
     UI_printMidString(LITERAL("欢迎使用批量增加!"), line);
     line += 1;
     putchar('\n');
