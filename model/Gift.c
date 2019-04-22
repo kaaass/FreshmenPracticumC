@@ -102,5 +102,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
     };
     Insert_sellingRecord(&newSellingRecord, true);
     mountings->amount--;
+    Order* order = GetById(Order, ORDER, GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId);
+    order->opId[order->opCount++] = Database_size(SELLING_RECORD);
     return true;
 }
