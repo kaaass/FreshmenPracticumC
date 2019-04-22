@@ -29,6 +29,8 @@ void calcTotal();
 
 void loadTableData();
 
+stringbuf forPriceStr(double price);
+
 /**
  * 初始化并进入读入记录页面
  * @param nowVal 当前值，若partId为-1则视为空
@@ -71,7 +73,7 @@ void RecordInput_init(RecordParam nowVal) {
             STR_BUF("价格"),
             STR_BUF("预测(进货/销售)")
     };
-    int columnWidth[] = {15, 25, 20, 10, 10, 20};
+    int columnWidth[] = {10, 25, 20, 10, 10, 25};
     mountingTable = Table_create(-1, 0, 106, 27, -1, -1);
     Table_setColumnTitle(mountingTable, columnName, columnWidth, TABLE_COLUMN_NUM);
     //
@@ -161,7 +163,7 @@ void RecordInput_inLoop() {
 
 void loadTableData() {
     Table_clear(mountingTable);
-    stringbuf line[5];
+    stringbuf line[TABLE_COLUMN_NUM];
     time_t curTime = time(NULL);
     ForEach(cur, MOUNTINGS) {
         Mountings *data = GetData(Mountings, cur);
@@ -174,11 +176,18 @@ void loadTableData() {
         line[2] = cloneString(data->name);
         line[3] = toIntString(data->amount);
         line[4] = toRmbString(data->price);
-        line[5] = concat(3, toRmbString(forcPurPrice), LITERAL("/"), toRmbString(forcSellPrice));
+        line[5] = concat(3, forPriceStr(forcPurPrice), LITERAL("/"), forPriceStr(forcSellPrice));
         Table_pushLine(mountingTable, line);
     }
     mountingTable->columnCur = 0;
     Table_setCurAndUpdate(mountingTable, nowParam.partId != -1 ? nowParam.partId: 1);
+}
+
+stringbuf forPriceStr(double price) {
+    if (price > 0)
+        return toRmbString(price);
+    else
+        return STR_BUF("数据不足");
 }
 
 int RecordInput_render(int line) {

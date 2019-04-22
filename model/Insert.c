@@ -131,15 +131,17 @@ bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderTy
         return false;
     }
     // 销售时，货品存量不能为负
-    ForEach(cur, records) {
-        RecordParam *data = GetData(RecordParam, cur);
-        Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
-        Provider *provider;
-        if (data->amount > mounting->amount) {
-            provider = GetById(Provider, PROVIDER, mounting->sellerId);
-            *info = concat(5, LITERAL("商品 "), mounting->name
-                    , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
-            return false;
+    if (orderType != ORDER_PURCHASE) {
+        ForEach(cur, records) {
+            RecordParam *data = GetData(RecordParam, cur);
+            Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
+            Provider *provider;
+            if (data->amount > mounting->amount) {
+                provider = GetById(Provider, PROVIDER, mounting->sellerId);
+                *info = concat(5, LITERAL("商品 "), mounting->name
+                        , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
+                return false;
+            }
         }
     }
     return true;
