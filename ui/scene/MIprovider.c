@@ -44,7 +44,9 @@ void MIprovider_inLoop(){
         else{
             content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
-            ForEach(cur,json){
+            Database *tempDb = Create(Provider);
+            DeserializeDB(Provider, tempDb, json);
+            ForEach(cur,tempDb){
                 Provider *record = GetData(Provider,cur);
                 Database_pushBack(PROVIDER,Data(Provider,record));
             }

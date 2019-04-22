@@ -44,7 +44,9 @@ void MIpurchase_inLoop(){
         else{
             content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
-            ForEach(cur,json){
+            Database *tempDb = Create(PurchaseRecord);
+            DeserializeDB(PurchaseRecord, tempDb, json);
+            ForEach(cur,tempDb){
                 PurchaseRecord *record = GetData(PurchaseRecord,cur);
                 Database_pushBack(PURCHASE_RECORD,Data(PurchaseRecord,record));
             }

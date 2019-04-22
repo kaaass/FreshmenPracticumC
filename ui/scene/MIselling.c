@@ -44,7 +44,9 @@ void MIselling_inLoop(){
         else{
             content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
-            ForEach(cur,json){
+            Database *tempDb = Create(SellingRecord);
+            DeserializeDB(SellingRecord, tempDb, json);
+            ForEach(cur,tempDb){
                 SellingRecord *record = GetData(SellingRecord,cur);
                 Database_pushBack(SELLING_RECORD,Data(SellingRecord,record));
             }
