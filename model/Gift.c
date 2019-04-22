@@ -25,7 +25,7 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
     }
 
     //送礼门槛
-    int bound1 = 0, bound2 = 0;
+    double bound1 = 0, bound2 = 0;
 
     //获取能做gift的Mountigs的id
     int* gifts = NULL;
@@ -38,9 +38,9 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
         if(EQUAL(config->key, LITERAL("giftId"))) {
             gifts = Config_getIntArray(STR_BUF("giftId"), giftsCount);
         } else if(EQUAL(config->key, LITERAL("giftSendingBound1"))) {
-            bound1 = Config_optInteger(STR_BUF("giftSendingBound1"), -1);
+            bound1 = Config_optDouble(STR_BUF("giftSendingBound1"), -1);
         } else if(EQUAL(config->key, LITERAL("giftSendingBound2"))) {
-            bound2 = Config_optInteger(STR_BUF("giftSendingBound2"), -1);
+            bound2 = Config_optDouble(STR_BUF("giftSendingBound2"), -1);
         }
     }
 
@@ -69,7 +69,7 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
             }
         }
     }
-    if(highAmount == 0)
+    if(highAmount <= 0)
         return -2;
     else
         return highId;
@@ -102,5 +102,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
     };
     Insert_sellingRecord(&newSellingRecord, true);
     mountings->amount--;
+    Order* order = GetById(Order, ORDER, GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId);
+    order->opId[order->opCount++] = Database_size(SELLING_RECORD);
     return true;
 }
