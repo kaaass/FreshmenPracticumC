@@ -94,9 +94,11 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
     Insert_order(&newOrder);
 
     int newOrderId = Database_size(ORDER);
-    newSellingRecord->orderId = newOrderId;
+    for (int i = 0; i < newOrder.opCount; ++i) {
+        SellingRecord* record = GetById(SellingRecord, SELLING_RECORD, newOrder.opId[i]);
+        record->orderId = newOrderId;
+    }
     Insert_sellingRecord(newSellingRecord, false);
-
     return true;
 }
 
@@ -132,7 +134,10 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
 
     Insert_order(&newOrder);
     int newOrderId = Database_size(ORDER);
-    newPuachaseRecord->orderId = newOrderId;
+    for (int i = 0; i < newOrder.opCount; ++i) {
+        PurchaseRecord* record = GetById(PurchaseRecord, PURCHASE_RECORD, newOrder.opId[i]);
+        record->orderId = newOrderId;
+    }
     Insert_purchaseRecord(newPuachaseRecord, false);
 
     return true;
