@@ -17,13 +17,15 @@ double forecasePurchasePrice(double time, int mountingsId) {
             yMean += nowPurchaseRecord->price;
             xyMean += (double)nowPurchaseRecord->time.timeStamp * nowPurchaseRecord->price;
             xxMean += (double)nowPurchaseRecord->time.timeStamp * nowPurchaseRecord->time.timeStamp;
-            cnt++;
+            cnt+=nowPurchaseRecord->amount;
         }
     }
 
-    if(cnt <= 1) {
+    if(cnt == 1) {
+        return yMean;
+    }
+    if(cnt <= 0) {
         return -1;
-
     }
 
     xMean /= cnt;
@@ -52,11 +54,14 @@ double forecaseSellingPrice(double time, int mountingsId) {
             yMean += nowSellingRecord->price;
             xyMean += (double)nowSellingRecord->time.timeStamp * nowSellingRecord->price;
             xxMean += (double)nowSellingRecord->time.timeStamp * (double)nowSellingRecord->time.timeStamp;
-            cnt++;
+            cnt+=nowSellingRecord->amount;
         }
     }
 
-    if(cnt <= 1) {
+    if(cnt == 1) {
+        return yMean;
+    }
+    if(cnt <= 0) {
         return -1;
     }
 
