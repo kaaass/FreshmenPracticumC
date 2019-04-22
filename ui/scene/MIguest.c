@@ -29,6 +29,8 @@ void MIguest_init(){
 void MIguest_inLoop(){
     Menu_inLoop(guestMenu);
     if(READ_SPEC){
+        if(SPEC_KEY == KEY_ESC)
+            UI_endScene();
         cJSON *json;
         string dir;
         dir = UI_inputString(LITERAL("请输入文件路径："));
@@ -37,6 +39,7 @@ void MIguest_inLoop(){
         if (!isExist(CSTR(dir))) {
             string instruction = LITERAL("文件不存在，按Esc返回上一页面");
             UI_setFooterUpdate(instruction);
+            UI_endScene();
         }
         // Guest
         else{
@@ -51,8 +54,7 @@ void MIguest_inLoop(){
             cJSON_Delete(json);
             $STR_BUF(path);
         }
-        if(SPEC_KEY == KEY_ESC)
-            UI_endScene();
+
     }
 }
 
