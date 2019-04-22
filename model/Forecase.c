@@ -14,8 +14,9 @@ double forecasePurchasePrice(double time, int mountingsId) {
     int amount;
     ForEach(cur, PURCHASE_RECORD) {
         PurchaseRecord *nowPurchaseRecord = GetData(PurchaseRecord, cur);
-        if((nowPurchaseRecord->status == PURCHASE_NORMAL || nowPurchaseRecord->status == PURCHASE_SALES_RETURN) && nowPurchaseRecord->partId == mountingsId) {
-            x = (double)nowPurchaseRecord->time.timeStamp;
+        if ((nowPurchaseRecord->status == PURCHASE_NORMAL || nowPurchaseRecord->status == PURCHASE_SALES_RETURN) &&
+            nowPurchaseRecord->partId == mountingsId) {
+            x = (double) nowPurchaseRecord->time.timeStamp;
             y = nowPurchaseRecord->price;
             amount = nowPurchaseRecord->amount;
             xMean += amount * x;
@@ -26,10 +27,10 @@ double forecasePurchasePrice(double time, int mountingsId) {
         }
     }
 
-    if(cnt == 1) {
+    if (cnt == 1) {
         return yMean;
     }
-    if(cnt <= 0) {
+    if (cnt <= 0) {
         return -1;
     }
 
@@ -38,7 +39,7 @@ double forecasePurchasePrice(double time, int mountingsId) {
     xyMean /= cnt;
     xxMean /= cnt;
 
-    double m = (xyMean - xMean * yMean) / (xxMean - xMean*xMean);
+    double m = (xyMean - xMean * yMean) / (xxMean - xMean * xMean);
     double c = yMean - m * xMean;
 
     double result = m * time + c;
@@ -56,8 +57,9 @@ double forecaseSellingPrice(double time, int mountingsId) {
     int cnt = 0;
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *nowSellingRecord = GetData(SellingRecord, cur);
-        if((nowSellingRecord->status == SELLING_NORMAL || nowSellingRecord->status == SELLING_SALES_RETURN) && nowSellingRecord->partId == mountingsId) {
-            x = (double)nowSellingRecord->time.timeStamp;
+        if ((nowSellingRecord->status == SELLING_NORMAL || nowSellingRecord->status == SELLING_SALES_RETURN) &&
+            nowSellingRecord->partId == mountingsId) {
+            x = (double) nowSellingRecord->time.timeStamp;
             y = nowSellingRecord->price;
             amount = nowSellingRecord->amount;
             xMean += amount * x;
@@ -68,10 +70,10 @@ double forecaseSellingPrice(double time, int mountingsId) {
         }
     }
 
-    if(cnt == 1) {
+    if (cnt == 1) {
         return yMean;
     }
-    if(cnt <= 0) {
+    if (cnt <= 0) {
         return -1;
     }
 
@@ -80,7 +82,7 @@ double forecaseSellingPrice(double time, int mountingsId) {
     xyMean /= cnt;
     xxMean /= cnt;
 
-    double m = (xyMean - xMean * yMean) / (xxMean - xMean*xMean);
+    double m = (xyMean - xMean * yMean) / (xxMean - xMean * xMean);
     double c = yMean - m * xMean;
 
     double result = m * time + c;
