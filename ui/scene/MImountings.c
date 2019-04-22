@@ -34,7 +34,7 @@ void MImountings_inLoop(){
         cJSON *json;
         string dir;
         dir = UI_inputString(LITERAL("请输入文件路径："));
-        stringbuf path, content;
+        stringbuf content;
         // 检测文件存在
         if (!isExist(CSTR(dir))) {
             string instruction = LITERAL("文件不存在，按Esc返回上一页面");
@@ -44,16 +44,17 @@ void MImountings_inLoop(){
         }
         // Mountings
         else{
-            path = LITERAL("/Mountings.json");
-            path = concat(2, dir, path);
-            content = readStringFromFile(CSTR(path));
+            content = readStringFromFile(CSTR(dir));
             json = cJSON_Parse(U8_CSTR(content));
             ForEach(cur,json){
                 Mountings *record = GetData(Mountings,cur);
                 Database_pushBack(MOUNTINGS,Data(Mountings,record));
             }
             cJSON_Delete(json);
-            $STR_BUF(path);
+            string instruction = LITERAL("导入成功，按Esc返回上一页面");
+            UI_setFooterUpdate(instruction);
+            if(SPEC_KEY == KEY_ESC)
+                UI_endScene();
         }
     }
 }
