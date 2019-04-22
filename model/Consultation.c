@@ -47,7 +47,7 @@ Database *AccessoryOut(int type) {
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *record = GetData(SellingRecord, cur);
         trans = GetById(Mountings, MOUNTINGS, record->partId);
-        if (trans->type == type && (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN)) {
+        if (trans->type == type && (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN || record->status == SELLING_GIFT)) {
             accessoryout[num] = record;
             num++;
         }
@@ -83,7 +83,7 @@ Database *Client(int guestId) {
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *record = GetData(SellingRecord, cur);
         if (record->guestId == guestId &&
-            (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN)) {
+            (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN || record->status == SELLING_GIFT)) {
             guest[num] = record;
             num++;
         }
@@ -113,7 +113,7 @@ Database *QueryAll_Sel() {
     int num = 0;
     ForEach(cur, SELLING_RECORD) {
         SellingRecord *record = GetData(SellingRecord, cur);
-        if (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN) {
+        if (record->status == SELLING_NORMAL || record->status == SELLING_SALES_RETURN || record->status == SELLING_GIFT) {
             sel[num] = record;
             num++;
         }

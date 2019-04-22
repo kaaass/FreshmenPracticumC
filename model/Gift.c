@@ -29,23 +29,23 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
 
     //获取能做gift的Mountigs的id
     int* gifts = NULL;
-    int giftsCount[] = {0};
+    int giftsCount = 0;
 
     ForEach(cur, CONFIG) {
 
         Config *config = GetData(Config, cur);
 
         if(EQUAL(config->key, LITERAL("giftId"))) {
-            gifts = Config_getIntArray(STR_BUF("giftId"), giftsCount);
+            gifts = Config_getIntArray(STR_BUF("giftId"), &giftsCount);
         } else if(EQUAL(config->key, LITERAL("giftSendingBound1"))) {
-            bound1 = Config_optDouble(STR_BUF("giftSendingBound1"), -1);
+            bound1 = Config_optDouble(STR_BUF("giftSendingBound1"), 100);
         } else if(EQUAL(config->key, LITERAL("giftSendingBound2"))) {
-            bound2 = Config_optDouble(STR_BUF("giftSendingBound2"), -1);
+            bound2 = Config_optDouble(STR_BUF("giftSendingBound2"), 1000);
         }
     }
 
     //无合适礼品可送
-    if(*giftsCount == 0 || gifts == NULL)
+    if(giftsCount == 0 || gifts == NULL)
         return -2;
     //无合适礼品可送
     else if(tot < bound1)
@@ -55,7 +55,7 @@ int getGift(int sellingRecordIds[], int sellingRecordCount) {
     int highId = 0;
     double highAmount = 0;
 
-    for (int i = 0; i < *giftsCount; ++i) {
+    for (int i = 0; i < giftsCount; ++i) {
         Mountings* mountings = GetById(Mountings, MOUNTINGS, gifts[i]);
         if(tot <= bound2) {
             if(mountings->price <= 100 && mountings->amount > highAmount) {
@@ -91,11 +91,13 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
         return false;
 
     //插入新礼品
+    SellingRecord *record = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0]);
     Mountings *mountings = GetById(Mountings, MOUNTINGS, mountingsId);
     SellingRecord newSellingRecord = {
             .partId = mountingsId,
             .status = SELLING_GIFT,
             .amount = 1,
+            .guestId = record->guestId,
             .price = mountings->price,
             .time = Time_getNow(),
             .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId

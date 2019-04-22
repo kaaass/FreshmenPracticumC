@@ -17,6 +17,8 @@
 
 Table *dataTable;
 
+stringbuf forcPriceStr(double price);
+
 void Inventory_init() {
     /*
      * 初始化表格
@@ -44,13 +46,20 @@ void Inventory_init() {
         testData[1] = concat(4, now->name, LITERAL(" ("), provider->name, LITERAL(")")),
         testData[2] = toIntString(now->amount);
         testData[3] = toRmbString(now->price);
-        testData[4] = toRmbString(forecasePurchasePrice(nowTime, now->id));
+        testData[4] = forcPriceStr(forecasePurchasePrice(nowTime, now->id));
         Table_pushLine(dataTable, testData);
     }
     //
     READ_SPEC = true;
     UI_setFooterUpdate(LITERAL("按ESC键返回上一页"));
     UI_startScene(SCENE_INVENTORY, STR_BUF("库存"));
+}
+
+stringbuf forcPriceStr(double price) {
+    if (price > 0)
+        return toRmbString(price);
+    else
+        return STR_BUF("数据不足");
 }
 
 void Inventory_inLoop() {

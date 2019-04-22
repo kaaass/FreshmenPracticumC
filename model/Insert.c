@@ -192,13 +192,6 @@ void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType order
             opId[opCnt++] = Database_size(SELLING_RECORD);
         }
     }
-    // 送礼
-    if (orderType != ORDER_PURCHASE) {
-        if (insertGift(opId, opCnt)) {
-            // 记录下礼品
-            opId[opCnt++] = Database_size(SELLING_RECORD);
-        }
-    }
     // 插入订单
     Order order = {
             .type = orderType,
@@ -208,6 +201,10 @@ void Insert_appendOrderLogic(List *records, Guest curGuest, enum OrderType order
     };
     memcpy(order.opId, opId, opCnt * sizeof(int));
     Insert_order(&order);
+    // 送礼
+    if (orderType != ORDER_PURCHASE) {
+        insertGift(opId, opCnt);
+    }
     // 变更账户余额
     double accountBalance = Config_optDouble(LITERAL("accountBalance"), 5000000);
     accountBalance += (orderType == ORDER_PURCHASE ? -1: 1) * totalPrice;
