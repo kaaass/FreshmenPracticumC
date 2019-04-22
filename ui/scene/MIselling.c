@@ -27,30 +27,35 @@ void MIselling_init(){
 }
 
 void MIselling_inLoop(){
-    cJSON *json;
-    string dir;
-    dir = UI_inputString(LITERAL("请输入文件路径："));
-    stringbuf path, content;
-    // 检测文件存在
-    if (!isExist(CSTR(dir))) {
-        string instruction = LITERAL("文件不存在，按Esc返回上一页面");
-        UI_setFooterUpdate(instruction);
-    }
-    // SellingRecord
-    else{
-        path = LITERAL("/SellingRecord.json");
-        path = concat(2, dir, path);
-        content = readStringFromFile(CSTR(path));
-        json = cJSON_Parse(U8_CSTR(content));
-        ForEach(cur,json){
-            SellingRecord *record = GetData(SellingRecord,cur);
-            Database_pushBack(SELLING_RECORD,Data(SellingRecord,record));
+    Menu_inLoop(sellingMenu);
+    if(READ_SPEC){
+        cJSON *json;
+        string dir;
+        dir = UI_inputString(LITERAL("请输入文件路径："));
+        stringbuf path, content;
+        // 检测文件存在
+        if (!isExist(CSTR(dir))) {
+            string instruction = LITERAL("文件不存在，按Esc返回上一页面");
+            UI_setFooterUpdate(instruction);
+            if(SPEC_KEY == KEY_ESC)
+                UI_endScene();
         }
-        cJSON_Delete(json);
-        $STR_BUF(path);
+        // SellingRecord
+        else{
+            path = LITERAL("/SellingRecord.json");
+            path = concat(2, dir, path);
+            content = readStringFromFile(CSTR(path));
+            json = cJSON_Parse(U8_CSTR(content));
+            ForEach(cur,json){
+                SellingRecord *record = GetData(SellingRecord,cur);
+                Database_pushBack(SELLING_RECORD,Data(SellingRecord,record));
+            }
+            cJSON_Delete(json);
+            $STR_BUF(path);
+        }
+        if(SPEC_KEY == KEY_ESC)
+            UI_endScene();
     }
-    if(SPEC_KEY == KEY_ESC)
-        UI_endScene();
 }
 
 int MIselling_render(int line){

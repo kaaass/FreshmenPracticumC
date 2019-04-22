@@ -27,30 +27,35 @@ void MIprovider_init(){
 }
 
 void MIprovider_inLoop(){
-    cJSON *json;
-    string dir;
-    dir = UI_inputString(LITERAL("请输入文件路径："));
-    stringbuf path, content;
-    // 检测文件存在
-    if (!isExist(CSTR(dir))) {
-        string instruction = LITERAL("文件不存在，按Esc返回上一页面");
-        UI_setFooterUpdate(instruction);
-    }
-    // Provider
-    else{
-        path = LITERAL("/Provider.json");
-        path = concat(2, dir, path);
-        content = readStringFromFile(CSTR(path));
-        json = cJSON_Parse(U8_CSTR(content));
-        ForEach(cur,json){
-            Provider *record = GetData(Provider,cur);
-            Database_pushBack(PROVIDER,Data(Provider,record));
+    Menu_inLoop(providerMenu);
+    if(READ_SPEC){
+        cJSON *json;
+        string dir;
+        dir = UI_inputString(LITERAL("请输入文件路径："));
+        stringbuf path, content;
+        // 检测文件存在
+        if (!isExist(CSTR(dir))) {
+            string instruction = LITERAL("文件不存在，按Esc返回上一页面");
+            UI_setFooterUpdate(instruction);
+            if(SPEC_KEY == KEY_ESC)
+                UI_endScene();
         }
-        cJSON_Delete(json);
-        $STR_BUF(path);
+        // Provider
+        else{
+            path = LITERAL("/Provider.json");
+            path = concat(2, dir, path);
+            content = readStringFromFile(CSTR(path));
+            json = cJSON_Parse(U8_CSTR(content));
+            ForEach(cur,json){
+                Provider *record = GetData(Provider,cur);
+                Database_pushBack(PROVIDER,Data(Provider,record));
+            }
+            cJSON_Delete(json);
+            $STR_BUF(path);
+        }
+        if(SPEC_KEY == KEY_ESC)
+            UI_endScene();
     }
-    if(SPEC_KEY == KEY_ESC)
-        UI_endScene();
 }
 
 int MIprovider_render(int line){
