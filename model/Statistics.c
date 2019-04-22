@@ -131,7 +131,7 @@ Database *Print_Purchaserecord(Time a, Time b) {
     int num = 0, num1 = 0;
     ForEach(cur, PURCHASE_RECORD) {
         PurchaseRecord *record = GetData(PurchaseRecord, cur);
-        if(record->status==0||record->status==2)
+        if(record->status==0||record->status==2 || record->status == SELLING_GIFT)
         {
             temp[num] = record;
             num++;
