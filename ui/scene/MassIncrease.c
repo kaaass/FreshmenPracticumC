@@ -13,9 +13,6 @@
 #include "../../data/DataManager.h"
 #include "../cJson/cJSON.h"
 #include "../../util/FileUtil.h"
-#include "MIguest.h"
-#include "MIprovider.h"
-#include "MImountings.h"
 #include "MIselling.h"
 #include "MIpurchase.h"
 
@@ -35,7 +32,7 @@ void MassIncrease_init() {
     READ_SPEC = true;
     stringbuf name[] = {
             STR_BUF("     客  户 "),
-            STR_BUF("    销 售 商"),
+            STR_BUF("    供 货 商"),
             STR_BUF("    零 部 件"),
             STR_BUF("    销售记录"),
             STR_BUF("    购买记录")
@@ -89,7 +86,10 @@ void processGuest() {
     json = cJSON_Parse(U8_CSTR(content));
     // 写数据库
     Database *guests = Create(Guest);
-    DeserializeDB(Guest, guests, json);
+    if (!DeserializeDB(Guest, guests, json)) {
+        UI_setFooterUpdate(LITERAL("文件格式不正确！"));
+        return;
+    }
     ForEach(cur, guests) {
         Guest *record = GetData(Guest, cur);
         Database_pushBack(GUEST, Data(Guest, record));
@@ -112,7 +112,10 @@ void processProvider() {
     json = cJSON_Parse(U8_CSTR(content));
     // 写数据库
     Database *providers = Create(Provider);
-    DeserializeDB(Provider, providers, json);
+    if (!DeserializeDB(Provider, providers, json)) {
+        UI_setFooterUpdate(LITERAL("文件格式不正确！"));
+        return;
+    }
     ForEach(cur, providers) {
         Provider *record = GetData(Provider, cur);
         Database_pushBack(PROVIDER, Data(Provider, record));
@@ -135,7 +138,10 @@ void processMountings() {
     json = cJSON_Parse(U8_CSTR(content));
     // 写数据库
     Database *mountings = Create(Mountings);
-    DeserializeDB(Mountings, mountings, json);
+    if (!DeserializeDB(Mountings, mountings, json)) {
+        UI_setFooterUpdate(LITERAL("文件格式不正确！"));
+        return;
+    }
     ForEach(cur, mountings) {
         Mountings *record = GetData(Mountings, cur);
         Database_pushBack(PROVIDER, Data(Mountings, record));
