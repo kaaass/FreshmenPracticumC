@@ -7,6 +7,7 @@
 #include "../data/TableOrder.h"
 #include "../core/Database.h"
 #include "../data/TableGuest.h"
+#include "../data/TableMountings.h"
 
 #ifndef FRESHMAN_PROJ_C_INSERT_H
 #define FRESHMAN_PROJ_C_INSERT_H
@@ -29,6 +30,8 @@ void Insert_guest(string name, string phone);
 int Insert_hasProvider(string name, string phone);
 
 void Insert_provider(string name, string phone);
+
+int Insert_hasMountings(Mountings *mountings);
 
 void Insert_sellingRecord(SellingRecord *data, bool change);
 

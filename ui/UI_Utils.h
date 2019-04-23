@@ -33,6 +33,8 @@ bool UI_inputDouble(double *num, string tip);
 
 bool UI_inputTime(Time *sTime, string tip);
 
+bool UI_askFor(string tip);
+
 stringbuf UI_inputString(string tip);
 
 void UI_moveCursor(Position pos);
