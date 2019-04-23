@@ -132,7 +132,7 @@ void ViewSell_inLoopTable() {
     Table_inLoop(sellTable);
     if (READ_SPEC) {
         if (SPEC_KEY == KEY_DEL) {
-            if (EQUAL(LITERAL("y"), UI_inputString(LITERAL("是否确定要删除？[y/n]")))) {
+            if (UI_askFor(LITERAL("是否确定要删除？"))) {
                 stringbuf reason = $init$;
                 int sId = getSelSellId();
                 if (deleteSellingRecord(sId, &reason)) {

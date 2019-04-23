@@ -195,6 +195,11 @@ void processGuest() {
     }
     ForEach(cur, guests) {
         Guest *record = GetData(Guest, cur);
+        if (Insert_hasGuest(record->name, record->phone)) {
+            stringbuf ask = concat(5, LITERAL("发现可能重复记录（"), record->name, LITERAL(":"), record->phone, LITERAL("），是否导入？"));
+            if (!UI_askFor(ask))
+                continue;
+        }
         Database_pushBack(GUEST, Data(Guest, record));
     }
     cJSON_Delete(json);
@@ -221,6 +226,11 @@ void processProvider() {
     }
     ForEach(cur, providers) {
         Provider *record = GetData(Provider, cur);
+        if (Insert_hasProvider(record->name, record->phone)) {
+            stringbuf ask = concat(5, LITERAL("发现可能重复记录（"), record->name, LITERAL(":"), record->phone, LITERAL("），是否导入？"));
+            if (!UI_askFor(ask))
+                continue;
+        }
         Database_pushBack(PROVIDER, Data(Provider, record));
     }
     cJSON_Delete(json);
@@ -247,6 +257,12 @@ void processMountings() {
     }
     ForEach(cur, mountings) {
         Mountings *record = GetData(Mountings, cur);
+        if (Insert_hasMountings(record)) {
+            Provider *provider = GetById(Provider, PROVIDER, record->sellerId);
+            stringbuf ask = concat(5, LITERAL("发现可能重复记录（"), record->name, LITERAL(":"), provider->name, LITERAL("），是否导入？"));
+            if (!UI_askFor(ask))
+                continue;
+        }
         Database_pushBack(MOUNTINGS, Data(Mountings, record));
     }
     cJSON_Delete(json);

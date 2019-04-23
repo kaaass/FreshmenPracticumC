@@ -121,6 +121,15 @@ bool UI_inputTime(Time *sTime, string tip) {
 }
 
 /**
+ * 读入是否
+ * @param tip
+ * @return
+ */
+bool UI_askFor(string tip) {
+    return EQUAL(LITERAL("y"), UI_inputString(concat(2, tip, LITERAL("[y/n]"))));
+}
+
+/**
  * 读入字符串
  * @param str 保存结果的指针
  * @param tip 输入提示，若NULL则为默认

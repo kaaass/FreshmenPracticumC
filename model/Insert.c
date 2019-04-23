@@ -75,6 +75,23 @@ void Insert_provider(string name, string phone) {
 }
 
 /**
+ * 是否存在Mountings记录
+ * @param mountings
+ * @return
+ */
+int Insert_hasMountings(Mountings *mountings) {
+    ForEach(cur, MOUNTINGS) {
+        Mountings *data = GetData(Mountings, cur);
+        if (data->type == mountings->type &&
+            data->sellerId == mountings->sellerId &&
+            EQUAL(data->name, mountings->name)) {
+            return data->id;
+        }
+    }
+    return 0;
+}
+
+/**
  * 插入SellingRecord记录
  * @param data
  * @param change 是否改变库存
