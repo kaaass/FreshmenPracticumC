@@ -384,7 +384,7 @@ cJSON *serialize_Database(Database *db, int type) {
  * @param db
  * @param type
  */
-void deserialize_Database(Database *db, const cJSON *json, int type) {
+bool deserialize_Database(Database *db, const cJSON *json, int type) {
     assert(db);
     Header *header = GetData(Header, db);
     assert(type == header->defaultDataType);
@@ -392,7 +392,8 @@ void deserialize_Database(Database *db, const cJSON *json, int type) {
     cJSON *jsonType, *data;
     jsonType = cJSON_GetObjectItemCaseSensitive(json, "type");
     assert(cJSON_IsNumber(jsonType));
-    assert(jsonType->valueint == type);
+    if (jsonType->valueint != type)
+        return false;
     data = cJSON_GetObjectItemCaseSensitive(json, "data");
     assert(cJSON_IsArray(data));
     // 反序列化结点
@@ -431,4 +432,5 @@ void deserialize_Database(Database *db, const cJSON *json, int type) {
                 break;
         }
     }
+    return true;
 }

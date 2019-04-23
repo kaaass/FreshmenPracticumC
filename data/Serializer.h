@@ -45,6 +45,6 @@ Mountings deserialize_Mountings(const cJSON *);
 Order deserialize_Order(const cJSON *);
 PurchaseRecord deserialize_PurchaseRecord(const cJSON *);
 SellingRecord deserialize_SellingRecord(const cJSON *);
-void deserialize_Database(Database *, const cJSON *, int);
+bool deserialize_Database(Database *db, const cJSON *json, int type);
 
 #endif //FRESHMAN_PROJ_C_SERIALIZER_H
