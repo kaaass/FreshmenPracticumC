@@ -285,19 +285,16 @@ void updatePrint() {
             instruction = LITERAL("批量增加客户信息。");
             break;
         case 1:
-            instruction = LITERAL("批量增加销售商信息。");
+            instruction = LITERAL("批量增加供货商信息。");
             break;
         case 2:
             instruction = LITERAL("批量增加零部件信息。");
             break;
         case 3:
-            instruction = LITERAL("批量增加销售记录信息。");
+            instruction = LITERAL("批量增加一个订单的销售记录信息。");
             break;
         case 4:
-            instruction = LITERAL("批量增加购买记录信息。");
-            break;
-        case 5:
-            instruction = LITERAL("批量增加订单信息。");
+            instruction = LITERAL("批量增加一个订单的进货记录信息。");
             break;
         default:
             instruction = LITERAL("");
