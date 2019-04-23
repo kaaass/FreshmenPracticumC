@@ -117,7 +117,7 @@ bool UI_inputTime(Time *sTime, string tip) {
         status &= UI_inputInt(&temp.second, LITERAL("请输入秒："))
                 && temp.second >= 0 && temp.second <= 59;
     *sTime = Time_getTimestamp(temp);
-    return status;
+    return status && Time_isValid(*sTime);
 }
 
 /**
