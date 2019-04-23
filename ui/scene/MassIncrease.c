@@ -25,6 +25,12 @@ Menu *miMenu;
 
 void updatePrint();
 
+void processGuest();
+
+void processProvider();
+
+void processMountings();
+
 void MassIncrease_init() {
     READ_SPEC = true;
     stringbuf name[] = {
@@ -45,13 +51,13 @@ void MassIncrease_inLoop() {
         if (SPEC_KEY == KEY_ENTER) {
             switch (miMenu->cur) {
                 case 0:
-                    MIguest_init();
+                    processGuest();
                     break;
                 case 1:
-                    MIprovider_init();
+                    processProvider();
                     break;
                 case 2:
-                    MImountings_init();
+                    processMountings();
                     break;
                 case 3:
                     MIselling_init();
@@ -69,14 +75,79 @@ void MassIncrease_inLoop() {
     }
 }
 
+void processGuest() {
+    stringbuf dir = UI_inputString(LITERAL("请输入文件路径："));
+    cJSON *json;
+    stringbuf content;
+    // 检测文件存在
+    if (!isExist(CSTR(dir))) {
+        UI_setFooterUpdate(LITERAL("文件不存在！"));
+        return;
+    }
+    // 读入文件
+    content = readStringFromFile(CSTR(dir));
+    json = cJSON_Parse(U8_CSTR(content));
+    // 写数据库
+    Database *guests = Create(Guest);
+    DeserializeDB(Guest, guests, json);
+    ForEach(cur, guests) {
+        Guest *record = GetData(Guest, cur);
+        Database_pushBack(GUEST, Data(Guest, record));
+    }
+    cJSON_Delete(json);
+    UI_setFooterUpdate(LITERAL("导入成功！"));
+}
+
+void processProvider() {
+    stringbuf dir = UI_inputString(LITERAL("请输入文件路径："));
+    cJSON *json;
+    stringbuf content;
+    // 检测文件存在
+    if (!isExist(CSTR(dir))) {
+        UI_setFooterUpdate(LITERAL("文件不存在！"));
+        return;
+    }
+    // 读入文件
+    content = readStringFromFile(CSTR(dir));
+    json = cJSON_Parse(U8_CSTR(content));
+    // 写数据库
+    Database *providers = Create(Provider);
+    DeserializeDB(Provider, providers, json);
+    ForEach(cur, providers) {
+        Provider *record = GetData(Provider, cur);
+        Database_pushBack(PROVIDER, Data(Provider, record));
+    }
+    cJSON_Delete(json);
+    UI_setFooterUpdate(LITERAL("导入成功！"));
+}
+
+void processMountings() {
+    stringbuf dir = UI_inputString(LITERAL("请输入文件路径："));
+    cJSON *json;
+    stringbuf content;
+    // 检测文件存在
+    if (!isExist(CSTR(dir))) {
+        UI_setFooterUpdate(LITERAL("文件不存在！"));
+        return;
+    }
+    // 读入文件
+    content = readStringFromFile(CSTR(dir));
+    json = cJSON_Parse(U8_CSTR(content));
+    // 写数据库
+    Database *mountings = Create(Mountings);
+    DeserializeDB(Mountings, mountings, json);
+    ForEach(cur, mountings) {
+        Mountings *record = GetData(Mountings, cur);
+        Database_pushBack(PROVIDER, Data(Mountings, record));
+    }
+    cJSON_Delete(json);
+    UI_setFooterUpdate(LITERAL("导入成功！"));
+}
+
 int MassIncrease_render(int line) {
-    UI_printMidString(LITERAL("欢迎使用批量增加!"), line);
+    UI_printMidString(LITERAL("欢迎使用批量增加!"), line++);
     line += 1;
-    putchar('\n');
-    line += 1;
-    UI_printMidString(LITERAL("请选择批量增加的内容："), line);
-    line += 1;
-    putchar('\n');
+    UI_printMidString(LITERAL("请选择批量增加的内容："), line++);
     line += Menu_render(miMenu, line);
     updatePrint();
     return line;
