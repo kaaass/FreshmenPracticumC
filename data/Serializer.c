@@ -391,7 +391,8 @@ bool deserialize_Database(Database *db, const cJSON *json, int type) {
     Database_clear(db);
     cJSON *jsonType, *data;
     jsonType = cJSON_GetObjectItemCaseSensitive(json, "type");
-    assert(cJSON_IsNumber(jsonType));
+    if (!cJSON_IsNumber(jsonType))
+        return false;
     if (jsonType->valueint != type)
         return false;
     data = cJSON_GetObjectItemCaseSensitive(json, "data");
