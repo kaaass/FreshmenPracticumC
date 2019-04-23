@@ -50,6 +50,14 @@ Time Time_getNow() {
  * @return
  */
 bool Time_isValid(Time structTime) {
+    Time tsSTime = Time_parseTime(structTime.timeStamp);
+    if (!(tsSTime.month == structTime.month &&
+        tsSTime.day == structTime.day &&
+        tsSTime.hour == structTime.hour &&
+        tsSTime.minute == structTime.minute &&
+        tsSTime.second == structTime.second)) {
+        structTime.timeStamp = -1; // 错误
+    }
     return structTime.timeStamp != -1;
 }
 
