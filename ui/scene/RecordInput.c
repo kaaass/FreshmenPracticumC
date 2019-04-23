@@ -44,7 +44,7 @@ void RecordInput_init(RecordParam nowVal) {
     curView = MENU; // 确定当前页面
     if (CUR_REC_PARAM.partId == -1) {
         CUR_REC_PARAM.id = -1;
-        CUR_REC_PARAM.amount = 0;
+        CUR_REC_PARAM.amount = 1;
         CUR_REC_PARAM.price = 0;
         CUR_REC_PARAM.total = 0;
         CUR_REC_PARAM.time = Time_getNow();
