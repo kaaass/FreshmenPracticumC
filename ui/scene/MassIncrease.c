@@ -13,8 +13,7 @@
 #include "../../data/DataManager.h"
 #include "../cJson/cJSON.h"
 #include "../../util/FileUtil.h"
-#include "MIselling.h"
-#include "MIpurchase.h"
+#include "../../model/Insert.h"
 
 #define MENU_CNT 5
 
@@ -28,6 +27,10 @@ void processProvider();
 
 void processMountings();
 
+void processSelling();
+
+void processPurchase();
+
 void MassIncrease_init() {
     READ_SPEC = true;
     stringbuf name[] = {
@@ -35,7 +38,7 @@ void MassIncrease_init() {
             STR_BUF("    供 货 商"),
             STR_BUF("    零 部 件"),
             STR_BUF("    销售记录"),
-            STR_BUF("    购买记录")
+            STR_BUF("    进货记录")
     };
     miMenu = Menu_create(-1, 3, name, MENU_CNT, 0);
     UI_startScene(SCENE_MASSINCREASE, STR_BUF("批量增加"));
@@ -57,10 +60,10 @@ void MassIncrease_inLoop() {
                     processMountings();
                     break;
                 case 3:
-                    MIselling_init();
+                    processSelling();
                     break;
                 case 4:
-                    MIpurchase_init();
+                    processPurchase();
                     break;
                 default:
                     break;
@@ -70,6 +73,106 @@ void MassIncrease_inLoop() {
             UI_endScene();
         }
     }
+}
+
+void processPurchase() {
+    stringbuf dir = UI_inputString(LITERAL("请输入文件路径："));
+    cJSON *json;
+    stringbuf content;
+    List *records = Create(RecordParam);
+    Guest object = {.id = -1};
+    stringbuf info = $init$;
+    double total = 0;
+    // 检测文件存在
+    if (!isExist(CSTR(dir))) {
+        UI_setFooterUpdate(LITERAL("文件不存在！"));
+        return;
+    }
+    // 读入文件
+    content = readStringFromFile(CSTR(dir));
+    json = cJSON_Parse(U8_CSTR(content));
+    // 读入临时数据库
+    Database *purchases = Create(PurchaseRecord);
+    if (!DeserializeDB(PurchaseRecord, purchases, json)) {
+        UI_setFooterUpdate(LITERAL("文件格式不正确！"));
+        return;
+    }
+    ForEach(cur, purchases) {
+        PurchaseRecord *record = GetData(PurchaseRecord, cur);
+        RecordParam data = {
+                .partId = record->partId,
+                .price = record->price,
+                .amount = record->amount,
+                .total = record->total,
+                .time = record->time
+        };
+        Database_pushBack(records, Data(RecordParam, &data));
+        total += record->total;
+        // 更新客户
+        if (object.id < 1) {
+            Provider *seller = GetById(Provider, PROVIDER, record->sellerId);
+            object.id = seller->id;
+            object.name = seller->name;
+            object.phone = seller->phone;
+        }
+    }
+    if (!Insert_checkForAppend(records, object, ORDER_PURCHASE, total, &info)) {
+        UI_setFooterUpdate(concat(2, LITERAL("导入数据错误！"), info));
+        return;
+    }
+    Insert_appendOrderLogic(records, object, ORDER_PURCHASE);
+    //
+    cJSON_Delete(json);
+    UI_setFooterUpdate(LITERAL("导入成功！"));
+}
+
+void processSelling() {
+    stringbuf dir = UI_inputString(LITERAL("请输入文件路径："));
+    cJSON *json;
+    stringbuf content;
+    List *records = Create(RecordParam);
+    Guest object = {.id = -1};
+    stringbuf info = $init$;
+    double total = 0;
+    // 检测文件存在
+    if (!isExist(CSTR(dir))) {
+        UI_setFooterUpdate(LITERAL("文件不存在！"));
+        return;
+    }
+    // 读入文件
+    content = readStringFromFile(CSTR(dir));
+    json = cJSON_Parse(U8_CSTR(content));
+    // 读入临时数据库
+    Database *selling = Create(SellingRecord);
+    if (!DeserializeDB(SellingRecord, selling, json)) {
+        UI_setFooterUpdate(LITERAL("文件格式不正确！"));
+        return;
+    }
+    ForEach(cur, selling) {
+        SellingRecord *record = GetData(SellingRecord, cur);
+        RecordParam data = {
+                .partId = record->partId,
+                .price = record->price,
+                .amount = record->amount,
+                .total = record->total,
+                .time = record->time
+        };
+        Database_pushBack(records, Data(RecordParam, &data));
+        total += record->total;
+        // 更新客户
+        if (object.id < 1) {
+            Guest *guest = GetById(Guest, GUEST, record->guestId);
+            object = *guest;
+        }
+    }
+    if (!Insert_checkForAppend(records, object, ORDER_WHOLE_SALE, total, &info)) {
+        UI_setFooterUpdate(concat(2, LITERAL("导入数据错误！"), info));
+        return;
+    }
+    Insert_appendOrderLogic(records, object, ORDER_WHOLE_SALE);
+    //
+    cJSON_Delete(json);
+    UI_setFooterUpdate(LITERAL("导入成功！"));
 }
 
 void processGuest() {
@@ -144,7 +247,7 @@ void processMountings() {
     }
     ForEach(cur, mountings) {
         Mountings *record = GetData(Mountings, cur);
-        Database_pushBack(PROVIDER, Data(Mountings, record));
+        Database_pushBack(MOUNTINGS, Data(Mountings, record));
     }
     cJSON_Delete(json);
     UI_setFooterUpdate(LITERAL("导入成功！"));
