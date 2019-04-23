@@ -256,7 +256,7 @@ void processMountings() {
 int MassIncrease_render(int line) {
     UI_printMidString(LITERAL("欢迎使用批量增加!"), line++);
     line += 1;
-    UI_printMidString(LITERAL("请选择批量增加的内容："), line++);
+    UI_printMidString(LITERAL("请选择批量增加的内容（按Esc键返回上一页）："), line++);
     line += Menu_render(miMenu, line);
     updatePrint();
     return line;
