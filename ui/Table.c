@@ -290,6 +290,8 @@ stringbuf Table_getSelection(Table *table) {
     // 是否允许选中
     if (selX == -1 || selY == -1) return NULL;
     TableLine *data = GetById(TableLine, table->columns, selY);
+    if (data == NULL)
+        return $init$;
     return data->content[selX];
 }
 
