@@ -99,6 +99,7 @@ bool insertGift(int sellingRecordIds[], int sellingRecordCount) {
             .amount = 1,
             .guestId = record->guestId,
             .price = mountings->price,
+            .total = mountings->price,
             .time = Time_getNow(),
             .orderId = GetById(SellingRecord, SELLING_RECORD, sellingRecordIds[0])->orderId
     };
