@@ -17,9 +17,6 @@
 #include "scene/Singleitem.h"
 #include "scene/MassIncrease.h"
 #include "scene/Inventory.h"
-#include "scene/MIguest.h"
-#include "scene/MIprovider.h"
-#include "scene/MImountings.h"
 #include "scene/MIselling.h"
 #include "scene/MIpurchase.h"
 #include "scene/ViewPurchase.h"
@@ -95,20 +92,11 @@ bool UI_runSceneLoop() {
         case SCENE_MASSINCREASE:
             MassIncrease_inLoop();
             break;
-        case SCENE_MIGUEST:
-            MIguest_inLoop();
-            break;
-        case SCENE_MIPROVIDER:
-            MIprovider_inLoop();
-            break;
         case SCENE_MIPURCHASE:
             MIpurchase_inLoop();
             break;
         case SCENE_MISELLING:
             MIselling_inLoop();
-            break;
-        case SCENE_MIMOUNTINGS:
-            MImountings_inLoop();
             break;
         case SCENE_INVENTORY:
             Inventory_inLoop();
@@ -176,12 +164,6 @@ int UI_renderScene(int line) {
             return Singleitem_render(line);
         case SCENE_MASSINCREASE:
             return MassIncrease_render(line);
-        case SCENE_MIGUEST:
-            return MIguest_render(line);
-        case SCENE_MIPROVIDER:
-            return MIprovider_render(line);
-        case SCENE_MIMOUNTINGS:
-            return MImountings_render(line);
         case SCENE_MISELLING:
             return MIselling_render(line);
         case SCENE_MIPURCHASE:
