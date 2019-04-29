@@ -89,7 +89,9 @@ bool modifyOrderOfSellingRecord(int orderId, int sellingRecordId, SellingRecord 
             newOrder.opId[count++] = order->opId[i];
     }
 
-    newOrder.opId[count++] = newSellingRecord->id;
+    Insert_sellingRecord(newSellingRecord, true);
+
+    newOrder.opId[count++] = Database_size(SELLING_RECORD);
     newOrder.opCount = count;
     Insert_order(&newOrder);
 
@@ -129,7 +131,10 @@ bool modifyOrderOfPurchaseRecord(int orderId, int purchaseRecordId, PurchaseReco
         if(record->status == PURCHASE_NORMAL || record->status == PURCHASE_SALES_RETURN)
             newOrder.opId[count++] = order->opId[i];
     }
-    newOrder.opId[count++] = newPuachaseRecord->id;
+
+    Insert_purchaseRecord(newPuachaseRecord, true);
+
+    newOrder.opId[count++] = Database_size(PURCHASE_RECORD);
     newOrder.opCount = count;
 
     Insert_order(&newOrder);
