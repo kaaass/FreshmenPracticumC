@@ -26,7 +26,7 @@ void TotalGift_init() {
             STR_BUF("名称"),
             STR_BUF("数量"),
             STR_BUF("客户"),
-            STR_BUF("手机号"),
+            STR_BUF("联系方式"),
             STR_BUF("价值")
     };
     int columnWidth[] = {17, 8, 23, 6, 10, 13, 15};

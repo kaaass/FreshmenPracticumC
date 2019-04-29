@@ -60,7 +60,7 @@ void ChooseGuest_init(int guestId, int type) {
     selGuestMenu = Menu_create(-1, 10, name, MENU_SEL_GUEST_CNT, 0);
     stringbuf nameCreate[] = {
             STR_BUF("姓名："),
-            STR_BUF("电话号码："),
+            STR_BUF("联系方式："),
             STR_BUF("添加"),
             STR_BUF("取消")
     };
@@ -70,7 +70,7 @@ void ChooseGuest_init(int guestId, int type) {
      */
     stringbuf columnName[] = {
             STR_BUF("姓名"),
-            STR_BUF("电话")
+            STR_BUF("联系方式")
     };
     int columnWidth[] = {20, 20};
     guestList = Table_create(-1, 1, 43, 20, 1, -1);
@@ -82,7 +82,7 @@ void ChooseGuest_init(int guestId, int type) {
 
 void updateMenuText() {
     Menu_setItemText(createGuestMenu, 0, concat(2, LITERAL("姓名："), tempGuest.name), false);
-    Menu_setItemText(createGuestMenu, 1, concat(2, LITERAL("电话："), tempGuest.phone), true);
+    Menu_setItemText(createGuestMenu, 1, concat(2, LITERAL("练习方式："), tempGuest.phone), true);
     // freeAssign(&selGuestMenu->name[0], concat(2, LITERAL("选择现有："), CUR_GUEST.name));
     UI_render();
 }
@@ -191,7 +191,7 @@ void ChooseGuest_inLoopCreate() {
                     updateMenuText();
                     break;
                 case 1: // 输入电话
-                    freeAssign(&tempGuest.phone, UI_inputString(LITERAL("请输入电话：")));
+                    freeAssign(&tempGuest.phone, UI_inputString(LITERAL("请输入联系方式：")));
                     updateMenuText();
                     break;
                 case 2: // 添加
@@ -201,7 +201,7 @@ void ChooseGuest_inLoopCreate() {
                         return;
                     }
                     if (length(tempGuest.phone) < 1) {
-                        UI_setFooterUpdate(LITERAL("电话不能为空！"));
+                        UI_setFooterUpdate(LITERAL("联系方式不能为空！"));
                         return;
                     }
                     // 逻辑
