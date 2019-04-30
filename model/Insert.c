@@ -141,6 +141,8 @@ void Insert_order(Order *data) {
  * @return
  */
 bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderType, float totalPrice, stringbuf *info) {
+    int amounts[100];
+    memset(amounts, -1, sizeof(amounts));
     // 进货时，账户余额不能是负的
     double accountBalance = Config_optDouble(LITERAL("accountBalance"), 5000000);
     if (orderType == ORDER_PURCHASE && totalPrice > accountBalance) {
@@ -153,12 +155,15 @@ bool Insert_checkForAppend(List *records, Guest curGuest, enum OrderType orderTy
             RecordParam *data = GetData(RecordParam, cur);
             Mountings *mounting = GetById(Mountings, MOUNTINGS, data->partId);
             Provider *provider;
-            if (data->amount > mounting->amount) {
+            if (amounts[mounting->id] < 0)
+                amounts[mounting->id] = mounting->amount;
+            if (data->amount > amounts[mounting->id]) {
                 provider = GetById(Provider, PROVIDER, mounting->sellerId);
                 *info = concat(5, LITERAL("商品 "), mounting->name
                         , LITERAL("（"), provider->name, LITERAL("）的库存不足！"));
                 return false;
             }
+            amounts[mounting->id] -= data->amount;
         }
     }
     return true;

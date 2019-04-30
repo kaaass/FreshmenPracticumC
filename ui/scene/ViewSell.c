@@ -58,7 +58,7 @@ void ViewSell_init() {
     stringbuf columnName[] = {
             STR_BUF("订单号"),
             STR_BUF("商品名"),
-            STR_BUF("供货商"),
+            STR_BUF("客户"),
             STR_BUF("数量"),
             STR_BUF("价格"),
             STR_BUF("时间"),
@@ -73,7 +73,7 @@ void ViewSell_init() {
     stringbuf menuName[] = {
             STR_BUF("  查看所有"),
             STR_BUF("  配件种类"),
-            STR_BUF("  供 货 商"),
+            STR_BUF("   客  户"),
             STR_BUF("  时 间 段")
     };
     sellMenu = Menu_create(7, 0, menuName, 4, 0);
@@ -191,7 +191,7 @@ void ViewSell_inLoopMenu() {
                     ChooseMountingsType_init(sCondType);
                     break;
                 case 2: // 供货商
-                    ChooseGuest_init(sCondGuest.id, 1);
+                    ChooseGuest_init(sCondGuest.id, 0);
                     break;
                 case 3: // 时间段
                     TimeDurationInput_init();
@@ -319,7 +319,7 @@ void updateSTableData() {
         SellingRecord *data = GetData(SellingRecord, cur);
         Mountings *mountings = GetById(Mountings, MOUNTINGS, data->partId);
         Provider *provider = GetById(Provider, PROVIDER, mountings->sellerId);
-        Guest *guest = GetById(Guest, PROVIDER, data->guestId);
+        Guest *guest = GetById(Guest, GUEST, data->guestId);
         Order *order = GetById(Order, ORDER, data->orderId);
 
         line[0] = concat(2, toIntString(data->orderId), order->type == ORDER_WHOLE_SALE ? LITERAL("批"): $init$);
